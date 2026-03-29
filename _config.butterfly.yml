@@ -1144,7 +1144,7 @@ live2d:
   tagMode: false
   log: false
   model:
-    use:
+    use: ''
   display:
     position: right
     width: 150
