@@ -1136,7 +1136,7 @@ CDN:
     # waline_js:
 
 live2d:
-  enable: false
+  enable: true
   scriptFrom: local
   pluginRootPath: live2dw/
   pluginJsPath: lib/
@@ -1144,12 +1144,14 @@ live2d:
   tagMode: false
   log: false
   model:
-    use: ''
+    use: live2d-widget-model-miku
   display:
     position: right
     width: 150
     height: 300
+    hOffset: 30
+    vOffset: -20
   mobile:
-    show: true
+    show: false
   react:
-    opacity: 0.7
+    opacity: 0.8
