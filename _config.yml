@@ -109,7 +109,7 @@ math:
   engine: mathjax # 这里先用 mathjax，因为它和 kramed 配合最稳
 
 live2d:
-  enable: false
+  enable: true
   scriptFrom: local
   pluginRootPath: live2dw/
   pluginJsPath: lib/
