@@ -107,3 +107,24 @@ deploy:
 math:
   enable: true
   engine: mathjax # 这里先用 mathjax，因为它和 kramed 配合最稳
+
+live2d:
+  enable: false
+  scriptFrom: local
+  pluginRootPath: live2dw/
+  pluginJsPath: lib/
+  pluginModelPath: assets/
+  tagMode: false
+  log: false
+  model:
+    use: live2d-widget-model-miku
+  display:
+    position: right
+    width: 150
+    height: 300
+    hOffset: 30
+    vOffset: -20
+  mobile:
+    show: false
+  react:
+    opacity: 0.8
