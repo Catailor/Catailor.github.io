@@ -1066,12 +1066,12 @@ inject:
             models: [
               {
                 path: '/live2d_models/koishi/object_live2d_054_101.asset.model3.json',
-                scale: 0.15,
-                position: [40, 50],
+                scale: 0.13,
+                position: [20, 80],
                 stageStyle: {
-                  width: 330,
-                  height: 450,
-                // backgroundColor: 'rgba(182, 252, 213, 0.15)'
+                  width: 260,
+                  height: 430,
+                  // backgroundColor: 'rgba(182, 252, 213, 0.15)'
                 }
               }
             ],
