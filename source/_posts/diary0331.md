@@ -1,5 +1,5 @@
 ---
-title: diary0331
+title: 3/31
 date: 2026-03-31 23:39:07
 category: diary
 tags:
