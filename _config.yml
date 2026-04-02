@@ -103,7 +103,7 @@ theme: butterfly
 deploy:
   type: ''
 
-# Math Formulas
-math:
-  enable: true
-  engine: mathjax # 这里先用 mathjax，因为它和 kramed 配合最稳
+markdown:
+  plugins:
+    - '@renbaoshuo/markdown-it-katex'
+
