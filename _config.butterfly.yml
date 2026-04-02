@@ -465,7 +465,7 @@ math:
 
   katex:
     # Enable the copy KaTeX formula
-    copy_tex: false
+    copy_tex: true
 
 # --------------------------------------
 # Search
