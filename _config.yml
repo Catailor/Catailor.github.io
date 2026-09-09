@@ -5,7 +5,7 @@
 # Site
 title: Catailor's blog
 subtitle: ''
-description: ''
+description: '关于学习，关于日常，也关于一点点好奇心。'
 keywords:
 author: Catailor
 language: zh-CN
@@ -61,7 +61,7 @@ prismjs:
 # order_by: Posts order. (Order by date descending by default)
 index_generator:
   path: ''
-  per_page: 10
+  per_page: 0
   order_by: -date
 
 # Category & Tag

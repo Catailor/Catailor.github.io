@@ -1,0 +1,108 @@
+- var globalPageType = 'home'
+- var pageType = 'page'
+- var moonlit = site.data.moonlit
+- var notes = moonlit_posts()
+doctype html
+html(lang=config.language data-theme=theme.display_mode)
+  head
+    include ../../node_modules/hexo-theme-butterfly/layout/includes/head.pug
+    link(rel='preload' as='image' href=url_for('/img/moonlit/hero.webp'))
+  body.moonlit-home
+    != partial('includes/loading/index', {}, {cache: true})
+    != partial('includes/sidebar', {}, {cache: true})
+    a.moonlit-skip(href='#notes') 跳到手记
+    #body-wrap.page
+      header#page-header.moonlit-hero
+        .moonlit-scene(aria-hidden='true')
+        .moonlit-wash(aria-hidden='true')
+        .moonlit-stars(aria-hidden='true')
+          each n in [1, 2, 3, 4, 5, 6]
+            span
+        nav#nav
+          span#blog-info
+            a.nav-site-title(href=url_for('/'))
+              span.moonlit-brand-moon(aria-hidden='true') ☾
+              span.site-name Catailor
+          #menus
+            .moonlit-links
+              a.is-current(href=url_for('/') aria-current='page') 首页
+              a(href='#study' data-note-nav='study') 学习手记
+              a(href='#life' data-note-nav='life') 生活碎片
+              a(href=url_for('/archives/')) 归档
+              button.moonlit-theme(type='button' aria-label='切换到夜间模式' title='切换日夜') ☾
+        .moonlit-hero-inner
+          .moonlit-hero-copy
+            p.moonlit-eyebrow MOONLIT NOTES
+            h1 在月光下，
+              br
+              | 记录一些小事。
+            p.moonlit-intro= moonlit.intro
+            a.moonlit-hero-link(href='#notes') 翻开我的手记
+              span(aria-hidden='true') ↓
+        .moonlit-hero-caption(aria-hidden='true') SOMEWHERE BETWEEN DAYDREAMS & DAILY LIFE
+      main#content-inner.layout.moonlit-layout
+        .moonlit-notice
+          span.moonlit-notice-label 小站便笺
+          span= moonlit.notice
+          span.moonlit-notice-star(aria-hidden='true') ✧
+        .moonlit-columns
+          section#notes.moonlit-notes(aria-labelledby='notes-title')
+            .moonlit-section-head
+              div
+                p.moonlit-eyebrow THE NOTEBOOK
+                h2#notes-title 最近的手记
+              .moonlit-filters(aria-label='手记分类' hidden)
+                button.is-active(type='button' data-filter='all' aria-pressed='true') 全部
+                button(type='button' data-filter='study' aria-pressed='false') 学习
+                button(type='button' data-filter='life' aria-pressed='false') 日常
+            p.moonlit-filter-status.sr-only(role='status' aria-live='polite')
+            #recent-posts.moonlit-posts
+              each post in notes
+                article.moonlit-card(class=post.featured ? 'moonlit-featured' : '' data-kind=post.kind)
+                  a.moonlit-cover(href=post.href tabindex='-1' aria-hidden='true')
+                    img(src=post.cover alt='' loading='lazy' decoding='async' width='760' height='480')
+                    if post.featured
+                      span.moonlit-cover-badge 值得慢慢读
+                  .moonlit-card-copy
+                    .moonlit-meta
+                      span.moonlit-topic= post.topic
+                      span= post.date
+                    h3
+                      a(href=post.href)= post.title
+                    p= post.summary
+                    a.moonlit-read(href=post.href aria-label='阅读：' + post.title) 阅读手记
+                      span(aria-hidden='true') ↗
+            button.moonlit-more(type='button' hidden) 再翻几页
+          aside#aside-content.moonlit-aside(aria-label='关于小站')
+            .moonlit-profile
+              .moonlit-profile-top(aria-hidden='true')
+              img.moonlit-avatar(src=url_for('/img/moonlit/avatar.webp') alt='Catailor 的头像' width='84' height='84')
+              p.moonlit-profile-name Catailor
+              p.moonlit-profile-en A LITTLE CORNER OF MY WORLD
+              p.moonlit-profile-bio= moonlit.bio
+              .moonlit-stats
+                a(href=url_for('/archives/'))
+                  strong= site.posts.length
+                  span 手记
+                a(href=url_for('/categories/'))
+                  strong= site.categories.length
+                  span 分类
+                a(href=url_for('/tags/'))
+                  strong= site.tags.length
+                  span 标签
+              a.moonlit-github(href='https://github.com/catailor' target='_blank' rel='noopener noreferrer') GitHub
+                span(aria-hidden='true') ↗
+            .moonlit-margin-note
+              span.moonlit-eyebrow MARGIN NOTES
+              h3 写在页边
+              p 世界很大，
+                br
+                | 先把眼前的一页写好。
+              span.moonlit-signature — Catailor
+            .moonlit-aside-bottom
+              span(aria-hidden='true') ✧
+              |  愿你在这里，停留片刻。
+      footer#footer.moonlit-footer
+        != partial('includes/footer', {}, {cache: true})
+    include ../../node_modules/hexo-theme-butterfly/layout/includes/rightside.pug
+    include ../../node_modules/hexo-theme-butterfly/layout/includes/additional-js.pug

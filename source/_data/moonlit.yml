@@ -1,0 +1,99 @@
+intro: 关于学习，关于日常，也关于一点点好奇心。
+notice: 把偶然想通的事情，认真记下来。
+bio: 学习、记录、偶尔发呆。把日子里细小的光，收进这个角落。
+featured: math.md
+posts:
+  math.md:
+    title: 数学笔记：线性代数与概率
+    summary: 从向量到概率，把理解慢慢连起来。记录矩阵、对角化、协方差与贝叶斯公式的复习要点。
+    kind: study
+    topic: 数学基础
+  MDP.md:
+    cover: /img/moonlit/hero.webp
+    title: MDP：状态、价值与策略
+    summary: 关于马尔可夫决策过程、价值迭代与策略迭代的学习札记。
+    kind: study
+    topic: 强化学习
+  Q-learning.md:
+    title: Q-learning：从一次更新理解学习
+    summary: 梳理更新公式、学习率、探索率与动作价值之间的关系。
+    kind: study
+    topic: 强化学习
+  recursion.md:
+    cover: /img/moonlit/sunset.webp
+    title: 递归：从汉诺塔说起
+    summary: 借助汉诺塔与数学归纳法，理解递归的分解思路。
+    kind: study
+    topic: 算法
+  tips.md:
+    title: 算法题里的小技巧
+    summary: 随手积累快慢指针、循环判断与哨兵节点的使用心得。
+    kind: study
+    topic: 算法
+  科研.md:
+    cover: /img/moonlit/hero.webp
+    title: 科研札记：让表达更清楚
+    summary: 关于简洁用色、突出重点与信息可读性的几条提醒。
+    kind: study
+    topic: 科研表达
+  Reino-de-Espana.md:
+    title: Reino de España
+    summary: 记录课程中涉及林凤、西班牙使团与中西交往的线索。
+    kind: study
+    topic: 课程札记
+  course.md:
+    cover: /img/moonlit/notes.webp
+    title: 强化学习课程随记
+    summary: 强化学习课程作业中的尝试与随手记录。
+    kind: life
+    topic: 学习日常
+  check_in.md:
+    title: 日常打卡
+    summary: 按日期整理的时间打卡记录。
+    kind: life
+    topic: 日常打卡
+  diary0330.md:
+    cover: /img/moonlit/hero.webp
+    title: 3/30 · 小站的开始
+    summary: 搭建博客、折腾 Live2D，也记录学习与生活的进展。
+    kind: life
+    topic: 日记
+  diary0331.md:
+    title: 3/31 · 日常之间
+    summary: 关于专注、日常安排与博客小问题的记录。
+    kind: life
+    topic: 日记
+  diary0402.md:
+    cover: /img/moonlit/notes.webp
+    title: 4/2 · 一天的切片
+    summary: 乒乓球、课程作业与音乐之间的一天。
+    kind: life
+    topic: 日记
+  4-5.md:
+    cover: /img/moonlit/hero.webp
+    title: 4/5 · 重新出发
+    summary: 记下一点重新行动的力量。
+    kind: life
+    topic: 日记
+  4-7.md:
+    title: 4/7 · 今日旋律
+    summary: 摘记喜欢的歌曲，留下一份当日心情。
+    kind: life
+    topic: 日记
+  4-8.md:
+    cover: /img/moonlit/notes.webp
+    title: 4/8 · 碎碎念
+    summary: 几句简短的日常回顾。
+    kind: life
+    topic: 日记
+  ok.md:
+    title: 一切都会好起来的
+    summary: 留给自己的一句鼓励。
+    kind: life
+    topic: 随笔
+  try.md:
+    cover: /img/moonlit/notes.webp
+    title: 锵锵
+    summary: 博客里的第一篇简短尝试。
+    kind: life
+    topic: 随笔
