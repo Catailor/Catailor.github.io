@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+  <title>私人手记 · Catailor</title>
+  <link rel="stylesheet" href="/css/vault.css">
+  <script src="/js/vault-crypto.js" defer></script>
+  <script src="/js/vendor/markdown-it.min.js" defer></script>
+  <script src="/js/vault.js" defer></script>
+</head>
+<body>
+  <main>
+    <header><a href="/">☾ Catailor</a><span>PRIVATE NOTEBOOK</span><button id="vault-lock" hidden>锁定</button></header>
+    <section id="vault-gate">
+      <div class="vault-symbol" aria-hidden="true">☾</div>
+      <p class="eyebrow">A QUIET PLACE OF MY OWN</p>
+      <h1>只写给自己。</h1>
+      <p id="vault-description">输入密码，翻开私人的那一页。</p>
+      <form id="vault-unlock">
+        <label for="vault-password">手记密码</label>
+        <input id="vault-password" type="password" autocomplete="current-password" required maxlength="512">
+        <div id="vault-confirm-wrap" hidden><label for="vault-confirm">再输入一次密码</label><input id="vault-confirm" type="password" autocomplete="new-password" maxlength="512"></div>
+        <button id="vault-submit" type="submit">解锁手记</button>
+      </form>
+      <p class="hint">密码仅用于本机解密，不会发送到服务器。忘记密码后无法恢复正文。</p>
+      <noscript>解锁需要启用 JavaScript。正文不会直接出现在网页源码里。</noscript>
+    </section>
+    <p id="vault-status" role="status" aria-live="polite">正在读取加密手记…</p>
+    <section id="vault-open" hidden>
+      <div class="vault-toolbar"><span id="vault-count"></span><button id="vault-new" hidden>＋ 新手记</button></div>
+      <div class="vault-layout"><nav id="vault-list" aria-label="私人手记列表"></nav><article id="vault-article"></article></div>
+      <section id="vault-editor" hidden>
+        <h2>编辑手记</h2>
+        <form id="vault-edit-form">
+          <label for="vault-title">标题</label><input id="vault-title" maxlength="200" required>
+          <label for="vault-date">日期</label><input id="vault-date" type="date" required>
+          <label for="vault-body">正文（Markdown）</label><textarea id="vault-body" rows="16" maxlength="200000" required></textarea>
+          <div class="vault-actions"><button type="submit">加密保存到本机项目</button><button id="vault-cancel" type="button">取消编辑</button><button id="vault-delete" type="button">删除这篇</button></div>
+        </form>
+        <p class="hint">保存后还需发布博客，线上才会更新。私人图片暂不支持；请不要把私人附件放入公开图片目录。</p>
+      </section>
+      <details id="vault-settings" hidden><summary>备份与修改密码</summary><p>先保存文章，再导出加密备份。更改密码后仍需发布网站；已经公开过的旧密文仍可能存在于历史记录中。</p><button id="vault-export">下载加密备份</button><form id="vault-rekey"><label for="vault-new-password">新密码（至少 12 个字符）</label><input id="vault-new-password" type="password" autocomplete="new-password" minlength="12" maxlength="512" required><label for="vault-new-confirm">再次输入新密码</label><input id="vault-new-confirm" type="password" autocomplete="new-password" maxlength="512" required><button type="submit">用新密码重新加密</button></form></details>
+    </section>
+    <footer>标题与正文一同加密 · 此页面不加载访问统计或看板娘</footer>
+  </main>
+</body>
+</html>
