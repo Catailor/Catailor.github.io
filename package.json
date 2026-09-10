@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "hexo generate",
+    "private": "node tools/private-editor.cjs",
+    "test": "node --test tests/*.test.cjs",
+    "build": "node tools/build.cjs",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
     "server": "hexo server"
@@ -13,6 +15,7 @@
   },
   "dependencies": {
     "@renbaoshuo/markdown-it-katex": "^2.0.2",
+    "cheerio": "1.0.0",
     "hexo": "^8.0.0",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
@@ -26,6 +29,7 @@
     "hexo-server": "^3.0.0",
     "hexo-theme-butterfly": "^5.5.4",
     "hexo-theme-landscape": "^1.0.0",
-    "katex": "^0.16.44"
+    "katex": "^0.16.44",
+    "markdown-it": "15.0.1"
   }
 }

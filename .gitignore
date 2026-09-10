@@ -6,3 +6,6 @@ node_modules/
 public/
 .deploy*/
 _multiconfig.yml
+.private-backups/
+private-drafts/
+source/private/*.tmp

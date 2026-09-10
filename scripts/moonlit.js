@@ -24,7 +24,8 @@ hexo.extend.helper.register('moonlit_posts', function () {
       href: this.url_for(post.path),
       date: name === 'check_in.md' ? '随手记录' : this.date(post.date, 'YYYY.MM.DD'),
       cover: this.url_for(entry.cover || (entry.kind === 'life' ? '/img/moonlit/sunset.webp' : '/img/moonlit/notes.webp')),
-      featured: name === settings.featured
+      featured: name === settings.featured,
+      ...this.notebook_stats(post.content)
     };
   }).sort((a, b) => Number(b.featured) - Number(a.featured));
 });

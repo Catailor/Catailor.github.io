@@ -29,6 +29,7 @@ html(lang=config.language data-theme=theme.display_mode)
               a(href='#study' data-note-nav='study') 学习手记
               a(href='#life' data-note-nav='life') 生活碎片
               a(href=url_for('/archives/')) 归档
+              a(href=url_for('/search/') title='搜索手记，快捷键 /') 搜索
               button.moonlit-theme(type='button' aria-label='切换到夜间模式' title='切换日夜') ☾
         .moonlit-hero-inner
           .moonlit-hero-copy
@@ -45,6 +46,12 @@ html(lang=config.language data-theme=theme.display_mode)
           span.moonlit-notice-label 小站便笺
           span= moonlit.notice
           span.moonlit-notice-star(aria-hidden='true') ✧
+        nav.moonlit-explore(aria-label='探索小站')
+          a(href=url_for('/topics/')) 学习专题 ↗
+          a(href=url_for('/moments/')) 碎碎念
+          a(href=url_for('/friends/')) 友链
+          a(href=url_for('/random/')) 随机漫游
+          a(href=url_for('/private/')) 私人手记
         .moonlit-columns
           section#notes.moonlit-notes(aria-labelledby='notes-title')
             .moonlit-section-head
@@ -70,6 +77,7 @@ html(lang=config.language data-theme=theme.display_mode)
                     h3
                       a(href=post.href)= post.title
                     p= post.summary
+                    .moonlit-card-reading= '约 ' + post.words + ' 字 · ' + post.minutes + ' 分钟'
                     a.moonlit-read(href=post.href aria-label='阅读：' + post.title) 阅读手记
                       span(aria-hidden='true') ↗
             button.moonlit-more(type='button' hidden) 再翻几页
@@ -92,6 +100,7 @@ html(lang=config.language data-theme=theme.display_mode)
                   span 标签
               a.moonlit-github(href='https://github.com/catailor' target='_blank' rel='noopener noreferrer') GitHub
                 span(aria-hidden='true') ↗
+              a.moonlit-profile-about(href=url_for('/about/')) 关于我与这个小站 →
             .moonlit-margin-note
               span.moonlit-eyebrow MARGIN NOTES
               h3 写在页边

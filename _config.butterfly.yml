@@ -22,6 +22,14 @@ menu:
   学习手记: /#study || fas fa-book-open
   生活碎片: /#life || fas fa-feather
   归档: /archives/ || fas fa-box-archive
+  搜索: /search/ || fas fa-search
+  探索||fas fa-compass:
+    学习专题: /topics/
+    碎碎念: /moments/
+    关于我: /about/
+    友链: /friends/
+    随机漫游: /random/
+    私人手记: /private/
   # Home: / || fas fa-home
   # List||fas fa-list:
   #   Music: /music/ || fas fa-music
@@ -232,7 +240,7 @@ post_edit:
 
 # Related Articles
 related_post:
-  enable: true
+  enable: false # Manual associations are configured in source/_data/notebook.yml.
   # Number of posts displayed
   limit: 6
   # Choose: created / updated
@@ -1064,9 +1072,11 @@ css_prefix: true
 inject:
   head:
     - <link rel="stylesheet" href="/css/moonlit.css">
+    - <link rel="stylesheet" href="/css/notebook.css">
     - <script src="/js/theme-clock.js"></script>
   bottom:
     - <script src="/js/moonlit.js" defer></script>
+    - <script src="/js/notebook.js" defer></script>
 
 # CDN Settings
 # Don't modify the following settings unless you know how they work

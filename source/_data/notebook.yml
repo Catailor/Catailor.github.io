@@ -1,0 +1,47 @@
+about:
+  intro: 学习、记录、偶尔发呆。把日子里细小的光，收进这个角落。
+  paragraphs:
+    - 这里是 Catailor 的个人博客，收集学习过程中的理解，也保留生活里的片段。
+    - 最近的笔记围绕数学、强化学习和算法展开。写下来，是为了让模糊的想法慢慢变清楚。
+    - 希望你能在这里找到一点有用的东西，或者只是轻松地停留片刻。
+
+series:
+  - id: math-foundations
+    title: 数学基础
+    description: 从线性代数到概率，把公式背后的联系慢慢理清。
+    posts:
+      - math.md
+  - id: reinforcement-learning
+    title: 强化学习入门
+    description: 先理解状态、价值与策略，再走进 Q-learning 的更新过程。
+    posts:
+      - MDP.md
+      - Q-learning.md
+      - course.md
+  - id: algorithms
+    title: 算法小札
+    description: 从递归的分解思路，到做题时积累的小技巧。
+    posts:
+      - recursion.md
+      - tips.md
+
+# File names are exact, including .md. These links are directional.
+related:
+  math.md:
+    - MDP.md
+  MDP.md:
+    - math.md
+    - Q-learning.md
+  Q-learning.md:
+    - MDP.md
+    - course.md
+  course.md:
+    - Q-learning.md
+  recursion.md:
+    - tips.md
+  tips.md:
+    - recursion.md
+
+# Add real friends and moments here; empty lists render intentional empty states.
+friends: []
+moments: []

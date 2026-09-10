@@ -4,6 +4,8 @@
 
 在线地址：[Catailor 的博客](https://catailor.github.io/)。完整教程：[使用与设置说明](docs/使用与设置说明.md)，包含写作、首页设置、图片、自动日夜模式和发布步骤。
 
+新增：全文搜索、学习专题、手动关联、字数与阅读时间、阅读位置记忆、关于我、友链、碎碎念、随机漫游，以及密码加密的私人手记。专题、友链和碎碎念在 `source/_data/notebook.yml` 维护。私人文章请使用 `npm run private` 的本机写作入口，勿放进公开的 `source/_posts/`。
+
 ## 本地预览
 
 ```sh
@@ -11,7 +13,7 @@ npm install
 npm run server
 ```
 
-打开 http://localhost:4000/。`npm run build` 生成静态文件到 `public/`。
+打开 http://localhost:4000/。`npm run build` 检查私人内容规则、清理旧输出并生成静态文件到 `public/`；`npm test` 验证统计与加密流程。
 
 ## 修改首页
 
