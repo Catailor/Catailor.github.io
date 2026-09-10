@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { plainText, readingStats, safeUrl } = require('../lib/notebook');
+const { plainText, readingStats, safeUrl, withHeadingAnchors } = require('../lib/notebook');
+const { load } = require('cheerio');
 const vault = require('../source/js/vault-crypto');
 const sample = { version: 1, notes: [{ id: 'test-note', title: 'PRIVATE_TITLE_SENTINEL', body: 'PRIVATE_BODY_SENTINEL 数学笔记', date: '2026-09-10' }] };
 const password = 'test-only-long-passphrase-2026';
@@ -26,6 +27,14 @@ test('public build refuses private front matter and plaintext vault files', () =
 test('Chinese and English word counts and reading estimates', () => {
   assert.deepEqual(readingStats('你好世界 hello world'), { words: 6, minutes: 1 });
   assert.equal(readingStats('学'.repeat(701)).minutes, 3);
+});
+
+test('heading links remain stable and missing or duplicate headings get unique anchors', () => {
+  const source = '<h2 id="旧链接">保留</h2><h1>同一标题</h1><h2>同一标题</h2><p><span class="katex">x²</span></p>';
+  const result = withHeadingAnchors(source), $ = load(result);
+  assert.deepEqual($('h1,h2').map((_, node) => $(node).attr('id')).get(), ['旧链接', '同一标题', '同一标题-2']);
+  assert.equal($('.katex').text(), 'x²');
+  assert.equal(withHeadingAnchors(result), result);
 });
 test('search text excludes duplicated math, scripts and reading metadata', () => {
   const text = plainText('<script>secret()</script><p>知识 <span class="katex-mathml">duplicate</span>x</p><div class="notebook-reading">999 字</div>');

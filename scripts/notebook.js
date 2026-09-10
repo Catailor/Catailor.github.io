@@ -1,7 +1,7 @@
 'use strict';
 const { readFileSync, existsSync, readdirSync } = require('node:fs');
 const path = require('node:path');
-const { escape: e, readingStats, plainText, publicPosts, safeUrl } = require('../lib/notebook');
+const { escape: e, readingStats, plainText, publicPosts, safeUrl, withHeadingAnchors } = require('../lib/notebook');
 
 // Fail closed: ordinary Hexo posts are public, including their source on GitHub.
 hexo.extend.filter.register('before_generate', () => {
@@ -22,8 +22,9 @@ hexo.extend.helper.register('notebook_stats', content => readingStats(plainText(
 
 hexo.extend.filter.register('after_post_render', data => {
   if (data.layout === 'post') {
+    data.content = withHeadingAnchors(data.content);
     const stats = readingStats(plainText(data.content));
-    data.content = `<div class="notebook-reading" data-reading-article data-article-version="${stats.words}"><span>约 ${stats.words.toLocaleString('zh-CN')} 字</span><span>预计 ${stats.minutes} 分钟</span><span>阅读进度 <b data-reading-percent>0%</b></span></div>` + data.content;
+    data.content = `<div class="notebook-reading" data-reading-article data-reading-minutes="${stats.minutes}" data-article-version="${stats.words}"><span>约 ${stats.words.toLocaleString('zh-CN')} 字</span><span>预计 ${stats.minutes} 分钟</span><span>阅读进度 <b data-reading-percent>0%</b></span></div>` + data.content;
   }
   return data;
 }, 20);

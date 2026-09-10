@@ -1073,10 +1073,12 @@ inject:
   head:
     - <link rel="stylesheet" href="/css/moonlit.css">
     - <link rel="stylesheet" href="/css/notebook.css">
+    - <link rel="stylesheet" href="/css/letter.css">
     - <script src="/js/theme-clock.js"></script>
   bottom:
     - <script src="/js/moonlit.js" defer></script>
     - <script src="/js/notebook.js" defer></script>
+    - <script src="/js/letter.js" defer></script>
 
 # CDN Settings
 # Don't modify the following settings unless you know how they work

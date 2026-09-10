@@ -129,6 +129,7 @@
       const update = () => {
         const ratio = position(); meter.style.width = `${ratio * 100}%`;
         $('[data-reading-percent]').textContent = `${Math.round(ratio * 100)}%`; frame = false;
+        document.dispatchEvent(new CustomEvent('notebook:progress', { detail: ratio }));
       };
       if (!location.hash && previous?.version === version && Number.isFinite(previous.ratio) && previous.ratio > .05 && previous.ratio < .95) {
         const prompt = make('aside', undefined, 'notebook-resume'); prompt.setAttribute('aria-label', '继续上次阅读');

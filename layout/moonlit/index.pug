@@ -18,19 +18,7 @@ html(lang=config.language data-theme=theme.display_mode)
         .moonlit-stars(aria-hidden='true')
           each n in [1, 2, 3, 4, 5, 6]
             span
-        nav#nav
-          span#blog-info
-            a.nav-site-title(href=url_for('/'))
-              span.moonlit-brand-moon(aria-hidden='true') ☾
-              span.site-name Catailor
-          #menus
-            .moonlit-links
-              a.is-current(href=url_for('/') aria-current='page') 首页
-              a(href='#study' data-note-nav='study') 学习手记
-              a(href='#life' data-note-nav='life') 生活碎片
-              a(href=url_for('/archives/')) 归档
-              a(href=url_for('/search/') title='搜索手记，快捷键 /') 搜索
-              button.moonlit-theme(type='button' aria-label='切换到夜间模式' title='切换日夜') ☾
+        include navigation.pug
         .moonlit-hero-inner
           .moonlit-hero-copy
             p.moonlit-eyebrow MOONLIT NOTES
@@ -66,8 +54,13 @@ html(lang=config.language data-theme=theme.display_mode)
             #recent-posts.moonlit-posts
               each post in notes
                 article.moonlit-card(class=post.featured ? 'moonlit-featured' : '' data-kind=post.kind)
-                  a.moonlit-cover(href=post.href tabindex='-1' aria-hidden='true')
-                    img(src=post.cover alt='' loading='lazy' decoding='async' width='760' height='480')
+                  a.moonlit-cover(href=post.href tabindex='-1' aria-hidden='true' class=post.cover ? 'has-illustration' : 'letter-art letter-art-' + post.art)
+                    if post.cover
+                      img(src=post.cover alt='' loading='lazy' decoding='async' width='760' height='480')
+                    else
+                      span.letter-art-symbol= post.symbol
+                      span.letter-art-topic= post.topic
+                      span.letter-art-date= post.date
                     if post.featured
                       span.moonlit-cover-badge 值得慢慢读
                   .moonlit-card-copy

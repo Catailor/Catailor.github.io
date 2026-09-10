@@ -1,0 +1,34 @@
+extends interior.pug
+
+block content
+  - const isTag = globalPageType === 'tag'
+  - const isCategory = globalPageType === 'category'
+  - const title = isTag ? '#' + page.tag : isCategory ? page.category : page.year ? page.year + ' 年' + (page.month ? ' · ' + page.month + ' 月' : '') : '把日子，一页页收藏。'
+  #archive.letter-archive
+    header.letter-page-heading
+      p.moonlit-eyebrow THE NOTEBOOK / ARCHIVE
+      h1= title
+      p= isTag || isCategory ? '循着同一条线索，重读这些片段。' : '学习时的灵光、生活里的片刻，都留在这里。'
+      nav.letter-directory-nav(aria-label='浏览方式')
+        a(href=url_for('/archives/')) 全部手记
+        a(href=url_for('/topics/')) 学习专题
+        a(href=url_for('/categories/')) 按分类
+        a(href=url_for('/tags/')) 按标签
+        span= '这一页 · ' + page.posts.length + ' 篇'
+    .letter-timeline
+      - let previousYear
+      each post in page.posts.toArray()
+        - const year = date(post.date, 'YYYY')
+        - const note = moonlit_note(post)
+        if year !== previousYear
+          - previousYear = year
+          h2.letter-year= year
+        a.letter-timeline-entry(href=url_for(post.path))
+          time(datetime=date_xml(post.date))= date(post.date, 'MM.DD')
+          .letter-timeline-copy
+            span.letter-timeline-topic= note.topic
+            h3= note.title
+            p= note.summary
+          span.letter-timeline-time= note.minutes + ' 分钟'
+          span.letter-timeline-arrow(aria-hidden='true') ↗
+    include ../../node_modules/hexo-theme-butterfly/layout/includes/pagination.pug
