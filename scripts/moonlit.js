@@ -18,10 +18,10 @@ hexo.extend.helper.register('moonlit_note', function (post) {
   const hash = [...name].reduce((sum, char) => sum + char.codePointAt(0), 0);
   const kind = entry.kind || (post.categories?.toArray().some(c => c.name === 'diary') ? 'life' : 'study');
   const summary = plainText(post.excerpt || post.content).slice(0, 100);
-  return { title: entry.title || post.title, summary: entry.summary || summary,
-    topic: entry.topic || post.categories?.toArray().map(c => c.name).join(' · ') || '随手记录', kind,
+  return { title: entry.title || post.title, summary: entry.summary || plainText(post.description) || summary,
+    topic: entry.topic || post.topic || post.categories?.toArray().map(c => c.name).join(' · ') || '随手记录', kind,
     art: ['orbit', 'grid', 'wave', 'petal', 'steps', 'constellation'][hash % 6],
-    symbol: entry.symbol || (kind === 'life' ? ['☾', '✧', '❋', '❀', '⌁', '✦'] : ['∑', '∞', 'π', '✧', '↗', '∴'])[hash % 6],
+    symbol: entry.symbol || post.symbol || (kind === 'life' ? ['☾', '✧', '❋', '❀', '⌁', '✦'] : ['∑', '∞', 'π', '✧', '↗', '∴'])[hash % 6],
     cover: entry.cover ? this.url_for(entry.cover) : null,
     ...this.notebook_stats(post.content) };
 });

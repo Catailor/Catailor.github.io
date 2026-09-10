@@ -1,7 +1,7 @@
 'use strict';
 const { readFileSync, existsSync, readdirSync } = require('node:fs');
 const path = require('node:path');
-const { escape: e, readingStats, plainText, publicPosts, safeUrl, withHeadingAnchors } = require('../lib/notebook');
+const { escape: e, readingStats, plainText, publicPosts, safeUrl, withHeadingAnchors, seriesPosts } = require('../lib/notebook');
 
 // Fail closed: ordinary Hexo posts are public, including their source on GitHub.
 hexo.extend.filter.register('before_generate', () => {
@@ -35,11 +35,7 @@ hexo.extend.generator.register('notebook', function (locals) {
   const byFile = new Map(posts.map(post => [post.file, post]));
   const series = (settings.series || []).map(item => {
     if (!/^[a-z0-9-]+$/.test(item.id)) throw new Error('专题 id 只允许小写英文、数字和短横线');
-    const items = (item.posts || []).map(file => {
-      if (!byFile.has(file)) throw new Error(`专题 ${item.id} 引用了不存在的公开文章：${file}`);
-      return byFile.get(file);
-    });
-    return { ...item, posts: items };
+    return { ...item, posts: seriesPosts(item, posts) };
   });
   const related = {};
   for (const [file, targets] of Object.entries(settings.related || {})) {
@@ -57,7 +53,8 @@ hexo.extend.generator.register('notebook', function (locals) {
 
   page('topics', '学习专题', intro('LEARNING PATHS', '把零散的笔记连成一条线，沿着自己的节奏慢慢读。') +
     `<div class="notebook-grid">${series.map(item => `<a class="notebook-tile" href="/topics/${e(item.id)}/"><small>${item.posts.length} 篇手记</small><h2>${e(item.title)}</h2><p>${e(item.description)}</p><span>打开专题 ↗</span></a>`).join('')}</div>`);
-  for (const item of series) page('topics/' + item.id, item.title, intro('LEARNING PATH', item.description) + `<a href="/topics/">← 所有专题</a>` + articleList(item.posts));
+  for (const item of series) page('topics/' + item.id, item.title, intro('LEARNING PATH', item.description) + `<a href="/topics/">← 所有专题</a>` +
+    (item.posts.length ? articleList(item.posts) : '<div class="notebook-empty notebook-series-empty"><span>✧</span><h2>第一篇，留给新的开始。</h2><p>这里会慢慢收集每一天的学习记录。</p></div>'));
 
   page('search', '找一篇手记', intro('SEARCH THE NOTEBOOK', '搜索标题、正文或标签。试试「协方差」「Q-learning」或你记得的一句话。') +
     `<form id="notebook-search" role="search"><label class="sr-only" for="note-query">搜索手记</label><input id="note-query" type="search" placeholder="输入关键词…" maxlength="150" autocomplete="off"><button type="submit">搜索</button></form><p id="search-status" role="status" aria-live="polite">输入关键词开始搜索。</p><div id="search-results"></div><button id="search-more" class="notebook-button" hidden>显示更多结果</button><noscript>搜索需要启用 JavaScript，也可以<a href="/archives/">浏览归档</a>。</noscript>`);

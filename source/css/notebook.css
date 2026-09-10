@@ -19,6 +19,7 @@
 .notebook-button:hover,#notebook-search button:hover { background: var(--moon-ink); color: var(--moon-panel) !important; }
 .notebook-empty { padding: 45px 24px; text-align: center; border: 1px dashed var(--moon-line); border-radius: 18px; background: var(--moon-paper); }
 .notebook-empty > span { font-size: 44px; color: var(--moon-ink); }
+.notebook-series-empty { margin-top: 28px; }
 .notebook-empty p { color: var(--moon-muted); }
 #notebook-search { display: flex; gap: 12px; }
 #note-query { flex: 1; min-width: 0; padding: 13px 18px; border: 1px solid var(--moon-line); border-radius: 12px; background: var(--moon-paper); color: var(--moon-text); font: inherit; }
