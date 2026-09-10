@@ -24,6 +24,16 @@ const server = http.createServer((req, res) => {
   if (req.method === 'GET') {
     if (pathname === '/api/session') return send(200, JSON.stringify({ token }));
     if (pathname === '/api/vault') { const bytes = current(); res.setHeader('ETag', tag(bytes)); return send(bytes ? 200 : 404, bytes || '{"empty":true}'); }
+    if (pathname === '/api/backups') {
+      const names = fs.existsSync(backupsPath) ? fs.readdirSync(backupsPath).filter(n => /^\d+-[a-f0-9-]+\.json$/.test(n)).sort().reverse().slice(0, 60) : [];
+      return send(200, JSON.stringify(names.map(id => ({ id, date: new Date(Number(id.split('-')[0])).toISOString() }))));
+    }
+    if (pathname === '/api/backup') {
+      const id = new URL(req.url, origin).searchParams.get('id');
+      if (!/^\d+-[a-f0-9-]+\.json$/.test(id || '')) return send(400, '{"error":"Invalid backup"}');
+      try { const bytes = fs.readFileSync(path.join(backupsPath, id)); validateEnvelope(JSON.parse(bytes)); return send(200, bytes); }
+      catch (_) { return send(404, '{"error":"Backup not found"}'); }
+    }
     if (pathname === '/') {
       const html = fs.readFileSync(path.join(root, 'source/private/index.html'), 'utf8').replace(/^---[\s\S]*?---\s*/, '').replace('<body>', '<body data-editor="true">');
       return send(200, html, 'text/html');

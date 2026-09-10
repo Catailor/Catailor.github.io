@@ -14,7 +14,7 @@ block content
         span.moonlit-eyebrow= note.kind === 'life' ? 'LIFE, IN SMALL PIECES' : 'NOTES ALONG THE WAY'
         span.letter-post-mark(aria-hidden='true')= note.symbol
       h1.post-title= note.title
-      if note.summary
+      if note.summary && !isShortNote
         p.letter-post-deck= note.summary
       .letter-byline
         a(href=url_for('/about/'))
@@ -24,12 +24,7 @@ block content
         time(datetime=date_xml(page.date))= date(page.date, 'YYYY.MM.DD')
         span.letter-topic= note.topic
     article#article-container.container.post-content!= page.content
-    .letter-endmark(aria-hidden='true') ✧
     footer.letter-colophon
-      .letter-signature
-        span 写在页末
-        strong Catailor
-        p= site.data.moonlit.bio
       .letter-post-tags
         each tag in page.tags.toArray()
           a(href=url_for(tag.path))= '# ' + tag.name
@@ -39,7 +34,7 @@ block content
         |  许可，转载请注明出处。
       button.letter-copy(type='button' data-copy-link hidden) 复制这页的链接 ↗
       span.letter-copy-status(role='status' aria-live='polite')
-    nav.letter-post-neighbors(aria-label='相邻手记')
+    nav.letter-post-neighbors(aria-label='相邻手记' class=page.categories.toArray().some(c => c.name === '日语学习') ? 'letter-japanese-neighbors' : '')
       if page.prev
         a(href=url_for(page.prev.path))
           small ← 较早的一页

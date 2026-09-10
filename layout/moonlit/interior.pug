@@ -1,6 +1,7 @@
 - var globalPageType = getPageType(page, is_home)
 - var pageType = globalPageType === 'post' ? 'post' : 'page'
 - var isLetterPost = globalPageType === 'post'
+- var isShortNote = isLetterPost && notebook_stats(page.content).words < 300 && !/<h[1-6][ >]/i.test(page.content)
 - var top_img = false
 if isLetterPost
   - page.title = moonlit_note(page).title
@@ -8,19 +9,18 @@ doctype html
 html(lang=config.language data-theme=theme.display_mode)
   head
     include ../../node_modules/hexo-theme-butterfly/layout/includes/head.pug
-  body.moonlit-interior(class=isLetterPost ? 'letter-reader' : 'letter-directory')
+  body.moonlit-interior(class=isLetterPost ? (isShortNote ? 'letter-reader letter-short' : 'letter-reader') : 'letter-directory')
     a.moonlit-skip(href='#content-inner') 跳到正文
     #body-wrap(class=pageType)
       header#page-header.not-top-img
         include navigation.pug
-      main#content-inner.layout.letter-layout(class=isLetterPost ? '' : 'hide-aside')
+      main#content-inner.layout.letter-layout(class=isLetterPost && !isShortNote ? '' : 'hide-aside')
         block content
-        if isLetterPost
+        if isLetterPost && !isShortNote
           aside#aside-content.letter-aside(aria-label='阅读助手')
             .sticky_layout
-              .letter-tools(data-reader-tools hidden)
-                p.moonlit-eyebrow MAKE YOURSELF AT HOME
-                h2 按自己的节奏读
+              details.letter-tools(data-reader-tools hidden)
+                summary 阅读设置
                 .letter-type-controls(role='group' aria-label='正文字号')
                   button(type='button' data-font-size='16' aria-pressed='false') 小
                   button(type='button' data-font-size='18' aria-pressed='true') 标准
@@ -30,15 +30,8 @@ html(lang=config.language data-theme=theme.display_mode)
               if showToc
                 - page.toc_number = false
                 include ../../node_modules/hexo-theme-butterfly/layout/includes/widget/card_post_toc.pug
-              else
-                .letter-side-note
-                  span(aria-hidden='true') ☾
-                  p 这一页不长，
-                    br
-                    | 慢慢读就好。
               a.letter-back(href=url_for('/archives/')) ← 回到手记目录
       footer#footer.letter-footer
-        p.letter-footer-line 把日子里细小的光，收进这个角落。
         a(href=url_for('/about/')) ☾ Catailor
         span= ' · ' + date(Date.now(), 'YYYY')
         a(href=url_for('/archives/')) 翻阅旧时光 ↗

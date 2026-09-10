@@ -5,7 +5,6 @@ block content
     if page.type === 'tags' || page.type === 'categories'
       - const entries = page.type === 'tags' ? site.tags.sort('name').toArray() : site.categories.sort('name').toArray()
       header.letter-page-heading
-        p.moonlit-eyebrow FIND YOUR OWN THREAD
         h1= page.type === 'tags' ? '循着关键词，慢慢找。' : '每一种日常，都有一格。'
         p 不必从头读起，从感兴趣的地方开始。
       #article-container.notebook-hub
@@ -17,7 +16,6 @@ block content
         a.letter-back(href=url_for('/archives/')) ← 看看全部手记
     else
       header.letter-page-heading
-        p.moonlit-eyebrow CATAILOR'S LITTLE CORNER
         h1= page.title
         span.letter-page-orbit(aria-hidden='true') ☾
       article#article-container!= page.content

@@ -193,3 +193,74 @@
 @media(max-width:800px) { .moonlit-interior #post { width: 100%; } .moonlit-interior #aside-content { display: none; } .moonlit-links > a:nth-child(2), .moonlit-links > a:nth-child(3) { display: none; } .moonlit-interior #content-inner { padding: 20px 14px; } .letter-post-neighbors { grid-template-columns: 1fr; } .letter-timeline-entry { grid-template-columns: 45px minmax(0,1fr) 18px; gap: 12px; } .letter-timeline-time { display: none; } .letter-reading-dock { bottom: 66px; right: 15px; } .letter-page-heading h1 { font-size: 27px; padding-right: 25px; } .letter-page-orbit { font-size: 45px; } }
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior: auto; } .letter-reveal, .letter-page-orbit { animation: none; } .letter-reveal { opacity: 1; transform: none; } .letter-timeline-entry, .letter-timeline-arrow, .letter-taxonomy a, .notebook-related, .letter-art-symbol, .moonlit-card, .moonlit-cover img, .moonlit-explore a { transition: none !important; } .moonlit-card:hover, .letter-taxonomy a:hover, .moonlit-card:hover .letter-art-symbol { transform: none; } }
 @media print { .letter-reader #page-header, .letter-reader #aside-content, .letter-reader #rightside, .letter-reader .moonlit-companion, .letter-reading-dock, .letter-exit-focus, .notebook-resume, .letter-copy, .letter-copy-status { display: none !important; } .letter-reader #content-inner, .letter-reader #post { width: 100%; max-width: none; padding: 0 !important; border: 0 !important; box-shadow: none; } .letter-reader { --moon-paper: white; --moon-panel: white; --moon-text: #222; --moon-muted: #555; --moon-ink: #444; --moon-line: #ddd; --moon-soft: #f5f5f5; } .letter-reader #article-container { font-size: 12pt; } .letter-reader #article-container h1, .letter-reader #article-container h2, .letter-reader #article-container h3 { break-after: avoid; } }
+
+/* Content decides the density; controls stay quiet until needed. */
+:root { --moon-muted: #696273; }
+[data-theme='dark'] { --moon-muted: #c1b9ce; }
+.letter-breadcrumb,.letter-byline,.letter-reader .notebook-reading,.moonlit-meta,.moonlit-card-reading,.letter-timeline-time,.letter-taxonomy small { font-size: 13px; }
+.moonlit-eyebrow { font-size: 11px; letter-spacing: 1.8px; }
+.letter-post-overline .moonlit-eyebrow,.moonlit-profile-en,.moonlit-hero-caption { display: none; }
+.letter-post-overline { margin-top: 12px; justify-content: flex-end; height: 12px; }
+.letter-post-mark { font-size: 24px; }
+.letter-reader .notebook-reading > span:last-child { margin-left: 0; }
+.letter-tools { padding: 15px 18px; }
+.letter-tools summary { cursor: pointer; color: var(--moon-text); font-size: 14px; }
+.letter-tools[open] summary { margin-bottom: 16px; }
+#card-toc .toc-percentage { display: none; }
+.letter-post-header .post-title { line-height: 1.5; }
+.letter-reader #article-container { line-height: 1.9; }
+.letter-reader .letter-colophon { margin-top: 28px; padding-top: 18px; }
+.letter-short #content-inner { max-width: 920px; }
+.letter-short #content-inner #post { width: 100%; padding: 32px 46px; }
+.letter-short .letter-post-overline,.letter-short .notebook-reading,.letter-short .letter-license { display: none; }
+.letter-short .letter-post-header .post-title { margin: 20px 0 12px; font-size: 30px; }
+.letter-short .letter-byline { margin: 14px 0 24px; }
+.letter-short .letter-post-neighbors { margin-top: 24px; }
+.letter-short .letter-colophon { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.letter-short #article-container > :first-child:not(.notebook-reading) { margin-top: 0; }
+.moonlit-interior .letter-page-heading { padding-bottom: 18px; margin-bottom: 24px; }
+.letter-page .notebook-empty { padding: 24px; margin: 24px 0; }
+.moonlit-posts { grid-template-columns: 1fr !important; gap: 18px !important; }
+.moonlit-text-note { display: block !important; }
+.moonlit-text-note .moonlit-card-copy { padding: 24px 30px; }
+.moonlit-text-note .moonlit-card-copy h3 { margin: 9px 0; font-size: 22px; }
+.moonlit-text-note .moonlit-read { display: none; }
+.moonlit-text-note .moonlit-card-copy p { margin-bottom: 8px; }
+.moonlit-card.moonlit-illustrated { display: grid; grid-template-columns: 40% minmax(0,1fr); grid-column: 1 / -1; }
+.moonlit-illustrated .moonlit-cover { height: 100%; min-height: 230px; }
+.moonlit-japanese { margin: 24px 0 34px; padding: 24px 28px; border: 1px solid var(--moon-line); border-radius: 18px; background: var(--moon-panel); }
+.moonlit-japanese-heading { display: flex; align-items: center; gap: 18px; }
+.moonlit-japanese-heading > span { color: var(--moon-accent); font: 40px var(--letter-serif); }
+.moonlit-japanese-heading h2 { font: 23px var(--letter-serif); margin: 0 0 6px; }
+.moonlit-japanese-heading p,.moonlit-japanese-empty { font-size: 14px; color: var(--moon-muted); margin: 0; }
+.moonlit-japanese-heading > a { margin-left: auto; white-space: nowrap; font-size: 14px; }
+.moonlit-japanese-latest { margin-top: 18px; border-top: 1px solid var(--moon-line); }
+.moonlit-japanese-latest a { display: flex; gap: 20px; padding-top: 14px; align-items: baseline; }
+.moonlit-japanese-latest time { color: var(--moon-muted); font-size: 13px; }
+.moonlit-japanese-latest strong { font-weight: 500; }
+.moonlit-japanese-empty { margin-top: 16px; }
+.notebook-months { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0; }
+.notebook-months a { padding: 5px 13px; border: 1px solid var(--moon-line); border-radius: 20px; font-size: 14px; }
+.notebook-months [aria-current] { background: var(--moon-soft); color: var(--moon-text); }
+.notebook-topic-actions,.notebook-pagination { display: flex; justify-content: space-between; align-items: center; gap: 15px; font-size: 14px; }
+.notebook-pagination { border-top: 1px solid var(--moon-line); padding-top: 24px; }
+.notebook-connections { padding: 18px 24px; margin: 30px 0 24px; }
+.notebook-connections ol { list-style: none; padding: 0; }
+.wordbook-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 20px; margin-top: 25px; font-size: 14px; }
+.wordbook-controls label:first-child { flex: 1; min-width: 230px; }
+#word-query { display: block; width: 100%; padding: 10px 14px; border: 1px solid var(--moon-line); background: var(--moon-paper); border-radius: 9px; color: var(--moon-text); }
+.wordbook-card { padding: 24px 0; border-top: 1px solid var(--moon-line); }
+.wordbook-card header { display: flex; align-items: center; gap: 14px; }
+.wordbook-card h2 { margin: 0 !important; font-size: 25px !important; }
+.wordbook-card button { margin-left: auto; border: 1px solid var(--moon-line); border-radius: 8px; padding: 5px 12px; background: var(--moon-paper); color: var(--moon-ink); cursor: pointer; font-size: 13px; }
+.wordbook-card button[aria-pressed='true'] { background: var(--moon-soft); border-color: var(--moon-accent); }
+.wordbook-card .word-answer { margin: 12px 0; }
+.wordbook-card details summary { cursor: pointer; color: var(--moon-ink); }
+.wordbook-card .word-sources { font-size: 13px; color: var(--moon-muted); }
+.wordbook-card .word-sources a { margin-right: 16px; }
+.wordbook-hint { font-size: 13px; color: var(--moon-muted); }
+@media(max-width:800px) { .moonlit-japanese { padding: 20px; } .moonlit-japanese-heading { flex-wrap: wrap; } .moonlit-card.moonlit-illustrated { grid-template-columns: 1fr; } .moonlit-illustrated .moonlit-cover { height: 200px; } }
+
+.letter-copy,.letter-copy-status,.letter-post-neighbors small,.letter-license,.moonlit-card .moonlit-read{font-size:13px}.moonlit-home #content-inner > .moonlit-japanese{padding:24px 28px;width:100%}.moonlit-short-label{font-size:13px}
+
+.moonlit-home #rightside-config,.moonlit-interior #rightside-config{display:none!important}

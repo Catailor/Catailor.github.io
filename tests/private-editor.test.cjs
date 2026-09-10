@@ -31,6 +31,11 @@ test('local writer rejects cross-origin, plaintext and stale writes; only cipher
     const updated = await fetch(base + '/api/vault', { method:'PUT', headers:{ ...headers, 'If-Match':saved.headers.get('etag') }, body:JSON.stringify(await encrypt(bundle, password)) });
     assert.equal(updated.status, 200);
     assert.equal(fs.readdirSync(backups).length, 1);
+    const choices = await (await fetch(base + '/api/backups')).json();
+    assert.equal(choices.length, 1);
+    const previous = await (await fetch(base + '/api/backup?id=' + choices[0].id)).json();
+    assert.deepEqual(await decrypt(previous, password), bundle);
+    assert.equal((await fetch(base + '/api/backup?id=../../vault.json')).status, 400);
   } finally {
     await new Promise(resolve => server.close(resolve));
     if (!path.resolve(directory).startsWith(path.resolve(os.tmpdir()) + path.sep + 'moonlit-editor-test-')) throw new Error('Unexpected test path');

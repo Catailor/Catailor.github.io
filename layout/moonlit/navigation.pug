@@ -6,19 +6,19 @@ nav#nav
   #menus
     .moonlit-links
       a(href=url_for('/') class=globalPageType === 'home' ? 'is-current' : '') 首页
-      a(href=url_for('/#study')) 学习手记
-      a(href=url_for('/#life')) 生活碎片
-      a(href=url_for('/archives/') class=globalPageType === 'archive' ? 'is-current' : '') 归档
+      a(href=url_for('/archives/') class=globalPageType === 'archive' ? 'is-current' : '') 手记
+      a(href=url_for('/topics/japanese/')) 日语日记
+      a(href=url_for('/about/')) 关于我
       a(href=url_for('/search/') title='搜索手记，快捷键 /') 搜索
       details.letter-explore
         summary 探索
           span(aria-hidden='true') ⌄
         .letter-menu
-          a(href=url_for('/topics/japanese/')) 日语学习日记
           a(href=url_for('/topics/')) 学习专题
-          a(href=url_for('/moments/')) 碎碎念
-          a(href=url_for('/about/')) 关于我
-          a(href=url_for('/friends/')) 友链
+          if site.data.notebook.moments.length
+            a(href=url_for('/moments/')) 碎碎念
+          if site.data.notebook.friends.length
+            a(href=url_for('/friends/')) 友链
           a(href=url_for('/random/')) 随机漫游
           a(href=url_for('/private/')) 私人手记
       button.moonlit-theme(type='button' aria-label='切换日夜模式') ☾

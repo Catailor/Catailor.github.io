@@ -9,3 +9,6 @@ _multiconfig.yml
 .private-backups/
 private-drafts/
 source/private/*.tmp
+source/_drafts/
+.studio/
+.studio-backups/

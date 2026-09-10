@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "studio": "node tools/studio.cjs",
     "japanese": "node tools/new-japanese.cjs",
     "private": "node tools/private-editor.cjs",
     "test": "node --test tests/*.test.cjs",

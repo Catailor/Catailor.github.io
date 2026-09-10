@@ -1,7 +1,9 @@
 - var globalPageType = 'home'
 - var pageType = 'page'
 - var moonlit = site.data.moonlit
-- var notes = moonlit_posts()
+- var allNotes = moonlit_posts()
+- var notes = allNotes.filter(p => !p.japanese)
+- var japaneseNotes = allNotes.filter(p => p.japanese).slice(0, 3)
 doctype html
 html(lang=config.language data-theme=theme.display_mode)
   head
@@ -34,13 +36,21 @@ html(lang=config.language data-theme=theme.display_mode)
           span.moonlit-notice-label 小站便笺
           span= moonlit.notice
           span.moonlit-notice-star(aria-hidden='true') ✧
-        nav.moonlit-explore(aria-label='探索小站')
-          a(href=url_for('/topics/japanese/')) 日语学习日记 あ
-          a(href=url_for('/topics/')) 学习专题 ↗
-          a(href=url_for('/moments/')) 碎碎念
-          a(href=url_for('/friends/')) 友链
-          a(href=url_for('/random/')) 随机漫游
-          a(href=url_for('/private/')) 私人手记
+        section.moonlit-japanese(aria-label='最近的日语学习')
+          .moonlit-japanese-heading
+            span(aria-hidden='true') あ
+            div
+              h2 日语学习日记
+              p 每天学到的词语，和一点点进步。
+            a(href=url_for('/topics/japanese/')) 翻开专栏 ↗
+          if japaneseNotes.length
+            .moonlit-japanese-latest
+              each post in japaneseNotes
+                a(href=post.href)
+                  time= post.date
+                  strong= post.title
+          else
+            p.moonlit-japanese-empty 正在开始日语学习，新的记录会收在这里。
         .moonlit-columns
           section#notes.moonlit-notes(aria-labelledby='notes-title')
             .moonlit-section-head
@@ -54,16 +64,12 @@ html(lang=config.language data-theme=theme.display_mode)
             p.moonlit-filter-status.sr-only(role='status' aria-live='polite')
             #recent-posts.moonlit-posts
               each post in notes
-                article.moonlit-card(class=post.featured ? 'moonlit-featured' : '' data-kind=post.kind)
-                  a.moonlit-cover(href=post.href tabindex='-1' aria-hidden='true' class=post.cover ? 'has-illustration' : 'letter-art letter-art-' + post.art)
-                    if post.cover
+                article.moonlit-card(class=(post.featured ? 'moonlit-featured ' : '') + (post.cover ? 'moonlit-illustrated' : 'moonlit-text-note') data-kind=post.kind)
+                  if post.cover
+                    a.moonlit-cover(href=post.href tabindex='-1' aria-hidden='true')
                       img(src=post.cover alt='' loading='lazy' decoding='async' width='760' height='480')
-                    else
-                      span.letter-art-symbol= post.symbol
-                      span.letter-art-topic= post.topic
-                      span.letter-art-date= post.date
-                    if post.featured
-                      span.moonlit-cover-badge 值得慢慢读
+                      if post.featured
+                        span.moonlit-cover-badge 精选手记
                   .moonlit-card-copy
                     .moonlit-meta
                       span.moonlit-topic= post.topic
@@ -71,7 +77,8 @@ html(lang=config.language data-theme=theme.display_mode)
                     h3
                       a(href=post.href)= post.title
                     p= post.summary
-                    .moonlit-card-reading= '约 ' + post.words + ' 字 · ' + post.minutes + ' 分钟'
+                    if post.words >= 300
+                      .moonlit-card-reading= '约 ' + post.words + ' 字 · 参考阅读时间 ' + post.minutes + ' 分钟'
                     a.moonlit-read(href=post.href aria-label='阅读：' + post.title) 阅读手记
                       span(aria-hidden='true') ↗
             button.moonlit-more(type='button' hidden) 再翻几页
@@ -96,12 +103,12 @@ html(lang=config.language data-theme=theme.display_mode)
                 span(aria-hidden='true') ↗
               a.moonlit-profile-about(href=url_for('/about/')) 关于我与这个小站 →
             .moonlit-margin-note
-              span.moonlit-eyebrow MARGIN NOTES
-              h3 写在页边
-              p 世界很大，
-                br
-                | 先把眼前的一页写好。
-              span.moonlit-signature — Catailor
+              h3 最近在学
+              p= site.data.notebook.now.learning
+              if site.data.notebook.now.goal
+                h3 接下来想做
+                p= site.data.notebook.now.goal
+              a(href=url_for('/topics/japanese/')) 看看学习记录 →
             .moonlit-aside-bottom
               span(aria-hidden='true') ✧
               |  愿你在这里，停留片刻。

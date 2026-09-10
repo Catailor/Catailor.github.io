@@ -1079,6 +1079,7 @@ inject:
     - <script src="/js/moonlit.js" defer></script>
     - <script src="/js/notebook.js" defer></script>
     - <script src="/js/letter.js" defer></script>
+    - <script src="/js/wordbook.js" defer></script>
 
 # CDN Settings
 # Don't modify the following settings unless you know how they work

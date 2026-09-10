@@ -3,11 +3,14 @@ const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 
-function createJapaneseNote(day, directory = path.join(root, 'source/_posts')) {
+function createJapaneseNote(day, directory = path.join(root, 'source/_drafts'), mode = 'quick') {
   const parsed = new Date(day + 'T00:00:00Z');
   if (!/^\d{4}-\d{2}-\d{2}$/.test(day) || Number(day.slice(0, 4)) < 1970 || Number.isNaN(parsed.valueOf()) || parsed.toISOString().slice(0, 10) !== day) throw new Error('日期请填写真实的 YYYY-MM-DD，例如 2026-09-11。');
   const file = path.join(directory, `japanese-${day}.md`);
-  const content = fs.readFileSync(path.join(root, 'scaffolds/japanese.md'), 'utf8')
+  if (!['quick', 'full'].includes(mode)) throw new Error('模板请选择 quick 或 full');
+  const published = path.join(root, 'source/_posts', `japanese-${day}.md`);
+  if (directory === path.join(root, 'source/_drafts') && fs.existsSync(published)) return { file: published, created: false };
+  const content = fs.readFileSync(path.join(root, `scaffolds/japanese${mode === 'full' ? '-full' : ''}.md`), 'utf8')
     .replace('{{ title }}', `日语学习日记 · ${day}`)
     .replace('{{ date }}', `${day} 12:00:00`);
   fs.mkdirSync(directory, { recursive: true });
@@ -23,6 +26,6 @@ if (require.main === module) {
     const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     if (process.argv.length > 3) throw new Error('只需指定一个日期，例如 npm run japanese -- 2026-09-11。');
     const result = createJapaneseNote(process.argv[2] || today);
-    console.log(`${result.created ? '已新建日语学习日记' : '这天的日记已存在，请继续编辑原文件'}：\n${result.file}\n填好内容后再发布，文章会自动进入日语专栏。`);
+    console.log(`${result.created ? '已新建日语学习草稿' : '这天的日记已存在，请继续编辑原文件'}：\n${result.file}\n打开 npm run studio 的写作台，预览后发布这篇日记。`);
   } catch (error) { console.error(error.message); process.exitCode = 1; }
 }

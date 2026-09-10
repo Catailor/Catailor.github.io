@@ -1,7 +1,7 @@
 'use strict';
 const { readFileSync, existsSync, readdirSync } = require('node:fs');
 const path = require('node:path');
-const { escape: e, readingStats, plainText, publicPosts, safeUrl, withHeadingAnchors, seriesPosts } = require('../lib/notebook');
+const { escape: e, readingStats, plainText, publicPosts, safeUrl, withHeadingAnchors, seriesPosts, wordbook } = require('../lib/notebook');
 
 // Fail closed: ordinary Hexo posts are public, including their source on GitHub.
 hexo.extend.filter.register('before_generate', () => {
@@ -24,7 +24,7 @@ hexo.extend.filter.register('after_post_render', data => {
   if (data.layout === 'post') {
     data.content = withHeadingAnchors(data.content);
     const stats = readingStats(plainText(data.content));
-    data.content = `<div class="notebook-reading" data-reading-article data-reading-minutes="${stats.minutes}" data-article-version="${stats.words}"><span>约 ${stats.words.toLocaleString('zh-CN')} 字</span><span>预计 ${stats.minutes} 分钟</span><span>阅读进度 <b data-reading-percent>0%</b></span></div>` + data.content;
+    data.content = `<div class="notebook-reading" data-reading-article data-reading-minutes="${stats.minutes}" data-article-version="${stats.words}"><span>约 ${stats.words.toLocaleString('zh-CN')} 字</span><span>参考阅读时间 ${stats.minutes} 分钟</span></div>` + data.content;
   }
   return data;
 }, 20);
@@ -53,8 +53,26 @@ hexo.extend.generator.register('notebook', function (locals) {
 
   page('topics', '学习专题', intro('LEARNING PATHS', '把零散的笔记连成一条线，沿着自己的节奏慢慢读。') +
     `<div class="notebook-grid">${series.map(item => `<a class="notebook-tile" href="/topics/${e(item.id)}/"><small>${item.posts.length} 篇手记</small><h2>${e(item.title)}</h2><p>${e(item.description)}</p><span>打开专题 ↗</span></a>`).join('')}</div>`);
-  for (const item of series) page('topics/' + item.id, item.title, intro('LEARNING PATH', item.description) + `<a href="/topics/">← 所有专题</a>` +
-    (item.posts.length ? articleList(item.posts) : '<div class="notebook-empty notebook-series-empty"><span>✧</span><h2>第一篇，留给新的开始。</h2><p>这里会慢慢收集每一天的学习记录。</p></div>'));
+  for (const item of series) {
+    const months = [...new Set(item.posts.map(p => p.date.slice(0, 7)))].sort().reverse();
+    const base = 'topics/' + item.id;
+    const views = [{ route: base, posts: item.posts, month: '' }, ...months.map(month => ({ route: `${base}/${month}`, posts: item.posts.filter(p => p.date.startsWith(month)), month }))];
+    for (const view of views) {
+      const count = Math.max(1, Math.ceil(view.posts.length / 20));
+      for (let n = 1; n <= count; n++) {
+        const href = num => '/' + view.route + (num === 1 ? '/' : `/page/${num}/`);
+        const nav = `<nav class="notebook-months" aria-label="按月浏览"><a href="/${base}/" ${!view.month ? 'aria-current="page"' : ''}>最近记录</a>${months.map(m => `<a href="/${base}/${m}/" ${view.month === m ? 'aria-current="page"' : ''}>${e(m)}</a>`).join('')}</nav>`;
+        const pager = `<nav class="notebook-pagination" aria-label="翻页">${n > 1 ? `<a href="${href(n - 1)}">← 上一页</a>` : '<span></span>'}<span>第 ${n} / ${count} 页 · ${view.posts.length} 篇</span>${n < count ? `<a href="${href(n + 1)}">下一页 →</a>` : '<span></span>'}</nav>`;
+        page(view.route + (n === 1 ? '' : `/page/${n}`), item.title, intro('LEARNING PATH', item.description) +
+          `<div class="notebook-topic-actions"><a href="/topics/">← 所有专题</a>${item.id === 'japanese' ? '<a href="/words/">我的词语本 ↗</a>' : ''}</div>` + nav +
+          (view.posts.length ? articleList(view.posts.slice((n - 1) * 20, n * 20)) + pager : '<p class="notebook-empty">新的学习记录会收在这里。</p>'));
+      }
+    }
+  }
+  const words = wordbook(posts.filter(p => p.categories.includes('日语学习')));
+  routes.push({ path: 'notebook-words.json', data: JSON.stringify(words) });
+  page('words', '我的词语本', intro('WORDS', '从日语日记里收集词语，回来查找，也回来复习。') +
+    '<a href="/topics/japanese/">← 日语学习日记</a><div id="wordbook"><div class="wordbook-controls"><label>查找词语<input id="word-query" type="search" placeholder="日语、假名或中文"></label><label><input id="word-review" type="checkbox"> 只看还没记牢的</label><label><input id="word-hide" type="checkbox"> 遮住释义，试着回想</label></div><p id="word-status" role="status"></p><div id="word-list"></div><button id="word-more" class="notebook-button" hidden>再看一些</button><p class="wordbook-hint">复习标记保存在当前浏览器中。</p></div><noscript>查词和复习需要启用 JavaScript；完整词语表仍可在日记里阅读。</noscript>');
 
   page('search', '找一篇手记', intro('SEARCH THE NOTEBOOK', '搜索标题、正文或标签。试试「协方差」「Q-learning」或你记得的一句话。') +
     `<form id="notebook-search" role="search"><label class="sr-only" for="note-query">搜索手记</label><input id="note-query" type="search" placeholder="输入关键词…" maxlength="150" autocomplete="off"><button type="submit">搜索</button></form><p id="search-status" role="status" aria-live="polite">输入关键词开始搜索。</p><div id="search-results"></div><button id="search-more" class="notebook-button" hidden>显示更多结果</button><noscript>搜索需要启用 JavaScript，也可以<a href="/archives/">浏览归档</a>。</noscript>`);

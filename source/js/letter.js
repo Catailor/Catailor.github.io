@@ -15,6 +15,13 @@
     }
     if (!document.body.classList.contains('letter-reader')) return;
     const tools = document.querySelector('[data-reader-tools]'), focusToggle = document.querySelector('[data-focus-toggle]');
+    const copy = document.querySelector('[data-copy-link]'), status = document.querySelector('.letter-copy-status');
+    copy.hidden = false;
+    copy.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(location.href); status.textContent = '链接已复制'; }
+      catch (_) { status.textContent = '请从地址栏复制链接'; }
+    });
+    if (!tools) return;
     tools.hidden = false;
     const resizeReading = change => {
       const anchor = [...document.querySelectorAll('#article-container > *')].find(node => {
@@ -56,21 +63,7 @@
     };
     focusToggle.addEventListener('click', () => focus(true)); exit.addEventListener('click', () => focus(false));
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && document.body.classList.contains('letter-focus')) focus(false); });
-    const dock = document.createElement('div'); dock.className = 'letter-reading-dock'; dock.setAttribute('aria-label', '当前阅读进度');
-    const percent = document.createElement('b'), remaining = document.createElement('span'); percent.textContent = '0%';
-    dock.append(percent, remaining); document.body.append(dock);
-    const total = Number(document.querySelector('[data-reading-article]')?.dataset.readingMinutes) || 1;
-    remaining.textContent = `约 ${total} 分钟`;
-    document.addEventListener('notebook:progress', event => {
-      const ratio = event.detail;
-      percent.textContent = `${Math.round(ratio * 100)}%`;
-      remaining.textContent = ratio >= .99 ? '这一页，读完了' : `还需约 ${Math.max(1, Math.ceil(total * (1 - ratio)))} 分钟`;
-    });
-    const copy = document.querySelector('[data-copy-link]'), status = document.querySelector('.letter-copy-status'); copy.hidden = false;
-    copy.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(location.href); status.textContent = '链接已复制'; }
-      catch (_) { status.textContent = '请从地址栏复制链接'; }
-    });
+
   };
   document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();
 })();
