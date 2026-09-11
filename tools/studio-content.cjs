@@ -5,6 +5,9 @@ const Markdown = require('markdown-it');
 const md = new Markdown({ html: false, breaks: true }).use(require('@renbaoshuo/markdown-it-katex'));
 const { plainText, summaryText } = require('../lib/notebook');
 const revision = text => crypto.createHash('sha256').update(text).digest('hex');
+// Front matter parses a zone-less timestamp in the local timezone. Display it in
+// that same timezone; converting to UTC can show the preceding calendar day.
+const noteDay = value => value instanceof Date ? `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, '0')}-${String(value.getDate()).padStart(2, '0')}` : String(value || '').slice(0, 10);
 function safePath(root, relative) {
   if (typeof relative !== 'string' || relative.includes('\\') || relative.split('/').some(p => p === '..' || p === '.') || !/^(source\/(?:_drafts|_posts)\/[\p{L}\p{N}_. -]+\.md|source\/img\/uploads\/[a-zA-Z0-9_.-]+|source\/private\/vault\.json)$/u.test(relative)) throw new Error('文件路径不合法');
   const absolute = path.resolve(root, relative);
@@ -25,14 +28,14 @@ function details(root, id) {
   const raw = fs.readFileSync(safePath(root, id), 'utf8'), data = parse(raw);
   let display = {};
   if (!data.studio_edited) { const file = path.join(root, 'source/_data/moonlit.yml'); if (fs.existsSync(file)) display = require('js-yaml').load(fs.readFileSync(file, 'utf8'))?.posts?.[path.basename(id)] || {}; }
-  return { id, revision: revision(raw), title: display.title || data.title || '', date: data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date || '').slice(0, 10), summary: display.summary || data.description || '', body: data._content || '', japanese: [].concat(data.categories || []).includes('日语学习'), draft: id.startsWith('source/_drafts/') };
+  return { id, revision: revision(raw), title: display.title || data.title || '', date: noteDay(data.date), summary: display.summary || data.description || '', body: data._content || '', japanese: [].concat(data.categories || []).includes('日语学习'), draft: id.startsWith('source/_drafts/') };
 }
 function serialize(previous, input) {
   const data = parse(previous);
   if (typeof input.title !== 'string' || input.title.length > 200 || typeof input.body !== 'string' || input.body.length > 200000 || typeof input.summary !== 'string' || input.summary.length > 500) throw new Error('文章内容过长或格式不正确');
   const date = new Date(input.date + 'T12:00:00Z');
   if (!/^\d{4}-\d{2}-\d{2}$/.test(input.date) || Number.isNaN(+date) || date.toISOString().slice(0, 10) !== input.date) throw new Error('请填写正确日期');
-  const oldDay = data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date || '').slice(0, 10);
+  const oldDay = noteDay(data.date);
   // Preserve the original time and all unrelated front matter, including stable permalinks.
   return '---\n' + matter.stringify({ ...data, studio_edited: true, title: input.title, date: oldDay === input.date ? data.date : `${input.date} 12:00:00`, description: input.summary, _content: input.body });
 }

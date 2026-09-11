@@ -29,6 +29,16 @@ test('writer scopes paths and uploaded assets, including Unicode filenames', () 
     assert.deepEqual(selectedAssets(root, '![图](/img/uploads/one.png)'), ['source/img/uploads/one.png']);
   } finally { cleanup(root); }
 });
+test('early-morning posts keep their local calendar date and publication time', () => {
+  const root = temporary();
+  try {
+    const early = sample.replace('09:20:00', '01:12:57');
+    write(root, 'source/_posts/early.md', early);
+    const post = details(root, 'source/_posts/early.md');
+    assert.equal(post.date, '2026-09-10');
+    assert.match(serialize(early, {...post, body:'更新正文。'}), /01:12:57/);
+  } finally { cleanup(root); }
+});
 test('wordbook collects only complete vocabulary rows and merges repeated words with source dates', () => {
   const html = markdown.render('| 单词 | 读音（假名） | 中文意思 | 例句与用法 |\n|---|---|---|---|\n| 猫 | ねこ | 猫 | 猫がいます。 |\n| 空 | | | |\n');
   const words = vocabulary(html); assert.equal(words.length, 1);

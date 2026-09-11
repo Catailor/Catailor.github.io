@@ -66,7 +66,8 @@ function createStudio({ root = ROOT, privatePort = 4002, publisher = publish } =
           const result = createJapaneseNote(input.date, directory, input.mode); id = 'source/_drafts/' + path.basename(result.file);
         } else {
           id = 'source/_drafts/note-' + crypto.randomUUID() + '.md'; fs.mkdirSync(directory, { recursive: true });
-          fs.writeFileSync(safePath(root, id), `---\nlayout: post\ntitle: ''\ndate: ${new Date().toISOString().slice(0, 10)} 12:00:00\n---\n\n`, { flag: 'wx' });
+          const day = /^\d{4}-\d{2}-\d{2}$/.test(input.date) ? input.date : new Date().toLocaleDateString('sv-SE');
+          fs.writeFileSync(safePath(root, id), `---\nlayout: post\ntitle: ''\ndate: ${day} 12:00:00\n---\n\n`, { flag: 'wx' });
         }
         return send(200, details(root, id));
       }
