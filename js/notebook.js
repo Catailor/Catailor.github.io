@@ -91,12 +91,14 @@
           const section = make('div'), heading = make('h2'), link = make('a', item.title); link.href = item.url;
           heading.append(make('small', '所属专题 · '), link); section.append(heading);
           const list = make('ol');
-          for (const post of item.posts) {
-            const li = make('li'), a = make('a', post.title); a.href = post.url;
+          const index = item.posts.findIndex(post => decode(post.url) === path);
+          for (const post of item.posts.filter((post, i) => Math.abs(i - index) === 1)) {
+            const li = make('li'), a = make('a', (item.posts.indexOf(post) < index ? '上一篇 · ' : '下一篇 · ') + post.title); a.href = post.url;
             if (decode(post.url) === path) { a.setAttribute('aria-current', 'page'); a.append(' · 正在读'); }
             li.append(a); list.append(li);
           }
           section.append(list); panel.append(section);
+          document.querySelector('.letter-japanese-neighbors')?.remove();
         }
         if (related.length) {
           const section = make('div'); section.append(make('h2', '接下来可以读'));
@@ -108,6 +110,7 @@
         }
         article.after(panel);
       }).catch(() => {});
+      if (document.body.classList.contains('letter-short')) return;
       const key = 'moonlit-reading-v1', version = $('[data-reading-article]').dataset.articleVersion;
       let records = {}, previous, frame = false;
       try { records = JSON.parse(localStorage.getItem(key)) || {}; } catch (_) {}
@@ -128,7 +131,7 @@
       };
       const update = () => {
         const ratio = position(); meter.style.width = `${ratio * 100}%`;
-        $('[data-reading-percent]').textContent = `${Math.round(ratio * 100)}%`; frame = false;
+        frame = false;
         document.dispatchEvent(new CustomEvent('notebook:progress', { detail: ratio }));
       };
       if (!location.hash && previous?.version === version && Number.isFinite(previous.ratio) && previous.ratio > .05 && previous.ratio < .95) {
