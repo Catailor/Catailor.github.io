@@ -11,7 +11,8 @@ series:
   - id: japanese
     title: 日语学习日记
     description: 每天一点日本語。记录今天的学习、遇见的词语，以及慢慢积累的进步。
-    posts: []
+    posts:
+      - note-adc0fef5-7ffd-461c-b3b5-39759f0a2257.md
   - id: math-foundations
     title: 数学基础
     description: 从线性代数到概率，把公式背后的联系慢慢理清。
