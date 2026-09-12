@@ -1,20 +1,17 @@
 now:
   learning: 日语。想把每天学到的词语和学习情况记下来。
   goal: 建立自己的日语学习专栏，逐步积累词语和复习记录。
-
 about:
   intro: 学习、记录、偶尔发呆。把日子里细小的光，收进这个角落。
   paragraphs:
     - 这里是 Catailor 的个人博客，收集学习过程中的理解，也保留生活里的片段。
     - 最近开始记录日语学习，也整理数学、强化学习和算法笔记。写下来，方便以后回来复习。
     - 希望你能在这里找到一点有用的东西，或者只是轻松地停留片刻。
-
 series:
   - id: japanese
     title: 日语学习日记
     description: 每天一点日本語。记录今天的学习、遇见的词语，以及慢慢积累的进步。
-    category: 日语学习
-    order: newest
+    posts: []
   - id: math-foundations
     title: 数学基础
     description: 从线性代数到概率，把公式背后的联系慢慢理清。
@@ -33,8 +30,6 @@ series:
     posts:
       - recursion.md
       - tips.md
-
-# File names are exact, including .md. These links are directional.
 related:
   math.md:
     - MDP.md
@@ -50,7 +45,5 @@ related:
     - tips.md
   tips.md:
     - recursion.md
-
-# Add real friends and moments here; empty lists render intentional empty states.
 friends: []
 moments: []
