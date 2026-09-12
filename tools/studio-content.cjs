@@ -43,9 +43,10 @@ function validatePublication(text) {
   const data = parse(text), body = data._content || '';
   if (!String(data.title || '').trim() || /{{|}}/.test(data.title)) throw new Error('请先填写文章标题');
   const meaningful = body.split('\n').filter(line => !/^\s*(#|\||<!--|$)/.test(line) && !/^\s*-\s+[^：:]+[：:]\s*$/.test(line)).join('\n');
-  const { vocabulary } = require('../lib/notebook');
-  if (!plainText(md.render(meaningful)).trim() && !vocabulary(md.render(body)).length) throw new Error('草稿还没有正文，请写完后再发布');
-  if (/{{[^}]+}}|^\s*-\s+[^：:\n]+[：:]\s*$/m.test(body) || /^\|\s*\|(?:\s*\|)+\s*$/m.test(body)) throw new Error('还有未填写的模板项目，请填写或删除空项目再发布');
+  const rendered = require('cheerio').load(md.render(body));
+  const tableContent = rendered('table td').toArray().some(cell => rendered(cell).text().trim());
+  if (!plainText(md.render(meaningful)).trim() && !tableContent && !rendered('img[src]').length) throw new Error('草稿还没有正文，请写完后再发布');
+  if (/{{[^}]+}}/.test(body)) throw new Error('还有模板占位文字，请填写或删除后再发布');
   return { title: data.title, summary: data.description || summaryText(md.render(body)), category: [].concat(data.categories || []).join('、') || '随手记录' };
 }
 function selectedAssets(root, text) {

@@ -69,7 +69,8 @@ hexo.extend.generator.register('notebook', function (locals) {
       }
     }
   }
-  const words = wordbook(posts.filter(p => p.categories.includes('日语学习')));
+  const japaneseMembers = new Set((series.find(s => s.id === 'japanese')?.posts || []).map(p => p.file));
+  const words = wordbook(posts.filter(p => p.categories.includes('日语学习') || japaneseMembers.has(p.file)));
   routes.push({ path: 'notebook-words.json', data: JSON.stringify(words) });
   page('words', '我的词语本', intro('WORDS', '从日语日记里收集词语，回来查找，也回来复习。') +
     '<a href="/topics/japanese/">← 日语学习日记</a><div id="wordbook"><div class="wordbook-controls"><label>查找词语<input id="word-query" type="search" placeholder="日语、假名或中文"></label><label><input id="word-review" type="checkbox"> 只看还没记牢的</label><label><input id="word-hide" type="checkbox"> 遮住释义，试着回想</label></div><p id="word-status" role="status"></p><div id="word-list"></div><button id="word-more" class="notebook-button" hidden>再看一些</button><p class="wordbook-hint">复习标记保存在当前浏览器中。</p></div><noscript>查词和复习需要启用 JavaScript；完整词语表仍可在日记里阅读。</noscript>');

@@ -13,7 +13,9 @@ function cleanup(dir) { if (path.dirname(path.resolve(dir)) !== path.resolve(os.
 function write(root, file, content) { fs.mkdirSync(path.dirname(path.join(root, file)), { recursive:true }); fs.writeFileSync(path.join(root, file), content); }
 test('draft publication rejects empty templates and preserves stable metadata when edited', () => {
   assert.throws(() => validatePublication(fs.readFileSync('scaffolds/japanese.md','utf8').replace('{{ title }}','测试').replace('{{ date }}','2026-09-10')));
-  assert.throws(() => validatePublication(sample + '\n- 学习时长：\n'));
+  assert.doesNotThrow(() => validatePublication(sample + '\n- 学习时长：\n'));
+  assert.doesNotThrow(() => validatePublication(sample.replace('学习了新的表达。','| 项目 | 收获 |\n| --- | --- |\n| 摄影 | 学会观察光线 |')));
+  assert.doesNotThrow(() => validatePublication(sample.replace('学习了新的表达。','![傍晚](/img/uploads/photo.png)')));
   assert.throws(() => validatePublication(sample.replace('layout: post','private: true')));
   assert.equal(validatePublication(sample).category, '日语学习');
   const result = serialize(sample, { title:'更好的标题', date:'2026-09-10', summary:'新的摘要', body:'记录新的理解。' });

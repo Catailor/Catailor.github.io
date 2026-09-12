@@ -5,7 +5,8 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const { validateEnvelope } = require('../source/js/vault-crypto');
 const root = path.resolve(__dirname, '..');
-function createPrivateServer({ vaultPath = path.join(root, 'source/private/vault.json'), backupsPath = path.join(root, '.private-backups'), port = 4002 } = {}) {
+function createPrivateServer({ vaultPath = path.join(root, 'source/private/vault.json'), backupsPath = path.join(root, '.private-backups'), port = 4002, studioOrigin = null } = {}) {
+if (studioOrigin && !/^http:\/\/127\.0\.0\.1:\d+$/.test(studioOrigin)) throw new Error('Invalid studio origin');
 const token = crypto.randomBytes(32).toString('hex');
 const current = () => fs.existsSync(vaultPath) ? fs.readFileSync(vaultPath) : null;
 const tag = data => data ? `"${crypto.createHash('sha256').update(data).digest('hex')}"` : 'empty';
@@ -17,7 +18,9 @@ const assets = {
 };
 const server = http.createServer((req, res) => {
   const host = `127.0.0.1:${server.address().port}`, origin = `http://${host}`;
-  res.setHeader('Cache-Control', 'no-store'); res.setHeader('X-Content-Type-Options', 'nosniff'); res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Cache-Control', 'no-store'); res.setHeader('X-Content-Type-Options', 'nosniff');
+  if (studioOrigin) res.setHeader('Content-Security-Policy', `frame-ancestors ${studioOrigin}`);
+  else res.setHeader('X-Frame-Options', 'DENY');
   const send = (status, body, type = 'application/json') => { res.writeHead(status, { 'Content-Type': `${type}; charset=utf-8` }); res.end(body); };
   if (req.headers.host !== host || (req.headers.origin && req.headers.origin !== origin)) return send(403, '{"error":"Forbidden"}');
   const pathname = new URL(req.url, origin).pathname;

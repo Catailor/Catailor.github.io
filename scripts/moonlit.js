@@ -18,11 +18,14 @@ hexo.extend.helper.register('moonlit_note', function (post) {
   const hash = [...name].reduce((sum, char) => sum + char.codePointAt(0), 0);
   const kind = entry.kind || (post.categories?.toArray().some(c => c.name === 'diary') ? 'life' : 'study');
   const summary = summaryText(post.excerpt || post.content);
+  const series = this.site.data.notebook?.series || [];
+  const memberships = series.filter(s => s.posts?.includes(name));
+  const japaneseSeries = series.find(s => s.id === 'japanese');
   return { title: entry.title || post.title, summary: entry.summary || plainText(post.description) || summary,
-    topic: entry.topic || post.topic || post.categories?.toArray().map(c => c.name).join(' · ') || '随手记录', kind,
+    topic: entry.topic || post.topic || memberships.map(s => s.title).join(' · ') || post.categories?.toArray().map(c => c.name).join(' · ') || '随手记录', kind,
     art: ['orbit', 'grid', 'wave', 'petal', 'steps', 'constellation'][hash % 6],
     symbol: entry.symbol || post.symbol || (kind === 'life' ? ['☾', '✧', '❋', '❀', '⌁', '✦'] : ['∑', '∞', 'π', '✧', '↗', '∴'])[hash % 6],
-    japanese: post.categories?.toArray().some(c => c.name === '日语学习'),
+    japanese: japaneseSeries?.posts ? japaneseSeries.posts.includes(name) : post.categories?.toArray().some(c => c.name === '日语学习'),
     cover: (entry.cover || post.cover) ? this.url_for(entry.cover || post.cover) : null,
     ...this.notebook_stats(post.content) };
 });
