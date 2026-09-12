@@ -45,9 +45,12 @@ test('publication freezes one article and series; later local edits survive draf
   const dir=temporary(),root=path.join(dir,'project'),remote=path.join(dir,'remote.git');fs.mkdirSync(root);
   try{
     await run('git',['init','--bare',remote],dir);await run('git',['init','-b','main'],root);await run('git',['config','user.name','Studio QA'],root);await run('git',['config','user.email','qa@example.invalid'],root);
-    write(root,'.gitignore','.studio/\nnode_modules/\nsource/_drafts/\n');write(root,'source/_posts/old.md',sample);write(root,'source/_data/notebook.yml','about:\n  intro: preserve\nseries: []\n');write(root,'tools/build.cjs',"const c=require('js-yaml').load(require('fs').readFileSync('source/_data/notebook.yml','utf8'));if(c.series[0].posts.length!==1)throw Error('Draft leaked');");
+    // Ignore the entry itself: on Unix the fixture uses a directory symlink,
+    // which a trailing-slash directory-only pattern would accidentally commit.
+    write(root,'.gitignore','.studio/\nnode_modules\nsource/_drafts/\n');write(root,'source/_posts/old.md',sample);write(root,'source/_data/notebook.yml','about:\n  intro: preserve\nseries: []\n');write(root,'tools/build.cjs',"const c=require('js-yaml').load(require('fs').readFileSync('source/_data/notebook.yml','utf8'));if(c.series[0].posts.length!==1)throw Error('Draft leaked');");
     fs.symlinkSync(path.resolve('node_modules'),path.join(root,'node_modules'),process.platform==='win32'?'junction':'dir');
     await run('git',['add','.'],root);await run('git',['commit','-m','Initial'],root);await run('git',['remote','add','origin',remote],root);await run('git',['push','-u','origin','main'],root);
+    assert.equal(await run('git',['ls-files','--','node_modules'],root),'');
     write(root,'source/_drafts/one.md',sample);write(root,'source/_drafts/two.md',sample+'PRIVATE_LOCAL_DRAFT');write(root,'source/_posts/untracked.md',sample+'UNTRACKED');
     write(root,'source/_data/notebook.yml','about:\n  intro: LOCAL_UNPUBLISHED_SETTING\nseries: []\n');
     const snapshot={series:[{id:'study',title:'学习',description:'测试',posts:['two.md','one.md','untracked.md']}],templates:[]};let changed=false;
