@@ -22,6 +22,7 @@ hexo.extend.helper.register('notebook_stats', content => readingStats(plainText(
 
 hexo.extend.filter.register('after_post_render', data => {
   if (data.layout === 'post') {
+    data.content = require('../lib/study-blocks.cjs').studyBlocks(data.content);
     data.content = withHeadingAnchors(data.content);
     const stats = readingStats(plainText(data.content));
     data.content = `<div class="notebook-reading" data-reading-article data-reading-minutes="${stats.minutes}" data-article-version="${stats.words}"><span>约 ${stats.words.toLocaleString('zh-CN')} 字</span><span>参考阅读时间 ${stats.minutes} 分钟</span></div>` + data.content;
