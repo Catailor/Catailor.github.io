@@ -288,3 +288,28 @@
 @media(max-width:600px) { .letter-reader #content-inner.layout { padding:20px 14px; } .letter-reader #content-inner #post { padding:28px 22px; } }
 @media print { .letter-reading-actions { display:none; } .letter-reader #content-inner #post { width:100%; padding:0; } }
 .letter-reader #mobile-toc-button { display:none !important; }
+
+/* Readable headings and semantic learning notes. */
+.letter-post-header .post-title { font-weight:600; letter-spacing:.4px; }
+.letter-page-heading h1,.notebook-connections h2 { font-weight:600; }
+.letter-reader #content-inner #post,.moonlit-interior #page,.moonlit-interior #archive { border-color:transparent; }
+[data-theme='dark'] .letter-reader #content-inner #post,[data-theme='dark'] .moonlit-interior #page,[data-theme='dark'] .moonlit-interior #archive { border-color:var(--moon-line); }
+.letter-tools-panel,.letter-menu { border-radius:12px; }
+.letter-tools summary,.letter-copy,.letter-return,.letter-reader #card-toc .toc-link { transition:color var(--moon-motion),background var(--moon-motion),border-color var(--moon-motion); }
+.letter-reader #article-container blockquote.study-note { --study-line:var(--moon-accent); margin:26px 0; padding:18px 22px; border:0; border-left:3px solid var(--study-line); border-radius:0 12px 12px 0; background:var(--moon-soft); color:var(--moon-text); }
+.letter-reader #article-container .study-note p { margin:10px 0; }
+.letter-reader #article-container .study-note .study-note-label { display:flex; align-items:center; gap:9px; margin:0 0 12px; color:var(--moon-ink); font-family:inherit; font-weight:600; font-size:14px; line-height:1.6; }
+.letter-reader #article-container .study-note-label::before { content:'✧'; color:var(--study-line); }
+.letter-reader #article-container blockquote.study-note--example { background:var(--moon-paper); }
+.letter-reader #article-container .study-note--example .study-note-label::before { content:'あ'; }
+.letter-reader #article-container blockquote.study-note--warning { --study-line:#a97643; background:#f8f0e5; }
+.letter-reader #article-container .study-note--warning .study-note-label::before { content:'!'; }
+.letter-reader #article-container blockquote.study-note--reference { background:var(--moon-paper); border-left-style:dotted; }
+.letter-reader #article-container .study-note--reference .study-note-label::before { content:'↗'; }
+.letter-reader #article-container .study-note > :last-child { margin-bottom:0; }
+[data-theme='dark'] .letter-reader #article-container blockquote.study-note--warning { --study-line:#d0a46e; background:#302a28; }
+@media(prefers-reduced-motion:reduce) { .letter-tools summary,.letter-copy,.letter-return,.letter-reader #card-toc .toc-link { transition:none; } }
+.moonlit-home .moonlit-japanese-heading h2 { font-weight:600; }
+.moonlit-home #content-inner > .moonlit-japanese { border-color:transparent; }
+[data-theme='dark'] .moonlit-home #content-inner > .moonlit-japanese { border-color:var(--moon-line); }
+.moonlit-theme,.moonlit-companion button { width:38px; height:38px; border-radius:50%; }
