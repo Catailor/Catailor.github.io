@@ -23,6 +23,18 @@ block content
         span ·
         time(datetime=date_xml(page.date))= date(page.date, 'YYYY.MM.DD')
         span.letter-topic= note.topic
+      .letter-reading-actions
+        if showToc
+          button.letter-toc-toggle(type='button' data-toc-toggle aria-expanded='false' aria-controls='aside-content' hidden) 目录
+        details.letter-tools(data-reader-tools hidden)
+          summary 阅读设置
+          .letter-tools-panel
+            .letter-type-controls(role='group' aria-label='正文字号')
+              button(type='button' data-font-size='16' aria-pressed='false') 小
+              button(type='button' data-font-size='18' aria-pressed='true') 标准
+              button(type='button' data-font-size='20' aria-pressed='false') 大
+            button.letter-focus-toggle(type='button' data-focus-toggle aria-pressed='false') 开启专注阅读
+            p.letter-tools-hint 按 Esc 退出专注模式
     article#article-container.container.post-content!= page.content
     nav.letter-post-neighbors(aria-label='相邻手记' class=page.categories.toArray().some(c => c.name === '日语学习') ? 'letter-japanese-neighbors' : '')
       if page.prev

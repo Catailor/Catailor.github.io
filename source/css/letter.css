@@ -219,14 +219,6 @@
 .letter-post-header .post-title { line-height: 1.5; }
 .letter-reader #article-container { line-height: 1.9; }
 .letter-reader .letter-colophon { margin-top: 28px; padding-top: 18px; }
-.letter-short #content-inner { max-width: 920px; }
-.letter-short #content-inner #post { width: 100%; padding: 32px 46px; }
-.letter-short .letter-post-overline,.letter-short .notebook-reading,.letter-short .letter-license { display: none; }
-.letter-short .letter-post-header .post-title { margin: 20px 0 12px; font-size: 30px; }
-.letter-short .letter-byline { margin: 14px 0 24px; }
-.letter-short .letter-post-neighbors { margin-top: 24px; }
-.letter-short .letter-colophon { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-.letter-short #article-container > :first-child:not(.notebook-reading) { margin-top: 0; }
 .moonlit-interior .letter-page-heading { padding-bottom: 18px; margin-bottom: 24px; }
 .letter-page .notebook-empty { padding: 24px; margin: 24px 0; }
 .moonlit-posts { grid-template-columns: 1fr !important; gap: 18px !important; }
@@ -273,3 +265,26 @@
 .letter-copy,.letter-copy-status,.letter-post-neighbors small,.letter-license,.moonlit-card .moonlit-read{font-size:13px}.moonlit-home #content-inner > .moonlit-japanese{padding:24px 28px;width:100%}.moonlit-short-label{font-size:13px}
 
 .moonlit-home #rightside-config,.moonlit-interior #rightside-config{display:none!important}
+
+/* Centered article canvas; the optional left TOC never changes its geometry. */
+.letter-reader #content-inner.layout { animation:none; transform:none; display:block; width:100%; max-width:none; padding:34px 24px 40px; }
+.letter-reader #content-inner #post { box-sizing:border-box; width:min(880px,100%); margin:0 auto; padding:44px 48px; }
+.letter-reader #content-inner #aside-content { display:block; position:fixed; top:118px; left:max(24px,calc(50% - 688px)); width:208px; max-height:calc(100dvh - 150px); padding:0; z-index:80; }
+.letter-reader #aside-content > .sticky_layout { position:static; }
+.letter-reader #aside-content #card-toc { position:static; transform:none; width:100%; max-width:none; max-height:none; margin:0; padding:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+.letter-reader #aside-content #card-toc .toc-content { margin:0; width:100%; max-height:calc(100dvh - 210px); overflow:auto; overscroll-behavior:contain; }
+.letter-reader #card-toc .item-headline { margin:0 10px 16px; }
+.letter-reading-actions { display:flex; align-items:flex-start; gap:18px; margin:18px 0 0; }
+.letter-reading-actions .letter-tools { position:relative; margin:0; padding:0; border:0; border-radius:0; background:transparent; }
+.letter-reading-actions .letter-tools summary,.letter-toc-toggle { padding:5px 0; font-family:inherit; font-size:13px; line-height:1.8; color:var(--moon-ink); cursor:pointer; }
+.letter-reading-actions .letter-tools[open] summary { margin:0; }
+.letter-tools-panel { position:absolute; top:calc(100% + 8px); left:0; width:240px; padding:16px; border:1px solid var(--moon-line); border-radius:12px; background:var(--moon-panel); box-shadow:var(--moon-shadow); z-index:85; }
+.letter-toc-toggle { display:none; border:0; background:transparent; }
+@media(max-width:1359px) {
+  .letter-toc-toggle:not([hidden]) { display:inline-block; }
+  .letter-reader #content-inner #aside-content { display:none; top:112px; left:24px; width:248px; padding:20px; background:var(--moon-panel); border:1px solid var(--moon-line); border-radius:14px; box-shadow:0 12px 40px #0002; z-index:100; }
+  .letter-reader.letter-toc-open #content-inner #aside-content { display:block; }
+}
+@media(max-width:600px) { .letter-reader #content-inner.layout { padding:20px 14px; } .letter-reader #content-inner #post { padding:28px 22px; } }
+@media print { .letter-reading-actions { display:none; } .letter-reader #content-inner #post { width:100%; padding:0; } }
+.letter-reader #mobile-toc-button { display:none !important; }
