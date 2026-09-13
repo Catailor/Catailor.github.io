@@ -99,19 +99,13 @@ html(lang=config.language data-theme=theme.display_mode)
                 a(href=url_for('/tags/'))
                   strong= site.tags.length
                   span 标签
-              a.moonlit-github(href='https://github.com/catailor' target='_blank' rel='noopener noreferrer') GitHub
-                span(aria-hidden='true') ↗
-              a.moonlit-profile-about(href=url_for('/about/')) 关于我与这个小站 →
-            .moonlit-margin-note
-              h3 最近在学
-              p= site.data.notebook.now.learning
-              if site.data.notebook.now.goal
-                h3 接下来想做
-                p= site.data.notebook.now.goal
-              a(href=url_for('/topics/japanese/')) 看看学习记录 →
-            .moonlit-aside-bottom
-              span(aria-hidden='true') ✧
-              |  愿你在这里，停留片刻。
+              if site.data.notebook.now.learning
+                .moonlit-profile-now
+                  h3 最近在学
+                  p= site.data.notebook.now.learning
+              .moonlit-profile-links
+                a(href=url_for('/about/')) 了解更多 →
+                a(href='https://github.com/catailor' target='_blank' rel='noopener noreferrer') GitHub ↗
       footer#footer.moonlit-footer
         != partial('includes/footer', {}, {cache: true})
     include ../../node_modules/hexo-theme-butterfly/layout/includes/rightside.pug

@@ -24,17 +24,6 @@ block content
         time(datetime=date_xml(page.date))= date(page.date, 'YYYY.MM.DD')
         span.letter-topic= note.topic
     article#article-container.container.post-content!= page.content
-    footer.letter-colophon
-      a.letter-return(href=url_for('/archives/') data-article-back) ← 返回手记
-      .letter-post-tags
-        each tag in page.tags.toArray()
-          a(href=url_for(tag.path))= '# ' + tag.name
-      p.letter-license
-        | 本文采用
-        a(href=theme.post_copyright.license_url target='_blank' rel='noopener noreferrer')= theme.post_copyright.license
-        |  许可，转载请注明出处。
-      button.letter-copy(type='button' data-copy-link hidden) 复制这页的链接 ↗
-      span.letter-copy-status(role='status' aria-live='polite')
     nav.letter-post-neighbors(aria-label='相邻手记' class=page.categories.toArray().some(c => c.name === '日语学习') ? 'letter-japanese-neighbors' : '')
       if page.prev
         a(href=url_for(page.prev.path))
@@ -44,3 +33,15 @@ block content
         a(href=url_for(page.next.path))
           small 较新的一页 →
           strong= moonlit_note(page.next).title
+    footer.letter-colophon
+      .letter-post-tags
+        each tag in page.tags.toArray()
+          a(href=url_for(tag.path))= '# ' + tag.name
+      .letter-footer-actions
+        a.letter-return(href=url_for('/archives/') data-article-back) ← 返回手记
+        button.letter-copy(type='button' data-copy-link hidden) 复制链接
+        span.letter-copy-status(role='status' aria-live='polite')
+      p.letter-license
+        | 本文采用
+        a(href=theme.post_copyright.license_url target='_blank' rel='noopener noreferrer')= theme.post_copyright.license
+        |  许可，转载请注明出处。

@@ -7,11 +7,10 @@ nav#nav
     .moonlit-links
       a(href=url_for('/') class=globalPageType === 'home' ? 'is-current' : '') 首页
       a(href=url_for('/archives/') class=globalPageType === 'archive' ? 'is-current' : '') 手记
-      a(href=url_for('/topics/japanese/')) 日语日记
-      a(href=url_for('/about/')) 关于我
+      a(href=url_for('/about/')) 关于
       a(href=url_for('/search/') title='搜索手记，快捷键 /') 搜索
       details.letter-explore
-        summary 探索
+        summary 更多
           span(aria-hidden='true') ⌄
         .letter-menu
           a(href=url_for('/topics/')) 学习专题

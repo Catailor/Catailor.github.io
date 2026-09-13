@@ -78,8 +78,10 @@ hexo.extend.generator.register('notebook', function (locals) {
   page('search', '找一篇手记', intro('SEARCH THE NOTEBOOK', '搜索标题、正文或标签。试试「协方差」「Q-learning」或你记得的一句话。') +
     `<form id="notebook-search" role="search"><label class="sr-only" for="note-query">搜索手记</label><input id="note-query" type="search" placeholder="输入关键词…" maxlength="150" autocomplete="off"><button type="submit">搜索</button></form><p id="search-status" role="status" aria-live="polite">输入关键词开始搜索。</p><div id="search-results"></div><button id="search-more" class="notebook-button" hidden>显示更多结果</button><noscript>搜索需要启用 JavaScript，也可以<a href="/archives/">浏览归档</a>。</noscript>`);
   const about = settings.about || {};
+  const now = settings.now || {};
+  const currentNotes = now.learning || now.goal ? '<section class="notebook-about-now"><h2>最近的我</h2>' + (now.learning ? '<h3>最近在学</h3><p>' + e(now.learning) + '</p>' : '') + (now.goal ? '<h3>接下来想做</h3><p>' + e(now.goal) + '</p>' : '') + '</section>' : '';
   page('about', '关于我', intro('HELLO, I AM CATAILOR', about.intro || '欢迎来到我的个人小站。') +
-    `<div class="notebook-about"><img src="/img/moonlit/avatar.webp" alt="Catailor 的头像" width="112" height="112"><div><h2>Catailor</h2>${(about.paragraphs || []).map(p => `<p>${e(p)}</p>`).join('')}<a class="notebook-button" href="https://github.com/catailor" target="_blank" rel="noopener noreferrer">去 GitHub 看看 ↗</a></div></div><h2>在这里可以读到</h2><div class="notebook-grid">${series.map(s => `<a class="notebook-tile" href="/topics/${e(s.id)}/"><h3>${e(s.title)}</h3><p>${e(s.description)}</p></a>`).join('')}</div>`);
+    `<div class="notebook-about"><img src="/img/moonlit/avatar.webp" alt="Catailor 的头像" width="112" height="112"><div><h2>Catailor</h2>${(about.paragraphs || []).map(p => `<p>${e(p)}</p>`).join('')}<a class="notebook-button" href="https://github.com/catailor" target="_blank" rel="noopener noreferrer">去 GitHub 看看 ↗</a></div></div>${currentNotes}<h2>在这里可以读到</h2><div class="notebook-grid">${series.map(s => `<a class="notebook-tile" href="/topics/${e(s.id)}/"><h3>${e(s.title)}</h3><p>${e(s.description)}</p></a>`).join('')}</div>`);
   const friends = settings.friends || [];
   page('friends', '友链', intro('NEIGHBORS & FRIENDS', '互联网很大，能遇见认真记录的人，是一件很好的事。') +
     (friends.length ? `<div class="notebook-grid">${friends.map(friend => {
