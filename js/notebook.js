@@ -115,6 +115,7 @@
         const relatedKey = Object.keys(data.related).find(url => decode(url) === path);
         const related = data.related[relatedKey] || [];
         if (!series.length && !related.length) return;
+        const seen = new Set([path]);
         const panel = make('section', undefined, 'notebook-connections'); panel.setAttribute('aria-label', '继续阅读');
         for (const item of series) {
           const section = make('div'), heading = make('h2'), link = make('a', item.title); link.href = item.url;
@@ -122,21 +123,25 @@
           const list = make('ol');
           const index = item.posts.findIndex(post => decode(post.url) === path);
           for (const post of item.posts.filter((post, i) => Math.abs(i - index) === 1)) {
+            if(seen.has(decode(post.url)))continue;seen.add(decode(post.url));
             const li = make('li'), a = make('a', (item.posts.indexOf(post) < index ? '上一篇 · ' : '下一篇 · ') + post.title); a.href = post.url;
             if (decode(post.url) === path) { a.setAttribute('aria-current', 'page'); a.append(' · 正在读'); }
             li.append(a); list.append(li);
           }
           section.append(list); panel.append(section);
-          document.querySelector('.letter-japanese-neighbors')?.remove();
+
         }
-        if (related.length) {
+        const uniqueRelated=related.filter(post=>{const url=decode(post.url);if(seen.has(url))return false;seen.add(url);return true;});
+        if (uniqueRelated.length) {
           const section = make('div'); section.append(make('h2', '接下来可以读'));
-          for (const post of related) {
+          for (const post of uniqueRelated) {
             const a = make('a', undefined, 'notebook-related'); a.href = post.url;
             a.append(make('strong', post.title), make('span', post.summary)); section.append(a);
           }
           panel.append(section);
         }
+        const neighbors=document.querySelector('.letter-post-neighbors');
+        if(neighbors){neighbors.querySelectorAll('a').forEach(a=>{const url=decode(new URL(a.href).pathname);if(seen.has(url))a.remove();else seen.add(url);});if(!neighbors.querySelector('a'))neighbors.remove();}
         article.after(panel);
       }).catch(() => {});
       if (document.body.classList.contains('letter-short')) return;

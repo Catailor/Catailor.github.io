@@ -161,6 +161,14 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--moon-ink); outl
 .moonlit-companion-status:not(:empty) { padding: 5px 10px; }
 .moonlit-companion-frame { position: fixed; left: 8px; bottom: 66px; width: 260px; height: 390px; z-index: 99; border: 0; color-scheme: normal; background: transparent; }
 .moonlit-companion-frame[hidden] { display: none; }
+.moonlit-companion button { display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border-radius: 50%; font-size: 20px; background: var(--moon-panel); }
+.moonlit-companion button:hover,.moonlit-companion button:focus-visible { color: var(--moon-text); background: var(--moon-soft); }
+.moonlit-profile-now { margin: 20px 0; padding-top: 18px; border-top: 1px solid var(--moon-line); text-align: left; }
+.moonlit-profile-now h3 { margin: 0 0 8px; color: var(--moon-ink); font-size: 13px; font-weight: 500; }
+.moonlit-profile-now p { margin: 0; color: var(--moon-muted); font-size: 13px; line-height: 1.9; }
+.moonlit-profile-links { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }
+.moonlit-profile-links a { color: var(--moon-ink); padding: 5px 0; }
+.moonlit-profile-links a:hover { color: var(--moon-text); text-decoration: underline; text-underline-offset: 4px; }
 
 @media (min-width: 1600px) { .moonlit-home #page-header.moonlit-hero { height: 600px; } }
 @media (max-width: 1000px) {

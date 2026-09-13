@@ -101,7 +101,12 @@
     companion.className = 'moonlit-companion';
     const button = document.createElement('button');
     button.type = 'button';
-    button.textContent = '✧ 召唤琪露诺';
+    const syncCompanion = open => {
+      button.textContent = open ? '×' : '❄';
+      button.setAttribute('aria-label', open ? '收起琪露诺' : '召唤琪露诺');
+      button.title = open ? '收起琪露诺' : '召唤琪露诺';
+    };
+    syncCompanion(false);
     button.setAttribute('aria-expanded', 'false');
     button.setAttribute('aria-controls', 'moonlit-companion-frame');
     companion.append(button);
@@ -111,7 +116,7 @@
       if (frame) {
         frame.remove();
         frame = null;
-        button.textContent = '✧ 召唤琪露诺';
+        syncCompanion(false);
         button.setAttribute('aria-expanded', 'false');
         return;
       }
@@ -121,7 +126,7 @@
       frame.title = '琪露诺 Live2D 小伙伴';
       frame.src = '/companion/';
       document.body.append(frame);
-      button.textContent = '× 收起琪露诺';
+      syncCompanion(true);
       button.setAttribute('aria-expanded', 'true');
     });
   }
