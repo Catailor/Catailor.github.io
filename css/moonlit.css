@@ -53,6 +53,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--moon-ink); outl
 
 /* The illustration stays bright on the left, with a quiet reading area on the right. */
 .moonlit-home #page-header.moonlit-hero { height: 530px; min-height: 460px; background: #c4c5e1; isolation: isolate; overflow: hidden; }
+/* Lift the hero's stacking context too: its fixed nav cannot escape isolation. */
+.moonlit-home #page-header.moonlit-hero.nav-fixed { z-index: 200; }
 .moonlit-home #page-header:before { content: none; }
 .moonlit-scene, .moonlit-wash, .moonlit-stars { position: absolute; inset: 0; pointer-events: none; }
 .moonlit-scene { inset: -18px; background: url('/img/moonlit/hero.webp') center 30% / cover; transform: translate3d(var(--scene-x, 0px), var(--scene-y, 0px), 0) scale(1.025); transition: transform .8s ease-out; }

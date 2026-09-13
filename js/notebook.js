@@ -6,6 +6,35 @@
   const links = () => linksRequest ||= fetch('/notebook-links.json').then(response => { if (!response.ok) throw new Error(); return response.json(); }).catch(error => { linksRequest = null; throw error; });
   const motion = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
   function init() {
+    function backTarget() {
+      const samePage = url => url.pathname.replace(/index\.html$/, '') === location.pathname.replace(/index\.html$/, '') && url.search === location.search;
+      // Skip article-heading history entries so “back” leaves the article in one click.
+      if (window.navigation?.currentEntry) {
+        const entries = window.navigation.entries(), current = window.navigation.currentEntry.index;
+        for (let i = current - 1; i >= 0; i--) {
+          if (!entries[i]?.url) return null;
+          const url = new URL(entries[i].url);
+          if (url.origin !== location.origin) return null;
+          if (!samePage(url)) return { href: url.href, steps: i - current };
+        }
+        return null;
+      }
+      // Older browsers still get a useful same-site destination, without leaving the blog.
+      try {
+        const url = new URL(document.referrer);
+        if (url.origin === location.origin && !samePage(url)) return { href: url.href, steps: !location.hash && history.length > 1 ? -1 : 0 };
+      } catch (_) {}
+      return null;
+    }
+    document.querySelectorAll('[data-article-back]').forEach(link => {
+      const target = backTarget();
+      if (target) { link.href = target.href; link.textContent = '← 返回上一页'; }
+      link.addEventListener('click', event => {
+        if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+        const destination = backTarget();
+        if (destination?.steps) { event.preventDefault(); history.go(destination.steps); }
+      });
+    });
     const form = $('#notebook-search');
     if (form) {
       const input = $('#note-query'), results = $('#search-results'), status = $('#search-status'), more = $('#search-more');

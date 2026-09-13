@@ -28,6 +28,10 @@
 .letter-breadcrumb { display: flex; flex-wrap: wrap; gap: 10px; color: var(--moon-muted); font-size: 11px; }
 .letter-breadcrumb a { color: var(--moon-muted); }
 .letter-breadcrumb a:hover { color: var(--moon-ink); }
+.letter-return { display: inline-flex; align-items: center; min-height: 38px; padding: 6px 13px; margin-bottom: 18px; border: 1px solid var(--moon-line); border-radius: 9px; background: var(--moon-soft); color: var(--moon-text); font-size: 14px; transition: background .18s, border-color .18s; }
+.letter-return:hover { background: var(--moon-panel); border-color: var(--moon-ink); color: var(--moon-text); }
+.letter-return:focus-visible,.letter-back:focus-visible { outline: 2px solid var(--moon-ink); outline-offset: 4px; }
+@media print { [data-article-back] { display: none !important; } }
 .letter-post-overline { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; }
 .letter-post-overline .moonlit-eyebrow { font-size: 9px; letter-spacing: 2.2px; }
 .letter-post-mark { font: italic 32px Georgia, serif; color: var(--moon-accent); opacity: .8; }
@@ -90,7 +94,8 @@
 .letter-reader #card-toc .item-headline { margin: 0 7px 14px; color: var(--moon-text); font-size: 14px; }
 .letter-reader #card-toc .toc-content { max-height: calc(100vh - 405px); font-size: 12px; line-height: 1.9; }
 .letter-reader #card-toc .toc-link { padding: 5px 9px; border-radius: 7px; color: var(--moon-muted); }
-.letter-reader #card-toc .toc-link.active { background: var(--moon-soft); color: var(--moon-ink); }
+.letter-reader #aside-content #card-toc .toc-content .toc-link:hover,
+.letter-reader #aside-content #card-toc .toc-content .toc-link.active { background: var(--moon-soft); color: var(--moon-ink); }
 .letter-reader #card-toc .toc-percentage { color: var(--moon-accent); }
 .letter-reader #readmode, .letter-reader #hide-aside-btn { display: none; }
 .letter-reading-dock { position: fixed; right: 28px; bottom: 72px; z-index: 95; display: flex; gap: 13px; align-items: center; padding: 10px 16px; border: 1px solid var(--moon-line); border-radius: 24px; background: var(--moon-panel); box-shadow: var(--moon-shadow); color: var(--moon-muted); font-size: 11px; }
