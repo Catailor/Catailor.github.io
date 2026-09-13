@@ -30,7 +30,7 @@ html(lang=config.language data-theme=theme.display_mode)
               if showToc
                 - page.toc_number = false
                 include ../../node_modules/hexo-theme-butterfly/layout/includes/widget/card_post_toc.pug
-              a.letter-back(href=url_for('/archives/')) ← 回到手记目录
+              a.letter-back(href=url_for('/archives/') data-article-back) ← 返回手记
       footer#footer.letter-footer
         a(href=url_for('/about/')) ☾ Catailor
         span= ' · ' + date(Date.now(), 'YYYY')

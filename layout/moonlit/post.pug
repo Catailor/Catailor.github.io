@@ -25,6 +25,7 @@ block content
         span.letter-topic= note.topic
     article#article-container.container.post-content!= page.content
     footer.letter-colophon
+      a.letter-return(href=url_for('/archives/') data-article-back) ← 返回手记
       .letter-post-tags
         each tag in page.tags.toArray()
           a(href=url_for(tag.path))= '# ' + tag.name
