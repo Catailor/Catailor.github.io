@@ -310,13 +310,12 @@
 .moonlit-theme,.moonlit-companion button { width:38px; height:38px; border-radius:50%; }
 /* Article navigation stays within reach without shifting the reading canvas. */
 .letter-reader #rightside { display:none !important; }
-.letter-page-actions { position:fixed; right:24px; bottom:24px; z-index:100; display:flex; flex-direction:column; gap:8px; }
-.letter-page-actions > a,.letter-page-actions > button { box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; gap:7px; width:80px; height:40px; padding:0 10px; border:1px solid var(--moon-line); border-radius:12px; background:var(--moon-panel); color:var(--moon-ink); box-shadow:0 3px 14px #3423450a; font-family:inherit; font-size:13px; line-height:1.4; cursor:pointer; transition:background 180ms,color 180ms,transform 180ms; text-decoration:none; }
+.letter-page-actions { position:fixed; right:24px; bottom:24px; z-index:100; display:flex; flex-direction:column; gap:5px; opacity:.8; }
+.letter-page-actions > a,.letter-page-actions > button { box-sizing:border-box; display:block; width:35px; height:35px; padding:0; border:0; border-radius:9px; background:var(--moon-accent); color:var(--btn-color); font-size:16px; line-height:35px; text-align:center; cursor:pointer; text-decoration:none; }
 .letter-page-actions > [hidden] { display:none; }
-.letter-page-actions svg { flex-shrink:0; }
-.letter-page-actions > a:hover,.letter-page-actions > button:hover { background:var(--moon-soft); color:var(--moon-text); }
-.letter-page-actions > a:active,.letter-page-actions > button:active { transform:scale(.97); }
+.letter-page-actions i { vertical-align:baseline; }
+.letter-page-actions > a:hover,.letter-page-actions > button:hover { background:var(--btn-hover-color); }
 .letter-page-actions > a:focus-visible,.letter-page-actions > button:focus-visible { outline:2px solid var(--moon-ink); outline-offset:3px; }
 @media(max-width:600px) { .letter-page-actions { right:14px; bottom:16px; } }
-@media(prefers-reduced-motion:reduce) { .letter-page-actions > a,.letter-page-actions > button { transition:none; transform:none; } }
+@media(prefers-reduced-motion:reduce) { .letter-page-actions > a,.letter-page-actions > button,.letter-page-actions > a::before,.letter-page-actions > button::before,.letter-page-actions i { transition:none; transform:none; animation:none; } }
 @media print { .letter-page-actions { display:none; } }
