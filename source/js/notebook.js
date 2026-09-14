@@ -31,7 +31,6 @@
       const syncBack = () => {
         const target = backTarget();
         link.href = target?.href || fallback;
-        link.querySelector('[data-back-label]').textContent = target ? '返回' : '手记';
         link.title = target ? '返回上一页' : '返回手记';
         link.setAttribute('aria-label', link.title);
       };

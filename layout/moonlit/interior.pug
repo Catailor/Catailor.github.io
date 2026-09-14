@@ -28,12 +28,8 @@ html(lang=config.language data-theme=theme.display_mode)
     include ../../node_modules/hexo-theme-butterfly/layout/includes/rightside.pug
     if isLetterPost
       nav.letter-page-actions(aria-label='文章导航')
-        button(type='button' data-reader-top hidden aria-label='回到顶部' title='回到顶部')
-          svg(width='16' height='16' viewBox='0 0 24 24' fill='none' aria-hidden='true' focusable='false')
-            path(d='m6 11 6-6 6 6M12 5v14' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round')
-          span 顶部
-        a(href=url_for('/archives/') data-article-back aria-label='返回手记' title='返回手记')
-          svg(width='16' height='16' viewBox='0 0 24 24' fill='none' aria-hidden='true' focusable='false')
-            path(d='m11 6-6 6 6 6M5 12h14' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round')
-          span(data-back-label) 手记
+        button.btn-effects(type='button' data-reader-top hidden aria-label='回到顶部' title='回到顶部')
+          i.fas.fa-arrow-up(aria-hidden='true')
+        a.btn-effects(href=url_for('/archives/') data-article-back aria-label='返回手记' title='返回手记')
+          i.fas.fa-arrow-left(aria-hidden='true')
     include ../../node_modules/hexo-theme-butterfly/layout/includes/additional-js.pug
