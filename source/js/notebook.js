@@ -27,42 +27,18 @@
       return null;
     }
     document.querySelectorAll('[data-article-back]').forEach(link => {
-      const fallback = link.href;
-      const syncBack = () => {
-        const target = backTarget();
-        link.href = target?.href || fallback;
-        link.title = target ? '返回上一页' : '返回手记';
-        link.setAttribute('aria-label', link.title);
-      };
-      syncBack();
-      addEventListener('pageshow', syncBack);
-      addEventListener('popstate', syncBack);
+      const target = backTarget();
+      if (target) { link.href = target.href; link.textContent = '← 返回上一页'; }
       link.addEventListener('click', event => {
         if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
         const destination = backTarget();
         if (destination?.steps) { event.preventDefault(); history.go(destination.steps); }
       });
     });
-    const readerTop = $('[data-reader-top]');
-    if (readerTop) {
-      const updateTop = () => { readerTop.hidden = scrollY < innerHeight * 1.5; };
-      readerTop.addEventListener('click', () => {
-        scrollTo({ top: 0, behavior: motion() });
-        $('[data-article-back]').focus({ preventScroll: true });
-      });
-      addEventListener('scroll', updateTop, { passive: true });
-      addEventListener('resize', updateTop);
-      addEventListener('pageshow', updateTop);
-      updateTop();
-    }
     const form = $('#notebook-search');
     if (form) {
       const input = $('#note-query'), results = $('#search-results'), status = $('#search-status'), more = $('#search-more');
       let indexRequest, current = 0, matches = [], limit = 12;
-      let savedSearch = history.state?.notebookSearch;
-      addEventListener('pagehide', () => {
-        history.replaceState({ ...history.state, notebookSearch:{ query:input.value.trim(), limit, y:scrollY } }, '');
-      });
       function snippet(text, tokens) {
         const lower = text.toLocaleLowerCase();
         const positions = tokens.map(token => lower.indexOf(token)).filter(n => n >= 0);
@@ -92,7 +68,7 @@
       async function search() {
         const id = ++current, query = input.value.trim().slice(0, 150);
         const tokens = [...new Set(query.toLocaleLowerCase().split(/\s+/).filter(Boolean))].slice(0, 12);
-        history.replaceState(history.state, '', query ? `?q=${encodeURIComponent(query)}` : location.pathname);
+        history.replaceState(null, '', query ? `?q=${encodeURIComponent(query)}` : location.pathname);
         results.replaceChildren(); more.hidden = true;
         if (!tokens.length) { status.textContent = '输入关键词开始搜索。'; return; }
         status.textContent = '正在翻找手记…';
@@ -106,10 +82,7 @@
             const found = tokens.every(token => title.includes(token) || tags.includes(token) || body.includes(token));
             return { ...post, score: found ? tokens.reduce((sum, token) => sum + (title.includes(token) ? 8 : 0) + (tags.includes(token) ? 4 : 0) + (body.includes(token) ? 1 : 0), 0) : 0 };
           }).filter(post => post.score).sort((a, b) => b.score - a.score || b.date.localeCompare(a.date));
-          const restore = savedSearch?.query === query && Number.isFinite(savedSearch.limit) && Number.isFinite(savedSearch.y) ? savedSearch : null;
-          savedSearch = null;
-          limit = restore ? Math.max(12, restore.limit) : 12; render(tokens);
-          if (restore) requestAnimationFrame(() => requestAnimationFrame(() => scrollTo({ top:restore.y, behavior:'instant' })));
+          limit = 12; render(tokens);
         } catch (_) { if (id === current) status.textContent = '搜索索引暂时没加载成功，请再次搜索重试。'; }
       }
       let debounce;

@@ -48,6 +48,7 @@ block content
         each tag in page.tags.toArray()
           a(href=url_for(tag.path))= '# ' + tag.name
       .letter-footer-actions
+        a.letter-return(href=url_for('/archives/') data-article-back) ← 返回手记
         button.letter-copy(type='button' data-copy-link hidden) 复制链接
         span.letter-copy-status(role='status' aria-live='polite')
       p.letter-license

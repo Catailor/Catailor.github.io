@@ -26,10 +26,4 @@ html(lang=config.language data-theme=theme.display_mode)
         span= ' · ' + date(Date.now(), 'YYYY')
         a(href=url_for('/archives/')) 翻阅旧时光 ↗
     include ../../node_modules/hexo-theme-butterfly/layout/includes/rightside.pug
-    if isLetterPost
-      nav.letter-page-actions(aria-label='文章导航')
-        button.btn-effects(type='button' data-reader-top hidden aria-label='回到顶部' title='回到顶部')
-          i.fas.fa-arrow-up(aria-hidden='true')
-        a.btn-effects(href=url_for('/archives/') data-article-back aria-label='返回手记' title='返回手记')
-          i.fas.fa-arrow-left(aria-hidden='true')
     include ../../node_modules/hexo-theme-butterfly/layout/includes/additional-js.pug
