@@ -3,10 +3,11 @@
 #nav .site-name { font: 24px Georgia, serif; letter-spacing: .4px; }
 #nav .moonlit-brand-moon { font-size: 28px; }
 .letter-explore { position: relative; }
-.letter-explore summary { list-style: none; cursor: pointer; padding: 6px 0; }
+.letter-explore summary { display: inline-flex; align-items: center; gap: 5px; list-style: none; cursor: pointer; padding: 6px 0; }
 .letter-explore summary::-webkit-details-marker { display: none; }
-.letter-explore summary span { display: inline-block; margin-left: 6px; transition: transform .2s; }
-.letter-explore[open] summary span { transform: rotate(180deg); }
+.letter-menu-chevron { display: block; flex-shrink: 0; opacity: .7; transform-origin: center; transition: transform 180ms ease; }
+.letter-explore[open] .letter-menu-chevron { transform: rotate(180deg); }
+@media (prefers-reduced-motion: reduce) { .letter-menu-chevron { transition: none; } }
 .letter-menu { position: absolute; right: -20px; top: calc(100% + 12px); min-width: 172px; padding: 10px; border: 1px solid var(--moon-line); border-radius: 15px; background: var(--moon-panel); box-shadow: 0 16px 45px #33234218; z-index: 110; }
 .letter-menu a { display: block; padding: 8px 14px; border-radius: 8px; color: var(--moon-text) !important; font-size: 13px; letter-spacing: .5px; }
 .letter-menu a:hover, .letter-menu a:focus-visible { background: var(--moon-soft); }
