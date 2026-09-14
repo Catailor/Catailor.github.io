@@ -35,16 +35,21 @@
       });
     };
     const toc = document.querySelector('#card-toc');
-    const tocToggle = document.querySelector('[data-toc-toggle]');
-    const closeToc = () => { document.body.classList.remove('letter-toc-open'); tocToggle?.setAttribute('aria-expanded', 'false'); };
-    if (tocToggle && toc) {
-      tocToggle.hidden = false;
-      tocToggle.addEventListener('click', () => {
-        const open = document.body.classList.toggle('letter-toc-open');
-        tocToggle.setAttribute('aria-expanded', String(open));
+    const tocToggles = [...document.querySelectorAll('[data-toc-toggle]')];
+    let tocOrigin = tocToggles[0];
+    const closeToc = () => { document.body.classList.remove('letter-toc-open'); tocToggles.forEach(button => button.setAttribute('aria-expanded', 'false')); };
+    if (tocToggles.length && toc) {
+      tocToggles.forEach(button => {
+        button.hidden = false;
+        button.addEventListener('click', () => {
+          tocOrigin = button;
+          const open = document.body.classList.toggle('letter-toc-open');
+          tocToggles.forEach(toggle => toggle.setAttribute('aria-expanded', String(open)));
+        });
       });
+      document.querySelector('[data-toc-close]')?.addEventListener('click', () => { closeToc(); tocOrigin.focus({preventScroll:true}); });
       document.addEventListener('click', event => { if (!event.target.closest('#aside-content,[data-toc-toggle]')) closeToc(); });
-      document.addEventListener('keydown', event => { if (event.key === 'Escape' && document.body.classList.contains('letter-toc-open')) { closeToc(); tocToggle.focus({preventScroll:true}); } });
+      document.addEventListener('keydown', event => { if (event.key === 'Escape' && document.body.classList.contains('letter-toc-open')) { closeToc(); tocOrigin.focus({preventScroll:true}); } });
       matchMedia('(min-width:1360px)').addEventListener('change', closeToc);
     }
     document.addEventListener('click', event => { if (!tools.contains(event.target)) tools.open = false; });

@@ -18,6 +18,7 @@ html(lang=config.language data-theme=theme.display_mode)
         block content
         if isLetterPost && showToc
           aside#aside-content.letter-aside(aria-label='文章目录')
+            button.letter-toc-close(type='button' data-toc-close aria-label='关闭目录') ×
             .sticky_layout
               - page.toc_number = false
               include ../../node_modules/hexo-theme-butterfly/layout/includes/widget/card_post_toc.pug
@@ -26,4 +27,6 @@ html(lang=config.language data-theme=theme.display_mode)
         span= ' · ' + date(Date.now(), 'YYYY')
         a(href=url_for('/archives/')) 翻阅旧时光 ↗
     include ../../node_modules/hexo-theme-butterfly/layout/includes/rightside.pug
+    if isLetterPost && showToc
+      button.letter-mobile-toc(type='button' data-toc-toggle aria-expanded='false' aria-controls='aside-content' hidden) 目录
     include ../../node_modules/hexo-theme-butterfly/layout/includes/additional-js.pug
