@@ -14,7 +14,7 @@
       document.querySelectorAll('.letter-timeline-entry,.notebook-tile,.letter-taxonomy a,.notebook-moments article').forEach(node => observer.observe(node));
     }
     if (!document.body.classList.contains('letter-reader')) return;
-    const tools = document.querySelector('[data-reader-tools]'), focusToggle = document.querySelector('[data-focus-toggle]');
+    const tools = document.querySelector('[data-reader-tools]');
     const copy = document.querySelector('[data-copy-link]'), status = document.querySelector('.letter-copy-status');
     copy.hidden = false;
     copy.addEventListener('click', async () => {
@@ -69,15 +69,6 @@
     let saved; try { saved = localStorage.getItem('moonlit-font-size'); } catch (_) {}
     setFont(saved);
     fontButtons.forEach(button => button.addEventListener('click', () => setFont(button.dataset.fontSize)));
-    const exit = document.createElement('button'); exit.type = 'button'; exit.className = 'letter-exit-focus'; exit.textContent = '退出专注 · Esc'; exit.hidden = true; document.body.append(exit);
-    const focus = enabled => {
-      closeToc(); tools.open = false;
-      resizeReading(() => document.body.classList.toggle('letter-focus', enabled)); exit.hidden = !enabled;
-      focusToggle.setAttribute('aria-pressed', String(enabled));
-      (enabled ? exit : focusToggle).focus({ preventScroll: true });
-    };
-    focusToggle.addEventListener('click', () => focus(true)); exit.addEventListener('click', () => focus(false));
-    document.addEventListener('keydown', event => { if (event.key === 'Escape' && document.body.classList.contains('letter-focus')) focus(false); });
 
   };
   document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();
