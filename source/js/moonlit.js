@@ -78,8 +78,15 @@
         // Keep keyboard users in the newly revealed content when the button disappears.
         cards.filter(card => !card.hidden)[previous]?.querySelector('h3 a')?.focus({ preventScroll: true });
       });
-      update();
-      fromHash();
+      const savedList = history.state?.moonlitList;
+      if (savedList && ['all', 'study', 'life'].includes(savedList.active) && Number.isFinite(savedList.limit) && Number.isFinite(savedList.y)) {
+        active = savedList.active; limit = Math.max(5, savedList.limit);
+        update();
+        requestAnimationFrame(() => requestAnimationFrame(() => scrollTo({ top:savedList.y, behavior:'instant' })));
+      } else { update(); fromHash(); }
+      addEventListener('pagehide', () => {
+        history.replaceState({ ...history.state, moonlitList:{ active, limit, y:scrollY } }, '');
+      });
     }
 
     const hero = document.querySelector('.moonlit-hero');
