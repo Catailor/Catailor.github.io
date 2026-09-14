@@ -41,6 +41,7 @@
 .notebook-resume { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; padding: 10px 16px; z-index: 100; background: var(--moon-panel); border: 1px solid var(--moon-line); border-radius: 30px; box-shadow: var(--moon-shadow); white-space: nowrap; }
 .notebook-resume button { color: var(--moon-ink); background: transparent; border: 0; padding: 5px; cursor: pointer; }
 .notebook-resume button + button { color: var(--moon-muted); font-size: 12px; }
+.notebook-resume button[aria-label='关闭继续阅读提示'] { min-width:32px; font-size:20px; line-height:1; }
 .notebook-connections { margin: 36px 0; padding: 24px; border: 1px solid var(--moon-line); border-radius: 16px; background: var(--moon-paper); }
 .notebook-connections h2 { font-size: 18px; margin: 12px 0; }
 .notebook-connections h2 small { font-weight: 400; color: var(--moon-muted); }

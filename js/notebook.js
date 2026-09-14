@@ -146,7 +146,7 @@
       }).catch(() => {});
       if (document.body.classList.contains('letter-short')) return;
       const key = 'moonlit-reading-v1', version = $('[data-reading-article]').dataset.articleVersion;
-      let records = {}, previous, frame = false;
+      let records = {}, previous, frame = false, awaitingResume = false, progressTimer, closeResume;
       try { records = JSON.parse(localStorage.getItem(key)) || {}; } catch (_) {}
       if (typeof records !== 'object' || Array.isArray(records)) records = {};
       previous = records[path];
@@ -157,9 +157,12 @@
         return Math.max(0, Math.min(1, (100 - rect.top) / range));
       };
       const save = () => {
+        if (awaitingResume) return;
         const ratio = position();
-        if (ratio <= .01) return;
-        records[path] = { ratio, version, time: Date.now() };
+        // Merge other tabs' progress before changing this article's record.
+        try { const latest = JSON.parse(localStorage.getItem(key)); if (latest && typeof latest === 'object' && !Array.isArray(latest)) records = latest; } catch (_) {}
+        if (ratio <= .01) delete records[path];
+        else records[path] = { ratio, version, time: Date.now() };
         records = Object.fromEntries(Object.entries(records).sort((a,b) => (b[1]?.time || 0) - (a[1]?.time || 0)).slice(0, 100));
         try { localStorage.setItem(key, JSON.stringify(records)); } catch (_) {}
       };
@@ -169,17 +172,41 @@
         document.dispatchEvent(new CustomEvent('notebook:progress', { detail: ratio }));
       };
       if (!location.hash && previous?.version === version && Number.isFinite(previous.ratio) && previous.ratio > .05 && previous.ratio < .95) {
+        awaitingResume = true;
         const prompt = make('aside', undefined, 'notebook-resume'); prompt.setAttribute('aria-label', '继续上次阅读');
-        const resume = make('button', `继续上次阅读 · ${Math.round(previous.ratio * 100)}%`), dismiss = make('button', '从头阅读');
+        const resume = make('button', `继续上次阅读 · ${Math.round(previous.ratio * 100)}%`), dismiss = make('button', '×');
+        dismiss.setAttribute('aria-label', '关闭继续阅读提示'); dismiss.title = '关闭提示';
         resume.type = dismiss.type = 'button';
+        let expiry;
+        const pause = () => clearTimeout(expiry);
+        const schedule = () => {
+          pause();
+          if (awaitingResume && !document.hidden && !prompt.matches(':hover') && !prompt.contains(document.activeElement)) expiry = setTimeout(() => closeResume(), 8000);
+        };
+        closeResume = (saveNow = true) => {
+          pause(); prompt.remove(); awaitingResume = false;
+          document.removeEventListener('visibilitychange', schedule);
+          if (saveNow) save();
+        };
         resume.addEventListener('click', () => {
           const top = scrollY + article.getBoundingClientRect().top - 100 + previous.ratio * Math.max(1, article.offsetHeight - innerHeight + 100);
-          scrollTo({ top, behavior: motion() }); prompt.remove();
+          closeResume(false); scrollTo({ top, behavior: motion() });
         });
-        dismiss.addEventListener('click', () => { delete records[path]; try { localStorage.setItem(key, JSON.stringify(records)); } catch (_) {} prompt.remove(); });
+        dismiss.addEventListener('click', () => closeResume());
+        prompt.addEventListener('pointerenter', pause); prompt.addEventListener('pointerleave', schedule);
+        prompt.addEventListener('focusin', pause); prompt.addEventListener('focusout', () => queueMicrotask(schedule));
+        prompt.addEventListener('keydown', event => { if (event.key === 'Escape') closeResume(); });
+        document.addEventListener('visibilitychange', schedule);
         prompt.append(resume, dismiss); document.body.append(prompt);
+        schedule();
       }
-      addEventListener('scroll', () => { if (!frame) { frame = true; requestAnimationFrame(update); } }, { passive: true });
+      let lastScroll = scrollY;
+      addEventListener('scroll', () => {
+        if (awaitingResume && Math.abs(scrollY - lastScroll) > 60) closeResume(false);
+        if (!awaitingResume) lastScroll = scrollY;
+        if (!frame) { frame = true; requestAnimationFrame(update); }
+        clearTimeout(progressTimer); progressTimer = setTimeout(save, 400);
+      }, { passive: true });
       addEventListener('resize', update); addEventListener('pagehide', save);
       document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
       setInterval(save, 5000); update();
