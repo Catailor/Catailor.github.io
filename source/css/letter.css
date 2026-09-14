@@ -85,8 +85,6 @@
 .letter-type-controls { display: flex; padding: 4px; border-radius: 10px; background: var(--moon-paper); gap: 3px; }
 .letter-type-controls button { flex: 1; padding: 6px 0; border: none; border-radius: 7px; background: transparent; color: var(--moon-muted); font-size: 12px; cursor: pointer; }
 .letter-type-controls button[aria-pressed='true'] { background: var(--moon-panel); color: var(--moon-ink); box-shadow: 0 1px 5px #33234209; }
-.letter-focus-toggle { width: 100%; padding: 8px; margin-top: 12px; border: 1px solid var(--moon-line); border-radius: 9px; background: transparent; color: var(--moon-ink); font-size: 12px; cursor: pointer; }
-.letter-tools-hint { margin: 10px 0 0; text-align: center; color: var(--moon-muted); font-size: 10px; }
 .letter-side-note { color: var(--moon-muted); font: 15px/2 var(--letter-serif); }
 .letter-side-note > span { font-size: 28px; color: var(--moon-accent); }
 .letter-back { display: inline-block; margin: 16px 0; color: var(--moon-muted); font-size: 12px; }
@@ -100,10 +98,6 @@
 .letter-reader #readmode, .letter-reader #hide-aside-btn { display: none; }
 .letter-reading-dock { position: fixed; right: 28px; bottom: 72px; z-index: 95; display: flex; gap: 13px; align-items: center; padding: 10px 16px; border: 1px solid var(--moon-line); border-radius: 24px; background: var(--moon-panel); box-shadow: var(--moon-shadow); color: var(--moon-muted); font-size: 11px; }
 .letter-reading-dock b { color: var(--moon-ink); font-weight: 500; }
-.letter-exit-focus { position: fixed; right: 30px; top: 22px; z-index: 1100; padding: 9px 18px; border: 1px solid var(--moon-line); border-radius: 20px; background: var(--moon-panel); color: var(--moon-ink); cursor: pointer; }
-.letter-focus #page-header, .letter-focus #aside-content, .letter-focus #footer, .letter-focus #rightside, .letter-focus .moonlit-companion, .letter-focus .moonlit-companion-frame { display: none !important; }
-.letter-focus #content-inner { max-width: 940px; padding-top: 60px; }
-.letter-focus #post { width: 100%; }
 .letter-endmark { margin: 40px 0 22px; color: var(--moon-accent); text-align: center; font-size: 24px; }
 .letter-colophon { padding: 28px 0 0; border-top: 1px solid var(--moon-line); }
 .letter-signature > span { display: block; color: var(--moon-muted); font-size: 10px; letter-spacing: 3px; }
@@ -201,7 +195,7 @@
 @media(max-width:1000px) { .moonlit-interior #content-inner > :first-child { padding: 30px; } .moonlit-links { gap: 15px; } .moonlit-interior #nav { padding: 0 25px; } .letter-taxonomy { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media(max-width:800px) { .moonlit-interior #post { width: 100%; } .moonlit-interior #aside-content { display: none; } .moonlit-links > a:nth-child(2), .moonlit-links > a:nth-child(3) { display: none; } .moonlit-interior #content-inner { padding: 20px 14px; } .letter-post-neighbors { grid-template-columns: 1fr; } .letter-timeline-entry { grid-template-columns: 45px minmax(0,1fr) 18px; gap: 12px; } .letter-timeline-time { display: none; } .letter-reading-dock { bottom: 66px; right: 15px; } .letter-page-heading h1 { font-size: 27px; padding-right: 25px; } .letter-page-orbit { font-size: 45px; } }
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior: auto; } .letter-reveal, .letter-page-orbit { animation: none; } .letter-reveal { opacity: 1; transform: none; } .letter-timeline-entry, .letter-timeline-arrow, .letter-taxonomy a, .notebook-related, .letter-art-symbol, .moonlit-card, .moonlit-cover img, .moonlit-explore a { transition: none !important; } .moonlit-card:hover, .letter-taxonomy a:hover, .moonlit-card:hover .letter-art-symbol { transform: none; } }
-@media print { .letter-reader #page-header, .letter-reader #aside-content, .letter-reader #rightside, .letter-reader .moonlit-companion, .letter-reading-dock, .letter-exit-focus, .notebook-resume, .letter-copy, .letter-copy-status { display: none !important; } .letter-reader #content-inner, .letter-reader #post { width: 100%; max-width: none; padding: 0 !important; border: 0 !important; box-shadow: none; } .letter-reader { --moon-paper: white; --moon-panel: white; --moon-text: #222; --moon-muted: #555; --moon-ink: #444; --moon-line: #ddd; --moon-soft: #f5f5f5; } .letter-reader #article-container { font-size: 12pt; } .letter-reader #article-container h1, .letter-reader #article-container h2, .letter-reader #article-container h3 { break-after: avoid; } }
+@media print { .letter-reader #page-header, .letter-reader #aside-content, .letter-reader #rightside, .letter-reader .moonlit-companion, .letter-reading-dock, .notebook-resume, .letter-copy, .letter-copy-status { display: none !important; } .letter-reader #content-inner, .letter-reader #post { width: 100%; max-width: none; padding: 0 !important; border: 0 !important; box-shadow: none; } .letter-reader { --moon-paper: white; --moon-panel: white; --moon-text: #222; --moon-muted: #555; --moon-ink: #444; --moon-line: #ddd; --moon-soft: #f5f5f5; } .letter-reader #article-container { font-size: 12pt; } .letter-reader #article-container h1, .letter-reader #article-container h2, .letter-reader #article-container h3 { break-after: avoid; } }
 
 /* Content decides the density; controls stay quiet until needed. */
 :root { --moon-muted: #696273; }
