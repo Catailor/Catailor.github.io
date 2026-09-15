@@ -335,7 +335,6 @@
   .moonlit-hero-copy h1 { font-size:clamp(27px,7.5vw,34px); letter-spacing:1px; }
   .moonlit-intro { font-size:13px; line-height:1.9; text-wrap:pretty; }
   .moonlit-home #content-inner.moonlit-layout { padding:0 14px 24px; }
-  .moonlit-home #content-inner > .moonlit-notice { margin-bottom:22px; padding:12px 16px; gap:12px; }
   .moonlit-home #content-inner > .moonlit-japanese { padding:20px; margin:20px 0 26px; }
   .moonlit-japanese-heading { gap:12px; }
   .moonlit-japanese-heading h2 { font-size:21px; }
