@@ -92,9 +92,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--moon-ink); outl
 
 /* Notebook */
 .moonlit-home #content-inner.moonlit-layout { display: block; max-width: 1248px; padding: 0 44px 24px; margin: 0 auto; }
-.moonlit-home #content-inner > .moonlit-notice { display: flex; width: 100%; gap: 22px; align-items: center; margin: 6px 0 36px; padding: 13px 20px; border: 1px solid var(--moon-line); border-radius: 11px; background: var(--moon-panel); color: var(--moon-muted); box-shadow: none; font-size: 13px; }
-.moonlit-notice-label { color: var(--moon-ink); font-size: 11px; letter-spacing: 2px; padding-right: 20px; border-right: 1px solid var(--moon-line); white-space: nowrap; }
-.moonlit-notice-star { margin-left: auto; color: var(--moon-ink); font-size: 20px; line-height: 1; }
 .moonlit-columns { display: grid; grid-template-columns: minmax(0, 1fr) 252px; gap: 32px; align-items: start; }
 .moonlit-section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
 .moonlit-section-head h2 { margin: 3px 0 0; color: var(--moon-text); font-size: 23px; font-weight: 500; letter-spacing: 2px; }
@@ -194,7 +191,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--moon-ink); outl
   .moonlit-home #recent-posts.moonlit-posts { grid-template-columns: 1fr; }
   .moonlit-featured { display: block; }
   .moonlit-featured .moonlit-cover { height: auto; aspect-ratio: 2 / 1; }
-  .moonlit-notice-label { display: none; }
   .moonlit-section-head h2 { font-size: 20px; }
   .moonlit-filters button { padding: 5px 11px; }
   .moonlit-companion { display: none; }
@@ -209,8 +205,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--moon-ink); outl
 /* A quieter frame with stronger type; homepage card layout stays intact. */
 :root { --moon-text:#2d2938; --moon-muted:#696273; --moon-motion:180ms; --moon-ease:cubic-bezier(.2,.7,.2,1); }
 [data-theme='dark'] { --moon-text:#f0ecf6; --moon-muted:#c0b8ce; }
-.moonlit-home #content-inner.moonlit-layout { position:relative; z-index:1; margin-top:-32px; }
-.moonlit-home #content-inner > .moonlit-notice { margin-top:0; border-color:transparent; border-radius:16px; box-shadow:0 8px 26px #34234509; }
+.moonlit-home #content-inner.moonlit-layout { position:relative; z-index:1; margin-top:0; }
 .moonlit-profile,.moonlit-japanese { border-color:transparent; }
 .moonlit-section-head h2,.moonlit-japanese-heading h2 { font-weight:600; color:var(--moon-text); }
 .moonlit-card { border-color:transparent; transition:transform var(--moon-motion) var(--moon-ease),box-shadow var(--moon-motion) var(--moon-ease); }
