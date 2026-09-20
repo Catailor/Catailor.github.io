@@ -1,0 +1,13 @@
+/* Shared readable content styles for editing, preview and published posts. */
+:is(.letter-reader #article-container,.toastui-editor-ww-container .toastui-editor-contents){font-size:var(--letter-font-size,18px)!important;line-height:2!important;overflow-wrap:anywhere}
+:is(.letter-reader #article-container,.toastui-editor-ww-container .toastui-editor-contents) p{line-height:2!important}
+:is(.letter-reader #article-container,.toastui-editor-ww-container .toastui-editor-contents) :is(h1,h2,h3,h4){line-height:1.65;font-weight:600}
+:is(.letter-reader #article-container,.toastui-editor-ww-container .toastui-editor-contents) h2{font-size:1.45em;margin:2em 0 .85em;padding-bottom:12px;border-bottom:1px solid var(--moon-line,#e8e5e9)}
+:is(.letter-reader #article-container,.toastui-editor-ww-container .toastui-editor-contents) h3{font-size:1.15em;margin:1.65em 0 .6em}
+:is(.letter-reader #article-container,.toastui-editor-ww-container .toastui-editor-contents) table{width:100%;border-collapse:collapse;font-size:.88em}
+:is(.letter-reader #article-container,.toastui-editor-ww-container .toastui-editor-contents) :is(td,th){padding:10px 15px;border:1px solid var(--moon-line,#ddd6e4)}
+:is(.letter-reader #article-container,.toastui-editor-ww-container .toastui-editor-contents) th{background:var(--moon-soft,#f2eef6);color:var(--moon-text,#25212b);font-weight:600}
+:is(.letter-reader #article-container,.toastui-editor-ww-container .toastui-editor-contents) th p{color:inherit}
+:is(.letter-reader #article-container,.toastui-editor-ww-container .toastui-editor-contents) img{max-width:100%;height:auto;border-radius:12px}
+:is(.letter-reader #article-container,.toastui-editor-ww-container .toastui-editor-contents) pre{overflow-x:auto;tab-size:2}
+.article-image-caption{display:block;text-align:center;color:var(--moon-muted,#777);font-size:.8em;margin:8px 0 20px;line-height:1.7}
