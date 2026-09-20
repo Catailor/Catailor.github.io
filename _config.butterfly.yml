@@ -1074,6 +1074,7 @@ inject:
     - <link rel="stylesheet" href="/css/moonlit.css">
     - <link rel="stylesheet" href="/css/notebook.css">
     - <link rel="stylesheet" href="/css/letter.css">
+    - <link rel="stylesheet" href="/css/article-content.css">
     - <script src="/js/theme-clock.js"></script>
   bottom:
     - <script src="/js/moonlit.js" defer></script>

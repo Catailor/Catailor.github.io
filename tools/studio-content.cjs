@@ -1,9 +1,9 @@
 'use strict';
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
 const matter = require('hexo-front-matter');
-const Markdown = require('markdown-it');
-const md = new Markdown({ html: false, breaks: true }).use(require('@renbaoshuo/markdown-it-katex'));
+const {md} = require('../lib/article-renderer.cjs');
 const { plainText, summaryText } = require('../lib/notebook');
+const taxonomy = require('../lib/studio-taxonomy');
 const revision = text => crypto.createHash('sha256').update(text).digest('hex');
 // Front matter parses a zone-less timestamp in the local timezone. Display it in
 // that same timezone; converting to UTC can show the preceding calendar day.
@@ -20,7 +20,7 @@ function safePath(root, relative) {
   return absolute;
 }
 function parse(text) {
-  const data = matter.parse(text);
+  const data = matter.parse(String(text).replace(/^\uFEFF/,'').replace(/\r\n/g,'\n'));
   if (data.private || data.password) throw new Error('私人内容请使用加密手记入口');
   return data;
 }
@@ -28,14 +28,25 @@ function details(root, id) {
   const raw = fs.readFileSync(safePath(root, id), 'utf8'), data = parse(raw);
   let display = {};
   if (!data.studio_edited) { const file = path.join(root, 'source/_data/moonlit.yml'); if (fs.existsSync(file)) display = require('js-yaml').load(fs.readFileSync(file, 'utf8'))?.posts?.[path.basename(id)] || {}; }
-  return { id, revision: revision(raw), title: display.title || data.title || '', date: noteDay(data.date), summary: display.summary || data.description || '', body: data._content || '', japanese: [].concat(data.categories || []).includes('日语学习'), draft: id.startsWith('source/_drafts/') };
+  return { id, revision: revision(raw), title: display.title || data.title || '', date: noteDay(data.date), summary: display.summary || data.description || '', body: data._content || '', ...taxonomyDetails(data), japanese: [].concat(data.categories || []).includes('日语学习'), draft: id.startsWith('source/_drafts/') };
 }
+function taxonomyDetails(data){return {categories:taxonomy.categories(data.categories),tags:taxonomy.tags(data.tags)};}
+function assignTaxonomy(data,input){
+  for(const kind of ['categories','tags'])if(input[kind]!==undefined){
+    if(JSON.stringify(input[kind])===JSON.stringify(taxonomyDetails(data)[kind]))continue;
+    const next=taxonomy.validate(input[kind]);
+    if(JSON.stringify(next)!==JSON.stringify(taxonomyDetails(data)[kind]))data[kind]=kind==='categories'?taxonomy.categoryData(next):next;
+  }
+}
+function updateTaxonomy(previous,input){const data=parse(previous);assignTaxonomy(data,input);return '---\n'+matter.stringify(data);}
 function serialize(previous, input) {
   const data = parse(previous);
   if (typeof input.title !== 'string' || input.title.length > 200 || typeof input.body !== 'string' || input.body.length > 200000 || typeof input.summary !== 'string' || input.summary.length > 500) throw new Error('文章内容过长或格式不正确');
   const date = new Date(input.date + 'T12:00:00Z');
   if (!/^\d{4}-\d{2}-\d{2}$/.test(input.date) || Number.isNaN(+date) || date.toISOString().slice(0, 10) !== input.date) throw new Error('请填写正确日期');
   const oldDay = noteDay(data.date);
+  delete data.studio_empty;
+  assignTaxonomy(data,input);
   // Preserve the original time and all unrelated front matter, including stable permalinks.
   return '---\n' + matter.stringify({ ...data, studio_edited: true, title: input.title, date: oldDay === input.date ? data.date : `${input.date} 12:00:00`, description: input.summary, _content: input.body });
 }
@@ -47,7 +58,7 @@ function validatePublication(text) {
   const tableContent = rendered('table td').toArray().some(cell => rendered(cell).text().trim());
   if (!plainText(md.render(meaningful)).trim() && !tableContent && !rendered('img[src]').length) throw new Error('草稿还没有正文，请写完后再发布');
   if (/{{[^}]+}}/.test(body)) throw new Error('还有模板占位文字，请填写或删除后再发布');
-  return { title: data.title, summary: data.description || summaryText(md.render(body)), category: [].concat(data.categories || []).join('、') || '随手记录' };
+  return { title: data.title, summary: data.description || summaryText(md.render(body)), category: taxonomy.categories(data.categories).join('、') || '未分类', tags:taxonomy.tags(data.tags) };
 }
 function selectedAssets(root, text) {
   const assets = new Set();
@@ -58,4 +69,23 @@ function selectedAssets(root, text) {
   }
   return [...assets];
 }
-module.exports = { safePath, revision, details, serialize, validatePublication, selectedAssets, md };
+function imageWarnings(root, body){
+  const $=require('cheerio').load(md.render(body)),warnings=[];
+  $('img[src]').each((_,image)=>{
+    const src=$(image).attr('src');if(!src.startsWith('/'))return;
+    let rel;try{rel=decodeURIComponent(src.split(/[?#]/)[0]);}catch(_){warnings.push('图片地址无法识别：'+src);return;}
+    const base=path.resolve(root,'source'),file=path.resolve(base,'.'+rel);
+    if(!file.startsWith(base+path.sep)||!fs.existsSync(file))warnings.push('找不到本机图片：'+src);
+  });return [...new Set(warnings)];
+}
+function publishedUrl(root,id){
+  if(id==='source/private/vault.json')return 'https://catailor.github.io/private/';
+  try{
+    const raw=fs.readFileSync(safePath(root,require('./studio-library.cjs').resolveId(root,id)),'utf8'),data=parse(raw);
+    const configFile=path.join(root,'_config.yml'),config=fs.existsSync(configFile)?require('js-yaml').load(fs.readFileSync(configFile,'utf8')):{};
+    const day=noteDay(data.date).split('-'),slug=data.slug||path.posix.basename(id,'.md');
+    const route=data.permalink||String(config.permalink||':year/:month/:day/:title/').replace(':year',day[0]).replace(':month',day[1]).replace(':day',day[2]).replace(':title',encodeURIComponent(slug));
+    const url=new URL(route,config.url||'https://catailor.github.io/');return /^https?:$/.test(url.protocol)?url.href:null;
+  }catch(_){return null;}
+}
+module.exports = { safePath, revision, details, serialize, validatePublication, selectedAssets, md, taxonomyDetails, updateTaxonomy, noteDay, imageWarnings, publishedUrl, parseDocument:parse };

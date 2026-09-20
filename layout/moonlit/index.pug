@@ -2,8 +2,9 @@
 - var pageType = 'page'
 - var moonlit = site.data.moonlit
 - var allNotes = moonlit_posts()
-- var notes = allNotes.filter(p => !p.japanese)
-- var japaneseNotes = allNotes.filter(p => p.japanese).slice(0, 3)
+- var homeSeries = moonlit_home_series(allNotes)
+- var highlighted = new Set(homeSeries.flatMap(s => s.entries.map(p => p.file)))
+- var notes = allNotes.filter(p => !highlighted.has(p.file))
 doctype html
 html(lang=config.language data-theme=theme.display_mode)
   head
@@ -32,21 +33,23 @@ html(lang=config.language data-theme=theme.display_mode)
               span(aria-hidden='true') ↓
         .moonlit-hero-caption(aria-hidden='true') SOMEWHERE BETWEEN DAYDREAMS & DAILY LIFE
       main#content-inner.layout.moonlit-layout
-        section.moonlit-japanese(aria-label='最近的日语学习')
-          .moonlit-japanese-heading
-            span(aria-hidden='true') あ
-            div
-              h2 日语学习日记
-              p 每天学到的词语，和一点点进步。
-            a(href=url_for('/topics/japanese/')) 翻开专栏 ↗
-          if japaneseNotes.length
-            .moonlit-japanese-latest
-              each post in japaneseNotes
-                a(href=post.href)
-                  time= post.date
-                  strong= post.title
-          else
-            p.moonlit-japanese-empty 正在开始日语学习，新的记录会收在这里。
+        each series in homeSeries
+          section.moonlit-japanese(aria-label=series.title)
+            .moonlit-japanese-heading
+              span(aria-hidden='true') ✧
+              div
+                h2= series.title
+                if series.description
+                  p= series.description
+              a(href=url_for('/topics/' + series.id + '/')) 翻开专栏 ↗
+            if series.entries.length
+              .moonlit-japanese-latest
+                each post in series.entries
+                  a(href=post.href)
+                    time= post.date
+                    strong= post.title
+            else
+              p.moonlit-japanese-empty 新的记录会收在这里。
         .moonlit-columns
           section#notes.moonlit-notes(aria-labelledby='notes-title')
             .moonlit-section-head

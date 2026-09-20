@@ -35,10 +35,14 @@ hexo.extend.helper.register('moonlit_posts', function () {
   return this.site.posts.sort('-date').toArray().map(post => {
     const name = path.basename(post.source);
     return {
-      href: this.url_for(post.path),
+      file:name,categories:post.categories?.toArray().map(c=>c.name)||[],href: this.url_for(post.path),
       date: name === 'check_in.md' ? '随手记录' : this.date(post.date, 'YYYY.MM.DD'),
       ...this.moonlit_note(post),
       featured: name === settings.featured
     };
   }).sort((a, b) => Number(b.featured) - Number(a.featured));
+});
+
+hexo.extend.helper.register('moonlit_home_series', function(posts){
+  return (this.site.data.notebook?.series||[]).filter(s=>s.homepage??s.id==='japanese').sort((a,b)=>(a.homeOrder||0)-(b.homeOrder||0)).map(s=>({...s,entries:posts.filter(p=>s.posts?s.posts.includes(p.file):p.categories.includes(s.category)).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3)}));
 });
