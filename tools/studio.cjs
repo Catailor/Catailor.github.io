@@ -9,7 +9,7 @@ const { createPrivateServer } = require('./private-editor.cjs');
 const history = require('./studio-history.cjs');
 const ROOT = path.resolve(__dirname, '..');
 function createStudio({ root = ROOT, privatePort = 4002, publisher = publish } = {}) {
-  const editorFile = require('./studio-assets.cjs').editorBundle();
+  require('./studio-assets.cjs').editorBundle();
   const token = crypto.randomBytes(32).toString('hex');
   const stateDir = path.join(root, '.studio'); fs.mkdirSync(stateDir, { recursive: true });
   const jobFile = path.join(stateDir, 'publication.json'); let publishing = false, checking = false, interrupted = false, job = { state: 'idle', message: '选择一篇草稿开始。' };
@@ -40,7 +40,7 @@ function createStudio({ root = ROOT, privatePort = 4002, publisher = publish } =
     const url = new URL(req.url, origin);
     try {
       if (req.method === 'GET') {
-        if (url.pathname === '/api/session') return send(200, { token, version:'history-v1', privateUrl: `http://127.0.0.1:${privatePort}/` });
+        if (url.pathname === '/api/session') return send(200, { token, version:'history-v2', privateUrl: `http://127.0.0.1:${privatePort}/` });
         if (url.pathname === '/api/history') {
           const id=resolveId(root,url.searchParams.get('id'));details(root,id);
           history.importLegacy(root);
@@ -70,7 +70,7 @@ function createStudio({ root = ROOT, privatePort = 4002, publisher = publish } =
         if(url.pathname==='/article-content.css')return send(200,fs.readFileSync(path.join(ROOT,'source/css/article-content.css')),'text/css');
         if (assets[url.pathname]) { const [file, type] = assets[url.pathname]; return send(200, fs.readFileSync(path.join(ROOT, file)), type); }
         if (url.pathname === '/purify.js') return send(200,fs.readFileSync(path.join(path.dirname(require.resolve('dompurify')),'purify.min.js')),'text/javascript');
-        if (url.pathname === '/editor.js') return send(200,fs.readFileSync(editorFile),'text/javascript');
+        if (url.pathname === '/editor.js') return send(200,fs.readFileSync(require('./studio-assets.cjs').editorBundle()),'text/javascript');
         const editorAssets = {'/editor.css':'toastui-editor.css'};
         if (editorAssets[url.pathname]) return send(200, fs.readFileSync(path.join(path.dirname(require.resolve('@toast-ui/editor')), editorAssets[url.pathname])), url.pathname.endsWith('.css') ? 'text/css' : 'text/javascript');
         if (/^\/img\/uploads\/[\w.-]+$/.test(url.pathname)) {

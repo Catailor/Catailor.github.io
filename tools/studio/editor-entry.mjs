@@ -1,9 +1,11 @@
 import Editor, {StudioCodeBlockView} from '@toast-ui/editor';
 import '@toast-ui/editor/dist/i18n/zh-cn';
 import DOMPurify from 'dompurify';
+import {diffLines} from 'diff';
 import {prepareVisualContent,scanImages} from './visual-content.mjs';
 window.prepareVisualContent = prepareVisualContent;
 window.scanArticleImages = scanImages;
+window.diffArticleLines = (before,after) => diffLines(before,after,{timeout:100}) || [{removed:true,value:before,count:before.split('\n').length},{added:true,value:after,count:after.split('\n').length}];
 window.studioSourceBlocks = options => context => ({wysiwygNodeViews:{codeBlock(node,view,getPos,eventEmitter){
   if(!options.isSourceLanguage(node.attrs.language))return new StudioCodeBlockView(node,view,getPos,eventEmitter);
   const dom=document.createElement('div'),toolbar=document.createElement('div'),toggle=document.createElement('button'),preview=document.createElement('div'),pre=document.createElement('pre'),code=document.createElement('code');

@@ -9,7 +9,7 @@ foreach ($candidatePort in @(4003, 4009, 4015)) {
     $candidateUrl = "http://127.0.0.1:$candidatePort/"
     try {
         $session = Invoke-RestMethod -Uri ($candidateUrl + 'api/session') -TimeoutSec 2
-        if ($session.version -eq 'history-v1') { $studioUrl = $candidateUrl; $studioPort = $candidatePort; $running = $true; break }
+        if ($session.version -eq 'history-v2') { $studioUrl = $candidateUrl; $studioPort = $candidatePort; $running = $true; break }
     } catch {
         if (-not (Get-NetTCPConnection -LocalPort $candidatePort -State Listen -ErrorAction SilentlyContinue)) {
             if (-not $freePort) { $freePort = $candidatePort }
@@ -33,7 +33,7 @@ if (-not $running) {
         Start-Sleep -Milliseconds 300
         try {
             $session = Invoke-RestMethod -Uri ($studioUrl + 'api/session') -TimeoutSec 1
-            if ($session.version -eq 'history-v1') { $running = $true; break }
+            if ($session.version -eq 'history-v2') { $running = $true; break }
         } catch { }
     }
 }

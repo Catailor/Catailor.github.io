@@ -76,3 +76,7 @@ body.library-collapsed>.navigation,body.library-collapsed>.library{display:none}
 .studio-special-block pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:12px!important;background:var(--wash)!important;min-height:40px}
 .post-drag-handle{color:var(--muted);cursor:grab;font-size:16px;padding:3px}
 .studio-special-preview .katex{font-size:1.08em}.toastui-editor-toolbar-icons{opacity:.82}.toastui-editor-toolbar-icons:hover{opacity:1}
+.history-added{background:#e2efe7;color:#264c38;border-radius:2px}.history-removed{background:#f5e3e8;color:#713b4b;border-radius:2px}
+.history-comparison pre span{box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.publication-error{white-space:pre-wrap;overflow-wrap:anywhere;max-height:180px;overflow:auto;font:12px/1.7 Consolas,monospace;background:var(--wash);padding:12px;border-radius:8px}
+.publication-record summary{cursor:pointer;color:var(--muted);font-size:12px;margin:10px 0}.image-status{font-size:12px;color:var(--accent);margin:12px 0 0}.image-status:empty{display:none}
