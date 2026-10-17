@@ -83,22 +83,6 @@
       fromHash();
     }
 
-    // Tonight's moon: a small, offline calculation from a known new moon.
-    const phaseBox = document.querySelector('[data-moon-phase]');
-    if (phaseBox) {
-      const synodic = 29.530588853, known = Date.UTC(2000, 0, 6, 18, 14);
-      const age = (((Date.now() - known) / 864e5) % synodic + synodic) % synodic;
-      const f = age / synodic;
-      const names = ['新月', '娥眉月', '上弦月', '盈凸月', '满月', '亏凸月', '下弦月', '残月'];
-      phaseBox.querySelector('[data-moon-name]').textContent = names[Math.floor(f * 8 + .5) % 8];
-      // Lit area: outer arc on the lit side, terminator ellipse with rx = |cos(2πf)| * r.
-      const r = 9, rx = Math.abs(Math.cos(f * 2 * Math.PI)) * r, waxing = f < .5;
-      const crescent = f < .25 || f >= .75, outer = waxing ? 1 : 0, inner = crescent === waxing ? 0 : 1;
-      const d = `M12 3A${r} ${r} 0 0 ${outer} 12 21A${rx.toFixed(2)} ${r} 0 0 ${inner} 12 3Z`;
-      phaseBox.querySelector('[data-moon-lit]').setAttribute('d', d);
-      phaseBox.hidden = false;
-    }
-
     // Gentle parallax on the full-screen hero illustration.
     const hero = document.querySelector('.moonlit-hero');
     if (hero && window.matchMedia('(pointer: fine)').matches) {
