@@ -99,6 +99,21 @@
       phaseBox.hidden = false;
     }
 
+    // Gentle parallax on the full-screen hero illustration.
+    const hero = document.querySelector('.moonlit-hero');
+    if (hero && window.matchMedia('(pointer: fine)').matches) {
+      hero.addEventListener('pointermove', event => {
+        if (reducedMotion.matches) return;
+        const rect = hero.getBoundingClientRect();
+        hero.style.setProperty('--scene-x', `${((event.clientX - rect.left) / rect.width - .5) * 14}px`);
+        hero.style.setProperty('--scene-y', `${((event.clientY - rect.top) / rect.height - .5) * 10}px`);
+      }, { passive: true });
+      hero.addEventListener('pointerleave', () => {
+        hero.style.setProperty('--scene-x', '0px');
+        hero.style.setProperty('--scene-y', '0px');
+      });
+    }
+
     // Isolate Live2D in a small, disposable frame so closing it releases its resources.
     const companion = document.createElement('div');
     companion.className = 'moonlit-companion';

@@ -1,6 +1,6 @@
 # Catailor.github.io · 月下手记
 
-基于 Hexo 8 / Butterfly 5.5 的个人博客，首页与文章页使用项目内维护的「月下手记」布局：简洁的无衬线排版、中性灰白配一种淡紫强调色、日夜两套配色；首页只有首屏插画、精选和最近文章三块。
+基于 Hexo 8 / Butterfly 5.5 的个人博客，首页与文章页使用项目内维护的「月下手记」布局：简洁的无衬线排版、中性灰白配一种淡紫强调色、日夜两套配色；首页保留整屏渐变插画首屏，下面只有精选和最近文章两块。
 
 在线地址：[catailor.github.io](https://catailor.github.io/) · 订阅：[`/atom.xml`](https://catailor.github.io/atom.xml)
 

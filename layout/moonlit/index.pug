@@ -11,21 +11,26 @@ doctype html
 html(lang=config.language data-theme=theme.display_mode)
   head
     include ../../node_modules/hexo-theme-butterfly/layout/includes/head.pug
+    link(rel='preload' as='image' href=url_for('/img/moonlit/hero.webp'))
   body.moonlit-home
     != partial('includes/loading/index', {}, {cache: true})
     != partial('includes/sidebar', {}, {cache: true})
     a.moonlit-skip(href='#notes') 跳到手记
     #body-wrap.page
-      header#page-header.moonlit-top
+      header#page-header.moonlit-hero
+        .moonlit-scene(aria-hidden='true')
+        .moonlit-wash(aria-hidden='true')
+        .moonlit-stars(aria-hidden='true')
+          each n in [1, 2, 3, 4, 5, 6, 7, 8]
+            span
         include navigation.pug
-      main#content-inner.moonlit-main
-        section.moonlit-hero(aria-labelledby='hero-title')
+        .moonlit-hero-inner
           .moonlit-hero-copy
             a.moonlit-hello(href=url_for('/about/'))
               img(src=url_for('/img/moonlit/avatar.webp') alt='' width='28' height='28')
               span Catailor
               span.moonlit-hello-bio= moonlit.bio
-            h1#hero-title 在月光下，<br>记录一些小事。
+            h1 在月光下，<br>记录一些小事。
             p.moonlit-intro= moonlit.intro
             .moonlit-hero-actions
               a.moonlit-button.is-primary(href='#notes')
@@ -47,12 +52,11 @@ html(lang=config.language data-theme=theme.display_mode)
                   path(data-moon-lit fill='currentColor' d='')
                 | 今夜
                 strong(data-moon-name)
-          figure.moonlit-hero-art
-            img(src=url_for('/img/moonlit/hero.webp') alt='月光下海边的两位少女' width='1920' height='1152' fetchpriority='high' decoding='async')
-            if notebook.now && notebook.now.learning
-              a.moonlit-now(href=url_for('/about/') + '#now')
-                span.moonlit-now-label 最近在学
-                span.moonlit-now-text= notebook.now.learning
+        if notebook.now && notebook.now.learning
+          a.moonlit-now(href=url_for('/about/') + '#now')
+            span.moonlit-now-label 最近在学
+            span.moonlit-now-text= notebook.now.learning
+      main#content-inner.moonlit-main
         if featured
           section.moonlit-section(aria-labelledby='featured-title')
             .moonlit-section-head
