@@ -1,0 +1,26 @@
+footer#footer.moonlit-site-footer
+  .moonlit-footer-inner
+    .moonlit-footer-brand
+      a(href=url_for('/'))
+        +icon('moon', 20)
+        span Catailor
+      p= config.description
+    nav.moonlit-footer-links(aria-label='页脚导航')
+      a(href=url_for('/archives/')) 全部手记
+      a(href=url_for('/topics/')) 学习专题
+      a(href=url_for('/moments/')) 碎碎念
+      a(href=url_for('/about/')) 关于我
+      a(href=url_for('/atom.xml'))
+        +icon('rss', 15)
+        | RSS
+      a(href='https://github.com/catailor' target='_blank' rel='noopener noreferrer')
+        +icon('github', 15)
+        | GitHub
+    p.moonlit-footer-fine
+      - var since = moonlit_since(), year = new Date().getFullYear()
+      span= '© ' + (since < year ? since + '–' + year : year) + ' Catailor'
+      span
+        | 文字采用
+        a(href=theme.post_copyright.license_url target='_blank' rel='noopener noreferrer')= ' ' + theme.post_copyright.license
+      span 插画版权归原作者，仅作装饰
+      span 由 Hexo 与 Butterfly 驱动

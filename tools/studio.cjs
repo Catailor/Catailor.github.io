@@ -1,5 +1,6 @@
 'use strict';
 const http = require('node:http'), fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
+const { execFileSync } = require('node:child_process');
 const { safePath, revision, details, serialize, validatePublication, selectedAssets, md, updateTaxonomy } = require('./studio-content.cjs');
 const { createJapaneseNote } = require('./new-japanese.cjs');
 const { library, saveLibrary, posts, resolveId, basename } = require('./studio-library.cjs');
@@ -140,7 +141,11 @@ function createStudio({ root = ROOT, privatePort = 4002, publisher = publish } =
         input.id = resolveId(root,input.id);
         const file = safePath(root, input.id); if (!/\.md$/.test(file)) throw new Error('请选择公开文章');
         const old = fs.readFileSync(file, 'utf8'); if (revision(old) !== input.revision) return send(409, { error: '另一个窗口修改了文章。请先复制当前内容，再重新打开文章。' });
-        const next = serialize(old, input);
+        // The version on GitHub (HEAD) decides whether an address change needs a redirect.
+        let published = null;
+        if (input.id.startsWith('source/_posts/')) { try { published = execFileSync('git', ['show', 'HEAD:' + input.id], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true }); } catch (_) {} }
+        const configFile = path.join(root, '_config.yml'), siteConfig = fs.existsSync(configFile) ? require('js-yaml').load(fs.readFileSync(configFile, 'utf8')) || {} : {};
+        const next = serialize(old, input, published, siteConfig);
         if(next===old)return send(200,details(root,input.id));
         history.snapshot(root,input.id,old);
         fs.writeFileSync(file + '.tmp', next); fs.renameSync(file + '.tmp', file);
@@ -166,7 +171,7 @@ function createStudio({ root = ROOT, privatePort = 4002, publisher = publish } =
         if(input.withdraw&&!posts(root).find(p=>p.id===id)?.isPublished)throw new Error('这篇文章尚未发布，无需撤回');
         const changes=await require('./studio-publish.cjs').seriesChanges(root,reviewLibrary,[{id,bytes,action:input.withdraw?'withdraw':'publish'}]);
         if(input.withdraw)return send(200,{id,revision:revision(bytes),libraryRevision:reviewLibrary.revision,action:'withdraw',title:details(root,id).title,summary:'网站更新后，这篇文章会下线；最新正文保留为本机草稿，可以再次发布。',assets:[],changes});
-        return send(200, { id, revision: revision(bytes), libraryRevision:reviewLibrary.revision,changes, warnings:require('./studio-content.cjs').imageWarnings(root,require('./studio-content.cjs').parseDocument(bytes.toString('utf8'))._content||''), ...validatePublication(bytes.toString('utf8')), assets: selectedAssets(root, bytes.toString('utf8')) });
+        return send(200, { id, revision: revision(bytes), libraryRevision:reviewLibrary.revision,changes, warnings:require('./studio-content.cjs').imageWarnings(root,require('./studio-content.cjs').parseDocument(bytes.toString('utf8'))._content||''), ...validatePublication(bytes.toString('utf8'), id), assets: selectedAssets(root, bytes.toString('utf8')) });
       }
       if (url.pathname === '/api/publish') {
         if (publishing || job.state === 'deploying') return send(409,{error:'上一批内容仍在发布，可以继续写，等它上线后再发下一批。'});

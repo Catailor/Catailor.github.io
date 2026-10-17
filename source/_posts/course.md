@@ -1,8 +1,13 @@
 ---
-title: course
-date: 2026-03-31 15:16:35
+title: 强化学习课程随记
 tags:
-    - 强化学习
+  - 强化学习
+description: 强化学习课程作业中的尝试与随手记录。
+categories: 日常
+kind: life
+topic: 学习日常
+studio_edited: true
+date: 2026-03-31 15:16:35
 ---
 
 ## 腾讯开悟强化学习吐槽

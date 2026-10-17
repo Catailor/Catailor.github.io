@@ -1,10 +1,13 @@
 ---
-title: 3/31
-date: 2026-03-31 23:39:07
-category: diary
+title: 3/31 · 日常之间
 tags:
-    - 中道崩殂
-    - 希望
+  - 日记
+description: 关于专注、日常安排与博客小问题的记录。
+categories: 日常
+kind: life
+topic: 日记
+studio_edited: true
+date: 2026-03-31 23:39:07
 ---
 
 今天开头想得挺美的，甚至下午还做得挺好的，就是晚上又开始刷b站了啊啊啊啊啊啊啊，但是，但是，我现在已经全面卸载b站了，我相信接下来会好的

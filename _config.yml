@@ -17,7 +17,7 @@ url: https://catailor.github.io/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
-  trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
+  trailing_index: false # Set to false to remove trailing 'index.html' from permalinks
   trailing_html: true # Set to false to remove trailing '.html' from permalinks
 
 # Directory
@@ -90,7 +90,9 @@ pagination_dir: page
 # Include / Exclude file(s)
 ## include:/exclude: options only apply to the 'source/' folder
 include:
+# 不参与生成的文件：备用的 Live2D 模型目前没有页面使用。
 exclude:
+  - live2d_models/koishi/**
 ignore:
 
 # Extensions

@@ -1,6 +1,7 @@
 extends interior.pug
 
 block content
+  include icons.pug
   - const isTag = globalPageType === 'tag'
   - const isCategory = globalPageType === 'category'
   - const title = isTag ? '#' + page.tag : isCategory ? page.category : page.year ? page.year + ' 年' + (page.month ? ' · ' + page.month + ' 月' : '') : '把日子，一页页收藏。'
@@ -29,6 +30,7 @@ block content
             span.letter-timeline-topic= note.topic
             h3= note.title
             p= note.summary
-          span.letter-timeline-time= note.minutes + ' 分钟'
-          span.letter-timeline-arrow(aria-hidden='true') ↗
+          span.letter-timeline-time= note.kind === 'moment' ? '碎碎念' : note.minutes + ' 分钟'
+          span.letter-timeline-arrow(aria-hidden='true')
+            +icon('arrow', 16)
     include ../../node_modules/hexo-theme-butterfly/layout/includes/pagination.pug

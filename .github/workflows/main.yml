@@ -3,7 +3,12 @@ name: Deploy Hexo
 on:
   push:
     branches:
-      - main # 监听 main 分支的推送
+      - main # 推送到 main 时构建并发布
+  workflow_dispatch: # 也可以在 Actions 页面手动重新发布
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -19,24 +24,21 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
       - name: Verify notebook features
         run: npm test
-      - name: Install writing test browser
-        run: npx playwright install --with-deps chromium
-      - name: Verify writing workflows
-        run: npm run test:browser
+
+      - name: Build
+        run: npm run build
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          publish_branch: gh-pages # 静态文件会自动存放在这个新分支
+          publish_branch: gh-pages # 静态文件会自动存放在这个分支

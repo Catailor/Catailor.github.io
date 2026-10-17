@@ -1,7 +1,14 @@
 ---
 title: Reino de España
-date: 2026-04-08 18:37:38
 tags:
+  - 历史
+description: 记录课程中涉及林凤、西班牙使团与中西交往的线索。
+categories: 学习笔记
+kind: study
+topic: 课程札记
+symbol: §
+studio_edited: true
+date: 2026-04-08 18:37:38
 ---
 
 海盗林（阿）凤：明朝把总王望高奉命出海，追捕海盗林凤，来到菲律宾

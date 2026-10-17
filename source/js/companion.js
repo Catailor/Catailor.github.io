@@ -1,10 +1,22 @@
 (() => {
   const status = document.getElementById('status');
-  const script = document.createElement('script');
-  script.src = 'https://unpkg.com/oh-my-live2d@0.19.3/dist/index.min.js';
+  // Try a few mirrors in turn: unpkg can be slow or blocked on some networks.
+  const sources = [
+    'https://cdn.jsdelivr.net/npm/oh-my-live2d@0.19.3/dist/index.min.js',
+    'https://registry.npmmirror.com/oh-my-live2d/0.19.3/files/dist/index.min.js',
+    'https://unpkg.com/oh-my-live2d@0.19.3/dist/index.min.js'
+  ];
   const fail = () => { status.textContent = '小伙伴暂时没能赶来，请收起后重试。'; };
-  script.onerror = fail;
-  script.onload = () => {
+  let script;
+  const load = index => {
+    if (index >= sources.length) { fail(); return; }
+    script = document.createElement('script');
+    script.src = sources[index];
+    script.onerror = () => { script.remove(); load(index + 1); };
+    script.onload = start;
+    document.head.append(script);
+  };
+  const start = () => {
     try {
       OML2D.loadOml2d({
         models: [{
@@ -27,5 +39,5 @@
       status.textContent = '';
     } catch (_) { fail(); }
   };
-  document.head.append(script);
+  load(0);
 })();

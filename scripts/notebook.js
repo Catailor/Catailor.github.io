@@ -1,6 +1,7 @@
 'use strict';
 const { readFileSync, existsSync, readdirSync } = require('node:fs');
 const path = require('node:path');
+const MOON = '<svg class="notebook-moon" viewBox="0 0 24 24" width="36" height="36" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>';
 const { escape: e, readingStats, plainText, publicPosts, safeUrl, withHeadingAnchors, seriesPosts, wordbook } = require('../lib/notebook');
 
 // Fail closed: ordinary Hexo posts are public, including their source on GitHub.
@@ -24,8 +25,8 @@ hexo.extend.filter.register('after_post_render', data => {
   if (data.layout === 'post') {
     data.content = require('../lib/study-blocks.cjs').studyBlocks(data.content);
     data.content = withHeadingAnchors(data.content);
-    const stats = readingStats(plainText(data.content));
-    data.content = `<div class="notebook-reading" data-reading-article data-reading-minutes="${stats.minutes}" data-article-version="${stats.words}"><span>约 ${stats.words.toLocaleString('zh-CN')} 字</span><span>参考阅读时间 ${stats.minutes} 分钟</span></div>` + data.content;
+    // Reading stats are rendered by layout/moonlit/post.pug, outside the article body,
+    // so they never leak into meta descriptions, feeds or search excerpts.
   }
   return data;
 }, 20);
@@ -80,7 +81,7 @@ hexo.extend.generator.register('notebook', function (locals) {
     `<form id="notebook-search" role="search"><label class="sr-only" for="note-query">搜索手记</label><input id="note-query" type="search" placeholder="输入关键词…" maxlength="150" autocomplete="off"><button type="submit">搜索</button></form><p id="search-status" role="status" aria-live="polite">输入关键词开始搜索。</p><div id="search-results"></div><button id="search-more" class="notebook-button" hidden>显示更多结果</button><noscript>搜索需要启用 JavaScript，也可以<a href="/archives/">浏览归档</a>。</noscript>`);
   const about = settings.about || {};
   const now = settings.now || {};
-  const currentNotes = now.learning || now.goal ? '<section class="notebook-about-now"><h2>最近的我</h2>' + (now.learning ? '<h3>最近在学</h3><p>' + e(now.learning) + '</p>' : '') + (now.goal ? '<h3>接下来想做</h3><p>' + e(now.goal) + '</p>' : '') + '</section>' : '';
+  const currentNotes = now.learning || now.goal ? '<section class="notebook-about-now" id="now"><h2>最近的我</h2>' + (now.learning ? '<h3>最近在学</h3><p>' + e(now.learning) + '</p>' : '') + (now.goal ? '<h3>接下来想做</h3><p>' + e(now.goal) + '</p>' : '') + '</section>' : '';
   page('about', '关于我', intro('HELLO, I AM CATAILOR', about.intro || '欢迎来到我的个人小站。') +
     `<div class="notebook-about"><img src="/img/moonlit/avatar.webp" alt="Catailor 的头像" width="112" height="112"><div><h2>Catailor</h2>${(about.paragraphs || []).map(p => `<p>${e(p)}</p>`).join('')}<a class="notebook-button" href="https://github.com/catailor" target="_blank" rel="noopener noreferrer">去 GitHub 看看 ↗</a></div></div>${currentNotes}<h2>在这里可以读到</h2><div class="notebook-grid">${series.map(s => `<a class="notebook-tile" href="/topics/${e(s.id)}/"><h3>${e(s.title)}</h3><p>${e(s.description)}</p></a>`).join('')}</div>`);
   const friends = settings.friends || [];
@@ -88,12 +89,14 @@ hexo.extend.generator.register('notebook', function (locals) {
     (friends.length ? `<div class="notebook-grid">${friends.map(friend => {
       const url = safeUrl(friend.url); if (!url) throw new Error('友链地址必须使用 http 或 https');
       return `<a class="notebook-tile" href="${e(url)}" target="_blank" rel="noopener noreferrer"><h2>${e(friend.name)}</h2><p>${e(friend.description)}</p><span>去坐坐 ↗</span></a>`;
-    }).join('')}</div>` : '<div class="notebook-empty"><span>✧</span><h2>留一个位置，等下一次相遇。</h2><p>友链正在慢慢收集。</p></div>'));
-  const moments = [...(settings.moments || [])].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    }).join('')}</div>` : `<div class="notebook-empty">${MOON}<h2>留一个位置，等下一次相遇。</h2><p>友链正在慢慢收集。</p></div>`));
+  const postMoments = locals.posts.toArray().filter(post => post.kind === 'moment').map(post => ({ date: post.date.format('YYYY-MM-DD'), title: post.title, html: post.content, url: '/' + post.path }));
+  const moments = [...postMoments, ...(settings.moments || []).map(m => ({ date: String(m.date), html: e(m.text).replace(/\n/g, '<br>'), tag: m.tag }))]
+    .sort((a, b) => String(b.date).localeCompare(String(a.date)));
   page('moments', '碎碎念', intro('LITTLE MOMENTS', '不必每次都写成文章，也可以只记下一句话。') +
-    (moments.length ? `<div class="notebook-moments">${moments.map(moment => `<article><time>${e(moment.date)}</time><p>${e(moment.text).replace(/\n/g, '<br>')}</p>${moment.tag ? `<span>${e(moment.tag)}</span>` : ''}</article>`).join('')}</div>` : '<div class="notebook-empty"><span>☾</span><h2>今天，有什么想记下来？</h2><p>第一条碎碎念，留给下一次灵感。</p></div>'));
+    (moments.length ? `<div class="notebook-moments">${moments.map(m => `<article class="notebook-moment"><header><time datetime="${e(m.date)}">${e(m.date)}</time>${m.title ? `<a href="${e(m.url)}">${e(m.title)}</a>` : ''}</header><div class="notebook-moment-body">${m.html}</div>${m.tag ? `<span>${e(m.tag)}</span>` : ''}</article>`).join('')}</div>` : `<div class="notebook-empty">${MOON}<h2>今天，有什么想记下来？</h2><p>第一条碎碎念，留给下一次灵感。</p></div>`));
   page('random', '随机漫游', intro('A SMALL DETOUR', '偶尔不按顺序，翻到一篇意料之外的手记。') +
-    '<div class="notebook-empty"><span>✧</span><h2>下一页，会遇见什么？</h2><button class="notebook-button" data-random-post>带我随便逛逛 ↗</button><p data-random-status role="status"></p><noscript><a href="/archives/">浏览所有手记</a></noscript></div>');
+    `<div class="notebook-empty">${MOON}<h2>下一页，会遇见什么？</h2><button class="notebook-button" data-random-post>带我随便逛逛 ↗</button><p data-random-status role="status"></p><noscript><a href="/archives/">浏览所有手记</a></noscript></div>`);
 
   routes.push({ path: 'notebook-index.json', data: JSON.stringify(posts) });
   routes.push({ path: 'notebook-links.json', data: JSON.stringify({

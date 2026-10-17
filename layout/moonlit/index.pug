@@ -1,10 +1,13 @@
 - var globalPageType = 'home'
 - var pageType = 'page'
 - var moonlit = site.data.moonlit
+- var notebook = site.data.notebook || {}
 - var allNotes = moonlit_posts()
-- var homeSeries = moonlit_home_series(allNotes)
-- var highlighted = new Set(homeSeries.flatMap(s => s.entries.map(p => p.file)))
-- var notes = allNotes.filter(p => !highlighted.has(p.file))
+- var featured = allNotes.find(p => p.featured)
+- var rows = allNotes.filter(p => p !== featured)
+- var shelf = moonlit_shelf(allNotes)
+- var moments = moonlit_moments(3)
+- var since = moonlit_since()
 doctype html
 html(lang=config.language data-theme=theme.display_mode)
   head
@@ -19,78 +22,132 @@ html(lang=config.language data-theme=theme.display_mode)
         .moonlit-scene(aria-hidden='true')
         .moonlit-wash(aria-hidden='true')
         .moonlit-stars(aria-hidden='true')
-          each n in [1, 2, 3, 4, 5, 6]
+          each n in [1, 2, 3, 4, 5, 6, 7, 8]
             span
         include navigation.pug
         .moonlit-hero-inner
           .moonlit-hero-copy
-            p.moonlit-eyebrow MOONLIT NOTES
-            h1 在月光下，
-              br
-              | 记录一些小事。
+            p.moonlit-eyebrow
+              span 月下手记
+              span.moonlit-eyebrow-line(aria-hidden='true')
+              span MOONLIT NOTES
+            h1
+              span 在月光下，
+              span 记录一些小事。
             p.moonlit-intro= moonlit.intro
-            a.moonlit-hero-link(href='#notes') 翻开我的手记
-              span(aria-hidden='true') ↓
-        .moonlit-hero-caption(aria-hidden='true') SOMEWHERE BETWEEN DAYDREAMS & DAILY LIFE
-      main#content-inner.layout.moonlit-layout
-        each series in homeSeries
-          section.moonlit-japanese(aria-label=series.title)
-            .moonlit-japanese-heading
-              span(aria-hidden='true') ✧
+            .moonlit-hero-actions
+              a.moonlit-button.is-primary(href='#notes')
+                | 翻开手记
+                +icon('down', 16)
+              a.moonlit-button(href=url_for('/topics/'))
+                | 学习专题
+                +icon('right', 16)
+            dl.moonlit-hero-facts
               div
-                h2= series.title
-                if series.description
-                  p= series.description
-              a(href=url_for('/topics/' + series.id + '/')) 翻开专栏 ↗
-            if series.entries.length
-              .moonlit-japanese-latest
-                each post in series.entries
-                  a(href=post.href)
-                    time= post.date
-                    strong= post.title
-            else
-              p.moonlit-japanese-empty 新的记录会收在这里。
+                dt 手记
+                dd= allNotes.length + ' 篇'
+              div
+                dt 专栏
+                dd= shelf.length + ' 个'
+              div.moonlit-moon-phase(data-moon-phase hidden)
+                dt 今夜月相
+                dd
+                  svg(width='16' height='16' viewBox='0 0 24 24' aria-hidden='true' focusable='false')
+                    circle(cx='12' cy='12' r='9' fill='currentColor' opacity='.18')
+                    path(data-moon-lit fill='currentColor' d='')
+                  span(data-moon-name)
+        if notebook.now && notebook.now.learning
+          a.moonlit-now(href=url_for('/about/') + '#now')
+            span.moonlit-now-label
+              +icon('sparkle', 14)
+              | 最近在学
+            span.moonlit-now-text= notebook.now.learning
+      main#content-inner.layout.moonlit-layout
+        if shelf.length
+          section.moonlit-shelf(aria-labelledby='shelf-title')
+            .moonlit-section-head
+              div
+                p.moonlit-kicker 专栏 · Series
+                h2#shelf-title 正在慢慢写的几条线
+              a.moonlit-head-link(href=url_for('/topics/'))
+                | 全部专题
+                +icon('right', 15)
+            .moonlit-shelf-grid
+              each series, i in shelf
+                article.moonlit-series(class=series.pinned ? 'is-pinned' : '' style='--series-index:' + i)
+                  a.moonlit-series-link(href=url_for('/topics/' + series.id + '/'))
+                    span.moonlit-series-count
+                      strong= String(series.count).padStart(2, '0')
+                      small 篇
+                    h3= series.title
+                    if series.description
+                      p= series.description
+                  if series.entries.length
+                    a.moonlit-series-latest(href=series.entries[0].href)
+                      small 最新
+                      span= series.entries[0].title
+                  else
+                    p.moonlit-series-latest.is-empty 第一篇正在路上
         .moonlit-columns
           section#notes.moonlit-notes(aria-labelledby='notes-title')
             .moonlit-section-head
               div
-                p.moonlit-eyebrow THE NOTEBOOK
-                h2#notes-title 最近的手记
-              .moonlit-filters(aria-label='手记分类' hidden)
+                p.moonlit-kicker 手记 · Notebook
+                h2#notes-title 最近写下的
+              .moonlit-filters(role='group' aria-label='手记分类' hidden)
                 button.is-active(type='button' data-filter='all' aria-pressed='true') 全部
                 button(type='button' data-filter='study' aria-pressed='false') 学习
                 button(type='button' data-filter='life' aria-pressed='false') 日常
             p.moonlit-filter-status.sr-only(role='status' aria-live='polite')
             #recent-posts.moonlit-posts
-              each post in notes
-                article.moonlit-card(class=(post.featured ? 'moonlit-featured ' : '') + (post.cover ? 'moonlit-illustrated' : 'moonlit-text-note') data-kind=post.kind)
-                  if post.cover
-                    a.moonlit-cover(href=post.href tabindex='-1' aria-hidden='true')
-                      img(src=post.cover alt='' loading='lazy' decoding='async' width='760' height='480')
-                      if post.featured
-                        span.moonlit-cover-badge 精选手记
+              if featured
+                article.moonlit-card.moonlit-featured(data-kind=featured.kind)
+                  a.moonlit-cover(href=featured.href tabindex='-1' aria-hidden='true' class=featured.cover ? '' : 'letter-art letter-art-' + featured.art)
+                    if featured.cover
+                      img(src=featured.cover alt='' loading='lazy' decoding='async' width='760' height='480')
+                    else
+                      span.letter-art-symbol= featured.symbol
+                      span.letter-art-topic= featured.topic
+                    span.moonlit-cover-badge 精选
                   .moonlit-card-copy
                     .moonlit-meta
+                      span.moonlit-topic= featured.topic
+                      time(datetime=featured.iso)= featured.date
+                    h3
+                      a(href=featured.href)= featured.title
+                    p= featured.summary
+                    a.moonlit-read(href=featured.href aria-label='阅读：' + featured.title)
+                      span= featured.words >= 300 ? '约 ' + featured.minutes + ' 分钟读完' : '读这一篇'
+                      +icon('arrow', 18)
+              each post in rows
+                article.moonlit-card.moonlit-row(data-kind=post.kind)
+                  time.moonlit-row-date(datetime=post.iso)
+                    strong= post.file === 'check_in.md' ? '··' : post.day
+                    small= post.file === 'check_in.md' ? '随手' : post.year
+                  .moonlit-row-copy
+                    .moonlit-meta
                       span.moonlit-topic= post.topic
-                      span= post.date
+                      if post.words >= 300
+                        span= post.minutes + ' 分钟'
                     h3
                       a(href=post.href)= post.title
                     p= post.summary
-                    if post.words >= 300
-                      .moonlit-card-reading= '约 ' + post.words + ' 字 · 参考阅读时间 ' + post.minutes + ' 分钟'
-                    a.moonlit-read(href=post.href aria-label='阅读：' + post.title) 阅读手记
-                      span(aria-hidden='true') ↗
-            button.moonlit-more(type='button' hidden) 再翻几页
+                  span.moonlit-row-arrow(aria-hidden='true')
+                    +icon('arrow', 18)
+            .moonlit-notes-foot
+              button.moonlit-more(type='button' hidden) 再翻几页
+              a.moonlit-head-link(href=url_for('/archives/'))
+                | 按时间翻阅全部
+                +icon('right', 15)
           aside#aside-content.moonlit-aside(aria-label='关于小站')
             .moonlit-profile
-              .moonlit-profile-top(aria-hidden='true')
-              img.moonlit-avatar(src=url_for('/img/moonlit/avatar.webp') alt='Catailor 的头像' width='84' height='84')
-              p.moonlit-profile-name Catailor
-              p.moonlit-profile-en A LITTLE CORNER OF MY WORLD
-              p.moonlit-profile-bio= moonlit.bio
+              img.moonlit-avatar(src=url_for('/img/moonlit/avatar.webp') alt='Catailor 的头像' width='72' height='72' loading='lazy')
+              div
+                p.moonlit-profile-name Catailor
+                p.moonlit-profile-bio= moonlit.bio
               .moonlit-stats
                 a(href=url_for('/archives/'))
-                  strong= site.posts.length
+                  strong= allNotes.length
                   span 手记
                 a(href=url_for('/categories/'))
                   strong= site.categories.length
@@ -98,14 +155,31 @@ html(lang=config.language data-theme=theme.display_mode)
                 a(href=url_for('/tags/'))
                   strong= site.tags.length
                   span 标签
-              if site.data.notebook.now.learning
-                .moonlit-profile-now
-                  h3 最近在学
-                  p= site.data.notebook.now.learning
               .moonlit-profile-links
-                a(href=url_for('/about/')) 了解更多 →
-                a(href='https://github.com/catailor' target='_blank' rel='noopener noreferrer') GitHub ↗
-      footer#footer.moonlit-footer
-        != partial('includes/footer', {}, {cache: true})
+                a(href=url_for('/about/')) 关于我
+                a(href='https://github.com/catailor' target='_blank' rel='noopener noreferrer')
+                  +icon('github', 15)
+                  | GitHub
+                a(href=url_for('/atom.xml'))
+                  +icon('rss', 15)
+                  | 订阅
+            section.moonlit-moments(aria-labelledby='moments-title')
+              .moonlit-moments-head
+                h2#moments-title
+                  +icon('quote', 16)
+                  | 碎碎念
+                a(href=url_for('/moments/')) 全部
+              if moments.length
+                ol
+                  each m in moments
+                    li
+                      time(datetime=m.date)= m.date.replace(/-/g, '.')
+                      if m.href
+                        a(href=m.href)= m.text.length > 64 ? m.text.slice(0, 64) + '…' : (m.text || m.title)
+                      else
+                        p= m.text
+              else
+                p.moonlit-moments-empty 还没有碎碎念。写作台里点「碎碎念」就能记一条。
+      include footer.pug
     include ../../node_modules/hexo-theme-butterfly/layout/includes/rightside.pug
     include ../../node_modules/hexo-theme-butterfly/layout/includes/additional-js.pug

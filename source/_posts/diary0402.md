@@ -1,9 +1,13 @@
 ---
-title: 4/2
-date: 2026-04-02 00:23:40
-category: diary
+title: 4/2 · 一天的切片
 tags:
-    - 绝望
+  - 日记
+description: 乒乓球、课程作业与音乐之间的一天。
+categories: 日常
+kind: life
+topic: 日记
+studio_edited: true
+date: 2026-04-02 00:23:40
 ---
 
 b站不看坚持1day hh，今天乒乓球技术在HW的指导下又突飞猛进，主要是反手要推拨，正手要夹一点大臂，引拍不要往后，垂下就可以，直接打，正手拉下旋和反拉一定要拉到头顶，拉完整

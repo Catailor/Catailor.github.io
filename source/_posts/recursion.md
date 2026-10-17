@@ -1,8 +1,14 @@
 ---
-title: recursion
-date: 2026-03-31 00:09:18
-category: algorithm
+title: 递归：从汉诺塔说起
 tags:
+  - 算法
+description: 借助汉诺塔与数学归纳法，理解递归的分解思路。
+categories: 学习笔记
+kind: study
+topic: 算法
+symbol: ∞
+studio_edited: true
+date: 2026-03-31 00:09:18
 ---
 
 ## 递归的独特视角：以汉诺塔为例
