@@ -5,7 +5,6 @@
 - var allNotes = moonlit_posts()
 - var featured = allNotes.find(p => p.featured)
 - var rows = allNotes.filter(p => p !== featured)
-- var shelf = moonlit_shelf(allNotes)
 - var since = moonlit_since()
 doctype html
 html(lang=config.language data-theme=theme.display_mode)
@@ -24,38 +23,9 @@ html(lang=config.language data-theme=theme.display_mode)
           each n in [1, 2, 3, 4, 5, 6, 7, 8]
             span
         include navigation.pug
-        .moonlit-hero-inner
-          .moonlit-hero-copy
-            a.moonlit-hello(href=url_for('/about/'))
-              img(src=url_for('/img/moonlit/avatar.webp') alt='' width='28' height='28')
-              span Catailor
-              span.moonlit-hello-bio= moonlit.bio
-            h1 在月光下，<br>记录一些小事。
-            p.moonlit-intro= moonlit.intro
-            .moonlit-hero-actions
-              a.moonlit-button.is-primary(href='#notes')
-                | 开始阅读
-                +icon('down', 16)
-              a.moonlit-button(href=url_for('/topics/'))
-                | 学习专题
-                +icon('right', 16)
-            ul.moonlit-facts
-              li
-                strong= allNotes.length
-                |  篇手记
-              li
-                strong= shelf.length
-                |  个专题
-              li.moonlit-moon-phase(data-moon-phase hidden)
-                svg(width='15' height='15' viewBox='0 0 24 24' aria-hidden='true' focusable='false')
-                  circle(cx='12' cy='12' r='9' fill='currentColor' opacity='.2')
-                  path(data-moon-lit fill='currentColor' d='')
-                | 今夜
-                strong(data-moon-name)
-        if notebook.now && notebook.now.learning
-          a.moonlit-now(href=url_for('/about/') + '#now')
-            span.moonlit-now-label 最近在学
-            span.moonlit-now-text= notebook.now.learning
+        h1.moonlit-sr-only 月下手记 · Catailor
+        a.moonlit-scroll(href='#content-inner' aria-label='向下阅读')
+          +icon('down', 20)
       main#content-inner.moonlit-main
         if featured
           section.moonlit-section(aria-labelledby='featured-title')
