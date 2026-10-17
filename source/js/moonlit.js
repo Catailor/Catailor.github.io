@@ -50,7 +50,7 @@
           button.setAttribute('aria-pressed', String(selected));
         });
         more.hidden = matches.length <= limit;
-        const label = active === 'study' ? '学习手记' : active === 'life' ? '生活碎片' : '全部手记';
+        const label = { study: '学习手记', life: '日常', moment: '碎碎念' }[active] || '全部手记';
         status.textContent = `${label}共 ${matches.length} 篇，已显示 ${visible.size} 篇`;
         document.querySelectorAll('[data-note-nav]').forEach(link => link.classList.toggle('is-current', link.dataset.noteNav === active));
         document.querySelector('.moonlit-links > a[aria-current]')?.classList.toggle('is-current', active === 'all');
@@ -61,7 +61,7 @@
         history.replaceState(null, '', active === 'all' ? '#notes' : `#${active}`);
       }));
       function fromHash() {
-        if (['#study', '#life'].includes(location.hash)) {
+        if (['#study', '#life', '#moment'].includes(location.hash) && filters.some(b => b.dataset.filter === location.hash.slice(1))) {
           select(location.hash.slice(1));
           document.querySelector('#notes').scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
         }
@@ -99,6 +99,7 @@
       phaseBox.hidden = false;
     }
 
+    // Gentle parallax on the full-screen hero illustration.
     const hero = document.querySelector('.moonlit-hero');
     if (hero && window.matchMedia('(pointer: fine)').matches) {
       hero.addEventListener('pointermove', event => {

@@ -1,6 +1,6 @@
 # Catailor.github.io · 月下手记
 
-基于 Hexo 8 / Butterfly 5.5 的个人博客，首页与文章页使用项目内维护的「月下手记」布局：纸页质感、日夜两套月光配色、系列书架、学习 / 日常 / 碎碎念三种手记。
+基于 Hexo 8 / Butterfly 5.5 的个人博客，首页与文章页使用项目内维护的「月下手记」布局：简洁的无衬线排版、中性灰白配一种淡紫强调色、日夜两套配色；首页保留整屏渐变插画首屏，下面只有精选和最近文章两块。
 
 在线地址：[catailor.github.io](https://catailor.github.io/) · 订阅：[`/atom.xml`](https://catailor.github.io/atom.xml)
 
@@ -29,7 +29,7 @@ npm run private     # 本机编写加密的私人手记
 | 首页介绍、留言区开关 | `source/_data/moonlit.yml` |
 | 系列、专题、友链、碎碎念 | `source/_data/notebook.yml`（写作台「我的系列」可改） |
 | 首页 / 导航 / 页脚 / 文章页布局 | `layout/moonlit/*.pug` |
-| 配色与版式 | `source/css/moonlit.css`（首页）、`letter.css`（纸页）、`moonlight.css`（最后加载的统一修饰） |
+| 配色与版式 | `source/css/moonlit.css`（配色变量、导航、首页）、`letter.css`（文章页结构）、`moonlight.css`（最后加载，统一的现代化修饰） |
 | 交互 | `source/js/moonlit.js`（筛选、日夜、月相）、`letter.js`（阅读助手）、`theme-clock.js`（自动日夜） |
 | 订阅、站点地图、旧地址跳转 | `scripts/feeds.js` |
 | 首页数据整理 | `scripts/moonlit.js`、`scripts/notebook.js` |
