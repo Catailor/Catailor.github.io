@@ -11,7 +11,7 @@ block content
         span /
         span= note.topic
       .letter-post-overline
-        span.moonlit-eyebrow= note.kind === 'life' ? 'LIFE, IN SMALL PIECES' : 'NOTES ALONG THE WAY'
+        span.moonlit-eyebrow= note.kind === 'life' ? 'LIFE, IN SMALL PIECES' : note.kind === 'moment' ? 'A PASSING THOUGHT' : 'NOTES ALONG THE WAY'
         span.letter-post-mark(aria-hidden='true')= note.symbol
       h1.post-title= note.title
       if note.summary && !isShortNote
@@ -23,6 +23,9 @@ block content
         span ·
         time(datetime=date_xml(page.date))= date(page.date, 'YYYY.MM.DD')
         span.letter-topic= note.topic
+      .notebook-reading(data-reading-article data-reading-minutes=note.minutes data-article-version=note.words)
+        span= '约 ' + note.words.toLocaleString('zh-CN') + ' 字'
+        span= '参考阅读时间 ' + note.minutes + ' 分钟'
       .letter-reading-actions
         if showToc
           button.letter-toc-toggle(type='button' data-toc-toggle aria-expanded='false' aria-controls='aside-content' hidden) 目录
@@ -51,6 +54,11 @@ block content
         a.letter-return(href=url_for('/archives/') data-article-back) ← 返回手记
         button.letter-copy(type='button' data-copy-link hidden) 复制链接
         span.letter-copy-status(role='status' aria-live='polite')
+      - var giscus = (site.data.moonlit || {}).giscus || {}
+      if giscus.repo && giscus.repo_id && giscus.category_id
+        section.letter-comments(aria-label='留言')
+          h2 留言
+          script(src='https://giscus.app/client.js' data-repo=giscus.repo data-repo-id=giscus.repo_id data-category=giscus.category || 'Announcements' data-category-id=giscus.category_id data-mapping='pathname' data-strict='1' data-reactions-enabled='1' data-emit-metadata='0' data-input-position='top' data-theme='preferred_color_scheme' data-lang='zh-CN' data-loading='lazy' crossorigin='anonymous' async)
       p.letter-license
         | 本文采用
         a(href=theme.post_copyright.license_url target='_blank' rel='noopener noreferrer')= theme.post_copyright.license

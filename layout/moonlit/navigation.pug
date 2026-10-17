@@ -1,25 +1,32 @@
+include icons.pug
 nav#nav
   span#blog-info
     a.nav-site-title(href=url_for('/') aria-label='Catailor，返回首页')
-      span.moonlit-brand-moon(aria-hidden='true') ☾
+      span.moonlit-brand-moon(aria-hidden='true')
+        +icon('moon', 22)
       span.site-name Catailor
   #menus
     .moonlit-links
-      a(href=url_for('/') class=globalPageType === 'home' ? 'is-current' : '') 首页
+      a.moonlit-nav-home(href=url_for('/') class=globalPageType === 'home' ? 'is-current' : '') 首页
       a(href=url_for('/archives/') class=globalPageType === 'archive' ? 'is-current' : '') 手记
-      a(href=url_for('/about/')) 关于
-      a(href=url_for('/search/') title='搜索手记，快捷键 /') 搜索
+      a.moonlit-nav-topics(href=url_for('/topics/')) 专题
+      a.moonlit-nav-about(href=url_for('/about/')) 关于
+      a.moonlit-nav-search(href=url_for('/search/') title='搜索手记，快捷键 /' aria-label='搜索')
+        +icon('search', 17)
+        span 搜索
       details.letter-explore
         summary 更多
           svg.letter-menu-chevron(width='10' height='10' viewBox='0 0 12 12' fill='none' aria-hidden='true' focusable='false')
             path(d='M2.5 4.25 6 7.75 9.5 4.25' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round')
         .letter-menu
+          a.letter-mobile-link(href=url_for('/topics/')) 学习专题
           a.letter-mobile-link(href=url_for('/about/')) 关于我
-          a(href=url_for('/topics/')) 学习专题
-          if site.data.notebook.moments.length
-            a(href=url_for('/moments/')) 碎碎念
+          a(href=url_for('/moments/')) 碎碎念
+          a(href=url_for('/words/')) 词语本
           if site.data.notebook.friends.length
             a(href=url_for('/friends/')) 友链
           a(href=url_for('/random/')) 随机漫游
-          a(href=url_for('/private/')) 私人手记
-      button.moonlit-theme(type='button' aria-label='切换日夜模式') ☾
+          a(href=url_for('/atom.xml')) 订阅 RSS
+      button.moonlit-theme(type='button' aria-label='切换日夜模式')
+        +icon('moon', 18)
+        +icon('sun', 18)

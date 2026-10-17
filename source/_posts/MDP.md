@@ -1,9 +1,14 @@
 ---
-title: MDP
-date: 2026-03-31 15:53:33
-category: ML
+title: MDP：状态、价值与策略
 tags:
-    - RL
+  - 强化学习
+description: 关于马尔可夫决策过程、价值迭代与策略迭代的学习札记。
+categories: 学习笔记
+kind: study
+topic: 强化学习
+symbol: π
+studio_edited: true
+date: 2026-03-31 15:53:33
 ---
 
 ## 关于 MDP 的一些思考

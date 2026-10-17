@@ -1,10 +1,20 @@
 ---
-title: math
-date: 2026-04-13 10:38:11
+title: 数学笔记：线性代数与概率
 tags:
+  - 数学
+  - 线性代数
+  - 概率
+description: 从向量到概率，把理解慢慢连起来。记录矩阵、对角化、协方差与贝叶斯公式的复习要点。
+categories: 学习笔记
+kind: study
+topic: 数学基础
+symbol: ∑
+featured: true
+studio_edited: true
+date: 2026-04-13 10:38:11
 ---
 柯西不等式：用来描述内积
-$<u, v>^2 \leq <u, u> \cdot <v, v>$
+$\langle u, v\rangle^2 \leq \langle u, u\rangle \cdot \langle v, v\rangle$
 
 协方差矩阵：决定了数据的形状，通常是椭圆
 相关系数：排除单位影响，描述是否有线性关系

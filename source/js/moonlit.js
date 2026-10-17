@@ -15,7 +15,8 @@
     if (themeButton) {
       const syncTheme = () => {
         const dark = root.dataset.theme === 'dark';
-        themeButton.textContent = dark ? '☀' : '☾';
+        // The button ships with both moon and sun SVGs; CSS shows the right one.
+        if (!themeButton.querySelector('svg')) themeButton.textContent = dark ? '☀' : '☾';
         themeButton.setAttribute('aria-label', dark ? '切换到日间模式' : '切换到夜间模式');
         themeButton.title = dark ? '切换到日间模式' : '切换到夜间模式';
       };
@@ -30,7 +31,7 @@
       const more = document.querySelector('.moonlit-more');
       const status = document.querySelector('.moonlit-filter-status');
       let active = 'all';
-      let limit = 5;
+      let limit = 8;
       document.querySelector('.moonlit-filters').hidden = false;
       function update(animate = false) {
         const matches = cards.filter(card => active === 'all' || card.dataset.kind === active);
@@ -54,7 +55,7 @@
         document.querySelectorAll('[data-note-nav]').forEach(link => link.classList.toggle('is-current', link.dataset.noteNav === active));
         document.querySelector('.moonlit-links > a[aria-current]')?.classList.toggle('is-current', active === 'all');
       }
-      function select(kind) { active = kind; limit = kind === 'life' ? 6 : 5; update(true); }
+      function select(kind) { active = kind; limit = 8; update(true); }
       filters.forEach(button => button.addEventListener('click', () => {
         select(button.dataset.filter);
         history.replaceState(null, '', active === 'all' ? '#notes' : `#${active}`);
@@ -73,13 +74,29 @@
       window.addEventListener('hashchange', fromHash);
       more.addEventListener('click', () => {
         const previous = cards.filter(card => !card.hidden).length;
-        limit += 6;
+        limit += 8;
         update(true);
         // Keep keyboard users in the newly revealed content when the button disappears.
         cards.filter(card => !card.hidden)[previous]?.querySelector('h3 a')?.focus({ preventScroll: true });
       });
       update();
       fromHash();
+    }
+
+    // Tonight's moon: a small, offline calculation from a known new moon.
+    const phaseBox = document.querySelector('[data-moon-phase]');
+    if (phaseBox) {
+      const synodic = 29.530588853, known = Date.UTC(2000, 0, 6, 18, 14);
+      const age = (((Date.now() - known) / 864e5) % synodic + synodic) % synodic;
+      const f = age / synodic;
+      const names = ['新月', '娥眉月', '上弦月', '盈凸月', '满月', '亏凸月', '下弦月', '残月'];
+      phaseBox.querySelector('[data-moon-name]').textContent = names[Math.floor(f * 8 + .5) % 8];
+      // Lit area: outer arc on the lit side, terminator ellipse with rx = |cos(2πf)| * r.
+      const r = 9, rx = Math.abs(Math.cos(f * 2 * Math.PI)) * r, waxing = f < .5;
+      const crescent = f < .25 || f >= .75, outer = waxing ? 1 : 0, inner = crescent === waxing ? 0 : 1;
+      const d = `M12 3A${r} ${r} 0 0 ${outer} 12 21A${rx.toFixed(2)} ${r} 0 0 ${inner} 12 3Z`;
+      phaseBox.querySelector('[data-moon-lit]').setAttribute('d', d);
+      phaseBox.hidden = false;
     }
 
     const hero = document.querySelector('.moonlit-hero');
@@ -102,7 +119,9 @@
     const button = document.createElement('button');
     button.type = 'button';
     const syncCompanion = open => {
-      button.textContent = open ? '×' : '❄';
+      button.innerHTML = open
+        ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
+        : '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M12 2.5v19M3.8 7.25l16.4 9.5M3.8 16.75l16.4-9.5M9.5 4l2.5 2.5L14.5 4M9.5 20l2.5-2.5 2.5 2.5"/></svg>';
       button.setAttribute('aria-label', open ? '收起琪露诺' : '召唤琪露诺');
       button.title = open ? '收起琪露诺' : '召唤琪露诺';
     };

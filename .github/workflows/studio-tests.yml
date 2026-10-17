@@ -1,0 +1,44 @@
+name: Writing studio tests
+
+# 写作台的浏览器测试比较慢，只在相关文件变化时运行，不再拖慢每次发布。
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+    paths:
+      - 'tools/**'
+      - 'tests/**'
+      - 'lib/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'playwright.config.*'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Install writing test browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Writing workflows
+        run: npm run test:browser

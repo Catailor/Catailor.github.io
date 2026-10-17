@@ -64,3 +64,16 @@ test('series can be searched, created and configured for the homepage',async({pa
   await page.getByText('首页展示（选填）',{exact:true}).click();await page.locator('#field-homepage').selectOption('yes');await page.locator('#field-homeOrder').fill('2');await page.locator('#dialog-submit').click();
   await expect(page.locator('#article-series')).toContainText('摄影练习');const library=await(await page.request.get(base+'/api/library')).json();expect(library.series.find(s=>s.title==='摄影练习')).toMatchObject({homepage:true,homeOrder:2});
 });
+test('quick moments, readable link names and focus mode work from the writing desk',async({page})=>{
+  await page.goto(base);await expect(page.locator('#empty-greeting')).not.toBeEmpty();
+  await page.locator('#quick-moment').click();await expect(page.locator('#title')).toHaveValue(/^碎碎念/);await expect(page.locator('#kind')).toHaveValue('moment');
+  await page.locator('.toastui-editor-ww-container .ProseMirror').click();await page.keyboard.type('月亮很圆。');
+  await page.locator('#settings-toggle').click();await page.locator('#link').fill('Evening Walk');await page.locator('#topic').click();
+  await expect(page.locator('#link')).toHaveValue('evening-walk');await expect(page.locator('#link-preview')).toContainText('/evening-walk/');
+  await page.keyboard.press('Control+s');await expect(page.locator('#save-status')).toHaveText('已保存到本机');
+  const file=fs.readdirSync(path.join(root,'source/_drafts')).map(name=>fs.readFileSync(path.join(root,'source/_drafts',name),'utf8')).find(text=>text.includes('月亮很圆'));
+  expect(file).toContain('kind: moment');expect(file).toMatch(/permalink: \d{4}\/\d{2}\/\d{2}\/evening-walk\//);
+  await page.keyboard.press('Control+Shift+F');await expect(page.locator('body')).toHaveClass(/focus-mode/);await expect(page.locator('#settings')).toBeHidden();
+  await page.keyboard.press('Escape');await expect(page.locator('body')).not.toHaveClass(/focus-mode/);
+  await page.keyboard.press('Control+/');await expect(page.locator('#shortcuts-dialog')).toBeVisible();
+});

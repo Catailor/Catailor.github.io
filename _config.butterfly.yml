@@ -65,7 +65,7 @@ social:
 # Image Settings
 # --------------------------------------
 
-favicon: /img/favicon.ico
+favicon: /img/favicon.svg
 
 avatar:
   img: /img/moonlit/avatar.webp
@@ -78,7 +78,7 @@ disable_top_img: false
 default_top_img:
 
 # The banner image of index page
-index_img: /img/mifeng.jpg
+index_img: false
 
 # The banner image of archive page
 archive_img:
@@ -1075,6 +1075,10 @@ inject:
     - <link rel="stylesheet" href="/css/notebook.css">
     - <link rel="stylesheet" href="/css/letter.css">
     - <link rel="stylesheet" href="/css/article-content.css">
+    - <link rel="stylesheet" href="/css/moonlight.css">
+    - <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    - <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.7.0/style.css" media="print" onload="this.media='all'">
+    - <link rel="alternate" type="application/atom+xml" title="月下手记" href="/atom.xml">
     - <script src="/js/theme-clock.js"></script>
   bottom:
     - <script src="/js/moonlit.js" defer></script>

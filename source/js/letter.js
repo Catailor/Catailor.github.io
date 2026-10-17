@@ -51,6 +51,23 @@
       document.addEventListener('click', event => { if (!event.target.closest('#aside-content,[data-toc-toggle]')) closeToc(); });
       document.addEventListener('keydown', event => { if (event.key === 'Escape' && document.body.classList.contains('letter-toc-open')) { closeToc(); tocOrigin.focus({preventScroll:true}); } });
       matchMedia('(min-width:1360px)').addEventListener('change', closeToc);
+      // On phones the floating TOC button steps aside while reading down, and returns when scrolling up.
+      const floating = document.querySelector('.letter-mobile-toc');
+      if (floating) {
+        let lastY = scrollY, ticking = false;
+        addEventListener('scroll', () => {
+          if (ticking) return; ticking = true;
+          requestAnimationFrame(() => {
+            const y = scrollY, down = y > lastY + 4, up = y < lastY - 4;
+            if (!document.body.classList.contains('letter-toc-open')) {
+              if (down && y > 240) floating.classList.add('is-tucked');
+              else if (up || y < 240) floating.classList.remove('is-tucked');
+            }
+            if (down || up) lastY = y;
+            ticking = false;
+          });
+        }, { passive: true });
+      }
     }
     document.addEventListener('click', event => { if (!tools.contains(event.target)) tools.open = false; });
     toc?.addEventListener('click', event => {

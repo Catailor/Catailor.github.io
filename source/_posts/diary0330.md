@@ -1,9 +1,15 @@
 ---
-title: 3/30
-date: 2026-03-30 19:02:09
-category: diary
+title: 3/30 · 小站的开始
 tags:
-    - 希望
+  - 日记
+description: 搭建博客、折腾 Live2D，也记录学习与生活的进展。
+categories: 日常
+kind: life
+topic: 日记
+cover: /img/moonlit/sunset.webp
+symbol: ¶
+studio_edited: true
+date: 2026-03-30 19:02:09
 ---
 
 一切一切的开始啊

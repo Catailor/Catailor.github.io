@@ -1,8 +1,14 @@
 ---
-title: Q_learning
-date: 2026-04-01 10:03:35
-category: ML
+title: Q-learning：从一次更新理解学习
 tags:
+  - 强化学习
+description: 梳理更新公式、学习率、探索率与动作价值之间的关系。
+categories: 学习笔记
+kind: study
+topic: 强化学习
+symbol: Q
+studio_edited: true
+date: 2026-04-01 10:03:35
 ---
 
 ## 关于 Q_learning 的一些思考
