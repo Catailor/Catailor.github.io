@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /private/
+Disallow: /companion/
+
+Sitemap: https://catailor.github.io/sitemap.xml
