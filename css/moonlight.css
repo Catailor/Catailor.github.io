@@ -1,27 +1,29 @@
-/* Moonlight — the last stylesheet: shared typography, navigation, footer and interior refinements. */
-:root { --letter-serif: 'LXGW WenKai Screen', 'LXGW WenKai', 'Noto Serif SC', 'Songti SC', STSong, SimSun, serif; --moon-muted: #696377; }
-[data-theme='dark'] { --moon-muted: #b4adc4; }
+/* Moonlight — the last stylesheet: modern, quiet overrides for navigation, footer and interior pages. */
+
+/* letter.css re-declares a serif stack; keep everything on the sans stack. */
+:root { --letter-serif: var(--moon-sans); --moon-latin: var(--moon-sans); }
+.letter-byline a, .notebook-connections h2, .letter-tools h2, .letter-side-note, .letter-signature strong, .letter-timeline-entry > time, .letter-footer .letter-footer-line, .letter-page .notebook-lead, .letter-page #article-container a.notebook-tile h2, .letter-page .notebook-empty h2, .letter-page .notebook-about h2, .letter-page .notebook-sequence li::before, .letter-page .notebook-result h2, .letter-lost-number, .letter-page-heading > p { font-family: var(--moon-sans) !important; font-style: normal !important; }
+.letter-timeline-entry > time { font-family: var(--moon-mono) !important; }
+.moonlit-interior #nav, .moonlit-interior #page-header.nav-fixed #nav, .moonlit-home #page-header:not(.nav-fixed) #nav { box-shadow: none !important; }
+.moonlit-interior #page-header.nav-fixed #nav, .moonlit-home #page-header.nav-fixed #nav { box-shadow: 0 1px 0 var(--moon-line) !important; }
 
 /* Navigation: class-based visibility instead of positional rules. */
-#nav .site-name { font: 500 23px/1 var(--moon-latin); }
-#nav .moonlit-brand-moon { font-size: inherit; }
-.moonlit-interior #nav { height: 72px; background: color-mix(in srgb, var(--moon-paper) 92%, transparent); }
-.moonlit-interior #page-header.nav-fixed #nav { background: color-mix(in srgb, var(--moon-panel) 88%, transparent); backdrop-filter: blur(14px) saturate(1.2); }
 .moonlit-links > a { display: inline-flex; }
-.letter-menu { padding: 8px; border-radius: 16px; box-shadow: var(--moon-shadow-lift); }
-.letter-menu a { border-radius: 10px; }
+.letter-menu { padding: 6px; border-radius: 14px; box-shadow: var(--moon-shadow-lift); }
+.letter-menu a { border-radius: 8px; font-size: 14px; letter-spacing: 0; }
+.letter-explore summary { padding: 7px 12px; }
 @media (max-width: 860px) {
   .moonlit-links > a.moonlit-nav-topics, .moonlit-links > a.moonlit-nav-about { display: none; }
   .letter-menu .letter-mobile-link { display: block; }
 }
 @media (max-width: 760px) {
-  .moonlit-home #nav, .moonlit-interior #nav { padding: 0 14px; gap: 10px; height: 62px; }
-  #nav .site-name { font-size: 20px; }
-  #nav .moonlit-brand-moon { width: 30px; height: 30px; }
+  .moonlit-home #nav, .moonlit-interior #nav { padding: 0 14px; gap: 8px; height: 60px; }
+  .moonlit-home #page-header.moonlit-top, .moonlit-interior #page-header { height: 60px; }
   .moonlit-links > a.moonlit-nav-home { display: none; }
-  .moonlit-links > a { min-height: 44px; }
-  .moonlit-links { gap: 14px; }
-  .moonlit-nav-search { justify-content: center; min-width: 32px; }
+  .moonlit-links > a, .letter-explore summary { min-height: 40px; padding: 7px 9px; }
+  .moonlit-links { gap: 0; }
+  .moonlit-nav-search { justify-content: center; min-width: 36px; }
+  .moonlit-theme { width: 34px; height: 34px; margin-left: 4px; }
   .letter-menu .letter-mobile-link { display: flex; }
 }
 
@@ -82,3 +84,66 @@
   .moonlit-companion { display: none; }
   .letter-timeline-arrow { display: none !important; }
 }
+
+/* ---------- Modern interior: no paper card, one calm reading column ---------- */
+.moonlit-interior { background: var(--moon-paper); }
+.moonlit-interior #content-inner { max-width: 1120px; justify-content: center; gap: 64px; padding: 40px 28px 48px; }
+.moonlit-interior #content-inner > :first-child { padding: 0; border: 0 !important; border-radius: 0; background: transparent !important; box-shadow: none !important; }
+.moonlit-interior #post { width: auto; flex: 0 1 740px; min-width: 0; }
+.moonlit-interior #page, .moonlit-interior #archive { max-width: 860px; }
+.moonlit-interior #aside-content { width: 220px; }
+.letter-breadcrumb { font-size: 13px; gap: 8px; }
+.letter-post-overline { margin-top: 20px; }
+.letter-post-mark { display: none; }
+.letter-post-header .post-title, .letter-page-heading h1 { font: 700 clamp(30px, 3.6vw, 42px)/1.25 var(--moon-sans) !important; letter-spacing: -.03em !important; }
+.letter-post-deck { font-size: 17px; line-height: 1.75; color: var(--moon-muted); }
+.letter-byline { font-size: 13px; }
+.letter-byline a { font: 600 14px/1.4 var(--moon-sans); }
+.letter-topic { border: 0; border-radius: 6px; background: var(--moon-soft); color: var(--moon-text); font-size: 12px; }
+.notebook-reading span { border: 0; border-radius: 6px; background: var(--moon-soft); }
+.letter-reader #article-container { font-size: var(--letter-font-size); line-height: 1.9; }
+.letter-reader #article-container :is(h1, h2, h3) { font-family: var(--moon-sans) !important; font-weight: 650; letter-spacing: -.015em; }
+.letter-reader #article-container h2 { padding-bottom: 0; border-bottom: 0; }
+.letter-reader #article-container blockquote { border-radius: 0 10px 10px 0; background: var(--moon-soft); }
+.letter-reader #article-container .katex-display { background: transparent; padding: 8px 0; }
+.letter-reader #article-container figure.highlight, .letter-reader #article-container img { border-radius: 12px; }
+.letter-reader #article-container hr::before { content: none; }
+.letter-reader #article-container hr { border: 0; border-top: 1px solid var(--moon-line); }
+.letter-tools, .letter-side-note, .letter-reader #card-toc { border: 0 !important; background: transparent !important; box-shadow: none !important; padding-left: 0 !important; padding-right: 0 !important; }
+.letter-tools .moonlit-eyebrow, .letter-page-heading .moonlit-eyebrow, .letter-post-overline .moonlit-eyebrow { font: 600 12px/1.4 var(--moon-sans); letter-spacing: .02em; text-transform: none; color: var(--moon-muted); }
+.moonlit-eyebrow-line { display: none !important; }
+.letter-page-orbit { display: none !important; }
+.letter-endmark { opacity: .35; }
+.letter-post-neighbors a, .notebook-related, .letter-taxonomy a, .letter-page #article-container a.notebook-tile { border: 1px solid var(--moon-line) !important; border-radius: 14px !important; background: var(--moon-panel) !important; box-shadow: none !important; }
+.letter-post-neighbors a:hover, .notebook-related:hover, .letter-taxonomy a:hover, .letter-page #article-container a.notebook-tile:hover { border-color: color-mix(in srgb, var(--moon-accent) 40%, var(--moon-line)) !important; transform: none !important; }
+.letter-year { font: 700 28px/1.2 var(--moon-sans) !important; letter-spacing: -.02em; color: var(--moon-text) !important; }
+.letter-year::after { background: var(--moon-line) !important; }
+.letter-timeline-entry { border-radius: 0 !important; }
+.letter-timeline-entry > time, .letter-timeline-time { font-family: var(--moon-mono); }
+.letter-timeline-entry h3, .notebook-tile h2, .notebook-sequence strong { font-family: var(--moon-sans) !important; font-weight: 600; }
+.moonlit-interior #pagination .page-number, .moonlit-interior #pagination .extend { border-radius: 10px; }
+.moonlit-interior #pagination .page-number.current { background: var(--moon-text) !important; color: var(--moon-paper) !important; }
+.notebook-moment { border-radius: 14px; box-shadow: none; }
+.notebook-moment:before { background: var(--moon-accent); }
+.letter-footer { display: none; }
+@media (max-width: 800px) {
+  .moonlit-interior #content-inner { padding: 20px 16px 32px; }
+  .moonlit-interior #post { flex-basis: 100%; }
+}
+
+/* Cover art without an illustration: a soft gradient tile and one big glyph. */
+.letter-art, .letter-art-grid, .letter-art-wave, .letter-art-petal, .letter-art-steps, .letter-art-constellation { background: radial-gradient(120% 110% at 100% 0%, color-mix(in srgb, var(--moon-accent) 30%, var(--moon-panel)), transparent 62%), linear-gradient(160deg, var(--moon-soft), var(--moon-panel)) !important; color: var(--moon-accent) !important; }
+.letter-art::before, .letter-art::after { content: none !important; }
+.letter-art-symbol { font: 300 104px/1.1 var(--moon-sans) !important; font-style: normal !important; opacity: .85; }
+.letter-art-topic { font: 600 15px/1.4 var(--moon-sans) !important; letter-spacing: 0 !important; color: var(--moon-text); }
+.letter-art-date { font: 12px var(--moon-mono) !important; letter-spacing: 0 !important; }
+
+/* Footer: aligned with the content column, quiet links. */
+.moonlit-footer-inner { width: min(1120px, calc(100% - 56px)); }
+.moonlit-footer-brand a { font: 650 16px/1.3 var(--moon-sans) !important; }
+.moonlit-footer-brand .moon-icon { color: var(--moon-text); }
+.moonlit-footer-brand p { font: 14px/1.7 var(--moon-sans) !important; }
+.moonlit-footer-links a { color: var(--moon-muted) !important; }
+.moonlit-footer-links a:hover { color: var(--moon-text) !important; text-decoration: none; }
+.moonlit-footer-fine { border-top-style: solid; }
+.moonlit-footer-fine a { color: var(--moon-muted) !important; text-decoration: underline; text-underline-offset: 3px; }
