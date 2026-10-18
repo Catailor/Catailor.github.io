@@ -39,8 +39,8 @@ export function prepareVisualContent(value) {
     if (ranges.some(range => start < range.end)) continue;
     const raw = lines.slice(start, end).join('\n');
     const check = raw.replace(/`+[^`]*`+/g, '').replace(/\\[\s\S]/g, '').replace(/<br\s*\/?\s*>/gi, '');
-    const captionedImage=/!\[[^\]]*\]\([^\n]+\s+"[^"\n]+"\)/.test(check);
-    if (!captionedImage && !(hasDefinitions && check.includes('[')) && !/<\/?[a-zA-Z!]|{%|\[\^[^\]]+\]|^\s*\[[^\]]+\]:|^\s*\[toc\]|\$\$|\$[^\s$](?:[^$\n]*[^\s$])?\$/im.test(check)) continue;
+    // Math, captioned images and <br> are handled by the visual editor itself.
+    if (!(hasDefinitions && check.includes('[')) && !/<\/?[a-zA-Z!]|{%|\[\^[^\]]+\]|^\s*\[[^\]]+\]:|^\s*\[toc\]/im.test(check)) continue;
     const key = sourceLabel;
     keys.add(key);
     const fence = '`'.repeat(Math.max(3, ...[...raw.matchAll(/`+/g)].map(match => match[0].length + 1)));

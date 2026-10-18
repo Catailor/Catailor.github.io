@@ -1,6 +1,9 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>写作台 · Catailor</title><link rel="stylesheet" href="/editor.css"><link rel="stylesheet" href="/studio.css"><link rel="stylesheet" href="/article-content.css"><link rel="stylesheet" href="/katex/katex.min.css"><script src="/editor.js" defer></script><script src="/taxonomy.js" defer></script><script src="/studio.js" defer></script></head>
-<body>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="data:,"><title>写作台 · Catailor</title>
+<script src="/theme.js"></script>
+<link rel="stylesheet" href="/editor/editor-entry.css"><link rel="stylesheet" href="/article-content.css"><link rel="stylesheet" href="/katex/katex.min.css"><link rel="stylesheet" href="/studio.css">
+<script type="module" src="/editor/editor-entry.js"></script><script src="/taxonomy.js" defer></script><script src="/studio.js" defer></script></head>
+<body data-screen="desk">
 <svg hidden xmlns="http://www.w3.org/2000/svg"><defs>
 <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1Z"/></symbol>
 <symbol id="i-sidebar" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M9.5 4.5v15"/></symbol>
@@ -16,43 +19,84 @@
 <symbol id="i-pen" viewBox="0 0 24 24"><path d="M15.5 4.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4L15.5 4.5Z"/><path d="m13.5 6.5 3 3"/></symbol>
 <symbol id="i-quote" viewBox="0 0 24 24"><path d="M9.5 7C6.5 8 5 10.3 5 13.5V17h4.5v-4.5H7c0-2 .9-3.3 2.5-4M18.5 7c-3 1-4.5 3.3-4.5 6.5V17h4.5v-4.5H16c0-2 .9-3.3 2.5-4"/></symbol>
 <symbol id="i-japanese" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.2" fill="currentColor" stroke="none"/></symbol>
-<symbol id="i-focus" viewBox="0 0 24 24"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/></symbol>
+
 <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path d="M6.5 10h1M10 10h1M13.5 10h1M17 10h.5M7.5 14h9"/></symbol>
 <symbol id="i-history" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 4v4.5H8M12 8v4l2.5 2"/></symbol>
 <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
 <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3.5c.6 4.2 2.3 5.9 6.5 6.5-4.2.6-5.9 2.3-6.5 6.5-.6-4.2-2.3-5.9-6.5-6.5 4.2-.6 5.9-2.3 6.5-6.5Z"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="M14.5 5.5 8 12l6.5 6.5"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M8.5 6.5h11M8.5 12h11M8.5 17.5h11M4.5 6.5h.01M4.5 12h.01M4.5 17.5h.01"/></symbol>
+<symbol id="i-panel" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M14.5 4.5v15M17 8.5h1M17 11.5h1"/></symbol>
+<symbol id="i-outline" viewBox="0 0 24 24"><path d="M4.5 6h15M7.5 10.5h12M7.5 15h12M4.5 19.5h15"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><path d="M6 12h.01M12 12h.01M18 12h.01" stroke-width="3"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></symbol>
+<symbol id="i-code" viewBox="0 0 24 24"><path d="m8.5 7.5-4.5 4.5 4.5 4.5M15.5 7.5l4.5 4.5-4.5 4.5M13.5 5l-3 14"/></symbol>
+<symbol id="i-type" viewBox="0 0 24 24"><path d="M5 6.5V5h14v1.5M12 5v14M9 19h6"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m4.5 18 5-5 3.5 3.5 2.5-2.5 4 4"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6A2.5 2.5 0 0 0 13 3.5H6A2.5 2.5 0 0 0 3.5 6v7A2.5 2.5 0 0 0 6 15.5h2.5"/></symbol>
 </defs></svg>
-<header class="workspace-bar"><button id="library-toggle" aria-expanded="true" title="展开或收起资料库 · Ctrl Shift B"><svg class="i" aria-hidden="true"><use href="#i-sidebar"/></svg><span>资料库</span></button><div class="document-info"><span id="document-state">留一页给今天</span><span id="save-status" role="status" aria-live="polite"></span></div><div id="article-actions" hidden><button id="focus-toggle" title="专注写作：只留下纸面 · Ctrl Shift F"><svg class="i" aria-hidden="true"><use href="#i-focus"/></svg><span>专注</span></button><button id="outline-toggle" hidden title="按小标题跳转到正文">目录</button><button id="mode-toggle">Markdown 编辑</button><button id="settings-toggle">文章设置</button><button id="publish" class="primary">发布</button></div><div id="private-actions" hidden><button id="private-publish" class="primary">发布加密手记</button></div><button id="shortcuts-open" class="icon-button" aria-label="快捷键" title="快捷键 · Ctrl /"><svg class="i" aria-hidden="true"><use href="#i-keyboard"/></svg></button></header>
+<header class="workspace-bar">
+  <div class="bar-start"><button id="desk-back" class="bar-back" title="合上稿纸，回到书桌"><svg class="i" aria-hidden="true"><use href="#i-back"/></svg><span>书桌</span></button><button id="library-toggle" class="icon-button" aria-expanded="false" aria-label="文章列表" title="快速切换文章 · Ctrl Shift B"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg></button></div>
+  <div class="document-info"><span id="document-state">留一页给今天</span><span id="save-status" role="status" aria-live="polite"></span></div>
+  <div id="article-actions" class="bar-actions" hidden>
+    <div class="mode-switch" role="group" aria-label="编辑方式"><button id="mode-toggle" aria-pressed="false" title="切换 Markdown 源码 · Ctrl /"><svg class="i" aria-hidden="true"><use href="#i-code"/></svg><span>源码</span></button></div>
+    <button id="outline-toggle" class="icon-button" hidden aria-label="目录" title="按小标题跳转"><svg class="i" aria-hidden="true"><use href="#i-outline"/></svg></button>
+    <button id="settings-toggle" class="icon-button" aria-label="文章属性" aria-pressed="false" title="文章属性 · Ctrl ,"><svg class="i" aria-hidden="true"><use href="#i-panel"/></svg></button>
+    <button id="article-preview" class="icon-button" aria-label="阅读预览" title="查看发布效果"><svg class="i" aria-hidden="true"><use href="#i-eye"/></svg></button>
+    <div class="menu-wrap"><button id="more-toggle" class="icon-button" aria-label="更多" aria-haspopup="menu" aria-expanded="false" title="更多"><svg class="i" aria-hidden="true"><use href="#i-more"/></svg></button>
+      <div id="more-menu" class="menu" role="menu" hidden><button id="article-images" role="menuitem"><svg class="i" aria-hidden="true"><use href="#i-image"/></svg>文章配图</button><button id="article-history" role="menuitem"><svg class="i" aria-hidden="true"><use href="#i-history"/></svg>历史版本</button><button id="save-template" role="menuitem"><svg class="i" aria-hidden="true"><use href="#i-copy"/></svg>将这篇存为模板</button><hr><button id="article-delete" role="menuitem" class="danger"><svg class="i" aria-hidden="true"><use href="#i-trash"/></svg><span>移到回收站</span></button></div></div>
+    <button id="publish" class="primary"><svg class="i" aria-hidden="true"><use href="#i-send"/></svg><span>发布</span></button>
+  </div>
+  <div id="private-actions" class="bar-actions" hidden><button id="private-publish" class="primary">发布加密手记</button></div>
+  <button id="palette-open" class="palette-button" title="搜索文章和命令 · Ctrl K"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><span>搜索或执行…</span><kbd>Ctrl K</kbd></button>
+</header>
+<div class="desk-backdrop" id="desk-backdrop"></div>
 <aside class="navigation">
   <div class="nav-scroll">
-  <a class="brand" href="/"><span class="brand-moon"><svg class="i" aria-hidden="true"><use href="#i-moon"/></svg></span><span>Catailor<small>我的写作台</small></span></a>
+  <a class="brand" href="/"><span class="brand-moon"><svg class="i" aria-hidden="true"><use href="#i-moon"/></svg></span><span>月下手记<small>Catailor 的书桌</small></span></a>
   <div class="create"><button id="new-post" class="primary" title="新建文章 · Ctrl Alt N"><svg class="i" aria-hidden="true"><use href="#i-pen"/></svg>新建文章</button><button id="quick-moment-nav" class="create-moment" title="记一条碎碎念"><svg class="i" aria-hidden="true"><use href="#i-quote"/></svg><span class="sr-only">碎碎念</span></button></div>
-  <nav aria-label="资料库"><button data-view="recent"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>最近写过</button><button data-view="all"><svg class="i" aria-hidden="true"><use href="#i-stack"/></svg>全部文章</button><button data-view="draft"><svg class="i" aria-hidden="true"><use href="#i-draft"/></svg>草稿</button><button data-view="published"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>已发布</button><button data-view="trash"><svg class="i" aria-hidden="true"><use href="#i-trash"/></svg>回收站</button></nav>
-  <div class="nav-heading"><span>我的系列</span><button id="new-series" aria-label="新建系列">＋</button></div><nav id="series-nav" aria-label="我的系列"></nav>
-  </div><div class="nav-bottom"><button id="publication-history"><svg class="i" aria-hidden="true"><use href="#i-history"/></svg>发布记录</button><button id="template-manage"><svg class="i" aria-hidden="true"><use href="#i-template"/></svg>文章模板</button><button id="private-open"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>私人手记</button><a href="https://catailor.github.io/" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-external"/></svg>打开博客</a><small>内容先存本机，发布后才公开</small></div>
+  <nav aria-label="书桌"><button data-view="recent"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>最近写过</button><button data-view="all"><svg class="i" aria-hidden="true"><use href="#i-stack"/></svg>全部文章</button><button data-view="draft"><svg class="i" aria-hidden="true"><use href="#i-draft"/></svg>草稿</button><button data-view="published"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>已发布</button><button data-view="trash"><svg class="i" aria-hidden="true"><use href="#i-trash"/></svg>回收站</button></nav>
+  <div class="nav-heading"><span>我的系列</span><button id="new-series" aria-label="新建系列" title="新建系列"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></button></div><nav id="series-nav" aria-label="我的系列"></nav>
+  </div>
+  <div class="nav-bottom"><button id="publication-history"><svg class="i" aria-hidden="true"><use href="#i-history"/></svg>发布记录</button><button id="template-manage"><svg class="i" aria-hidden="true"><use href="#i-template"/></svg>文章模板</button><button id="private-open"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>私人手记</button><a href="https://catailor.github.io/" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-external"/></svg>打开博客</a><button id="theme-toggle" title="白天 06:00–18:00 自动浅色，其余时间深色；手动切换会保持到下一次 06:00 或 18:00"><svg class="i" aria-hidden="true"><use href="#i-sun"/></svg><span>跟随时间</span></button><small>内容先存本机，发布后才公开</small></div>
 </aside>
-<section class="library" aria-label="文章列表">
-  <header><div class="list-heading"><h1 id="view-title">最近写过</h1><button id="series-settings" hidden aria-label="编辑当前系列">设置</button></div><p id="view-description">从上次停下的地方继续。</p><input id="filter" type="search" placeholder="查找文章…" aria-label="查找文章"><details id="taxonomy-filters"><summary>按分类、标签筛选</summary><label>分类<select id="category-filter" aria-label="按分类筛选"></select></label><label>标签<select id="tag-filter" aria-label="按标签筛选"></select></label><button id="filter-clear">清除筛选</button></details><div class="list-selection"><span id="result-count"></span><button id="select-filtered">全选结果</button></div><div id="series-actions" hidden><button id="series-publish">更新线上目录</button></div></header>
-  <div id="batch-bar" hidden><span id="batch-count"></span><button id="batch-add">加入系列</button><button id="batch-taxonomy">分类／标签</button><button id="batch-trash">删除</button><button id="batch-restore" hidden>恢复</button><button id="batch-clear" aria-label="取消选择">×</button></div>
-  <div id="post-list"></div><p id="list-empty" class="muted" hidden>这里还没有文章，写下第一篇吧。</p>
-</section>
+<div class="desk">
+  <section id="empty"><div class="empty-inner">
+    <div class="desk-hello"><div><p class="empty-greeting" id="empty-greeting">晚上好</p><h2>今天想写点什么？</h2><p>一段想法，一次学习，或只是今天的小事。先写下来，系列和发布都可以稍后再说。</p></div><span class="empty-mark"><svg class="i" aria-hidden="true"><use href="#i-moon"/></svg></span></div>
+    <div class="quick-start" role="group" aria-label="快速开始"><button id="empty-new" class="quick-card is-primary"><svg class="i" aria-hidden="true"><use href="#i-pen"/></svg><strong>写一篇文章</strong><small>空白的纸，随便写</small></button><button id="quick-japanese" class="quick-card"><svg class="i" aria-hidden="true"><use href="#i-japanese"/></svg><strong>今天的日语日记</strong><small>生词表、注音、进度</small></button><button id="quick-moment" class="quick-card"><svg class="i" aria-hidden="true"><use href="#i-quote"/></svg><strong>记一条碎碎念</strong><small>一两句话也很好</small></button><button id="quick-template" class="quick-card"><svg class="i" aria-hidden="true"><use href="#i-template"/></svg><strong>从模板开始</strong><small>用保存好的框架</small></button></div>
+    <button id="quick-continue" class="continue-card" hidden><svg class="i" aria-hidden="true"><use href="#i-history"/></svg><span><small>接着上次写</small><strong id="quick-continue-title"></strong></span><b aria-hidden="true">→</b></button>
+  </div></section>
+  <section class="library" aria-label="文章列表">
+    <header><div class="list-heading"><h1 id="view-title">最近写过</h1><button id="series-settings" hidden aria-label="编辑当前系列">设置</button></div><p id="view-description">从上次停下的地方继续。</p>
+      <div class="list-tools"><label class="search-field"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><input id="filter" type="search" placeholder="查找文章…" aria-label="查找文章"></label><details id="taxonomy-filters"><summary>筛选</summary><div class="filter-pop"><label>分类<select id="category-filter" aria-label="按分类筛选"></select></label><label>标签<select id="tag-filter" aria-label="按标签筛选"></select></label><button id="filter-clear">清除筛选</button></div></details></div>
+      <div class="list-selection"><span id="result-count"></span><button id="select-filtered">全选结果</button></div><div id="series-actions" hidden><button id="series-publish">更新线上目录</button></div></header>
+    <div id="batch-bar" hidden><span id="batch-count"></span><button id="batch-add">加入系列</button><button id="batch-taxonomy">分类／标签</button><button id="batch-trash">删除</button><button id="batch-restore" hidden>恢复</button><button id="batch-clear" aria-label="取消选择">×</button></div>
+    <div id="post-list"></div><p id="list-empty" class="muted" hidden>这里还没有文章，写下第一篇吧。</p>
+  </section>
+</div>
 <main>
-  <section id="empty"><div class="empty-inner"><span class="empty-mark"><svg class="i" aria-hidden="true"><use href="#i-moon"/></svg></span><p class="empty-greeting" id="empty-greeting">晚上好</p><h2>今天想写点什么？</h2><p>一段想法，一次学习，或只是今天的小事。先写下来，系列和发布都可以稍后再说。</p>
-<div class="quick-start" role="group" aria-label="快速开始"><button id="empty-new" class="quick-card is-primary"><svg class="i" aria-hidden="true"><use href="#i-pen"/></svg><strong>写一篇文章</strong><small>空白的纸，随便写</small></button><button id="quick-moment" class="quick-card"><svg class="i" aria-hidden="true"><use href="#i-quote"/></svg><strong>记一条碎碎念</strong><small>一两句话也很好</small></button><button id="quick-japanese" class="quick-card"><svg class="i" aria-hidden="true"><use href="#i-japanese"/></svg><strong>今天的日语日记</strong><small>按模板记录词语和进度</small></button><button id="quick-template" class="quick-card"><svg class="i" aria-hidden="true"><use href="#i-template"/></svg><strong>从模板开始</strong><small>用保存好的框架</small></button></div>
-<button id="quick-continue" class="continue-card" hidden><svg class="i" aria-hidden="true"><use href="#i-history"/></svg><span><small>接着上次写</small><strong id="quick-continue-title"></strong></span></button>
-<p class="empty-keys"><kbd>Ctrl</kbd>+<kbd>S</kbd> 保存　<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd> 专注　<kbd>Ctrl</kbd>+<kbd>/</kbd> 全部快捷键</p></div></section>
   <section id="editor" hidden>
-    <div id="writing-scroll"><div class="paper"><input id="title" aria-label="文章标题" placeholder="无标题" maxlength="200"><div class="paper-meta"><button id="article-series">＋ 加入系列</button><span id="word-count"></span></div><div id="article-taxonomy" aria-label="文章分类和标签"></div><p id="compatibility" hidden>公式和特殊内容已单独保留，点“编辑这一块”修改原文，完成后恢复排版显示。</p><div id="rich-editor"></div><textarea id="source-editor" aria-label="Markdown 正文" placeholder="从这里开始写…" spellcheck="false" hidden></textarea></div></div>
-    <aside id="settings" class="drawer" hidden><div class="drawer-title"><h2>文章设置</h2><button data-close="settings" aria-label="关闭文章设置">×</button></div>
-<section class="drawer-group"><h3>基本</h3><div class="field-row"><label>日期<input id="date" type="date"></label><label>类型<select id="kind"><option value="">自动</option><option value="study">学习</option><option value="life">日常</option><option value="moment">碎碎念</option></select></label></div><label>主题<input id="topic" placeholder="留空时用系列或分类名，例如：数学基础" maxlength="40" autocomplete="off"></label><p class="field-help">类型决定它出现在首页「学习 / 日常」还是「碎碎念」里。</p></section>
-<section class="drawer-group"><h3>整理</h3><label>分类<input id="categories" placeholder="例如：学习笔记" autocomplete="off"></label><label>标签<input id="tags" placeholder="例如：日语，听力" autocomplete="off"></label><p class="taxonomy-help field-help">可选已有名称，也可直接输入新名称；多个名称用逗号分隔。</p><h3 class="sub">所属系列</h3><div id="membership"></div><button id="article-new-series">＋ 新建系列</button></section>
-<section class="drawer-group"><h3>链接与摘要</h3><label>链接名<span class="link-field"><input id="link" placeholder="例如 japanese-day-1" maxlength="80" autocomplete="off" spellcheck="false" inputmode="url" pattern="[a-z0-9]+(-[a-z0-9]+)*"><button id="link-suggest" type="button" title="根据标题里的英文和数字生成">生成</button></span></label><p id="link-preview" class="field-help link-preview"></p><label>摘要<textarea id="summary" rows="4" maxlength="500" placeholder="留空会自动摘取正文"></textarea></label><p id="summary-count" class="field-help"></p></section>
-<section class="drawer-group drawer-tools"><h3>更多</h3><button id="article-images">文章配图</button><button id="article-history">历史版本</button><button id="article-preview">查看发布效果</button><button id="save-template">将这篇存为模板</button><button id="article-delete" class="danger">移到回收站</button></section><p class="muted">自动保存的是本机内容。修改已发布文章后，需要再次发布才会更新博客。</p></aside>
-    <aside id="outline" class="drawer" hidden><div class="drawer-title"><h2>文章目录</h2><button data-close="outline" aria-label="关闭文章目录">×</button></div><nav id="outline-list"></nav></aside>
+    <aside id="outline" class="drawer outline-drawer" hidden><div class="drawer-title"><h2>目录</h2><button data-close="outline" aria-label="关闭目录">×</button></div><nav id="outline-list"></nav></aside>
+    <div id="writing-scroll"><div class="paper">
+      <textarea id="title" aria-label="文章标题" placeholder="无标题" maxlength="200" rows="1"></textarea>
+      <div class="paper-meta"><button id="article-series">＋ 加入系列</button><span id="word-count"></span><span id="mode-label" class="mode-label"></span></div>
+      <div id="article-taxonomy" aria-label="文章分类和标签"></div>
+      <p id="compatibility" hidden></p>
+      <div id="rich-editor"></div><div id="source-editor" hidden></div>
+    </div></div>
+    <aside id="settings" class="drawer properties" hidden aria-label="文章属性"><div class="drawer-title"><h2>文章属性</h2><button data-close="settings" aria-label="收起文章属性">×</button></div>
+      <section class="drawer-group"><h3>基本</h3><div class="field-row"><label>日期<input id="date" type="date"></label><label>类型<select id="kind"><option value="">自动</option><option value="study">学习</option><option value="life">日常</option><option value="moment">碎碎念</option></select></label></div><label>主题<input id="topic" placeholder="留空时用系列或分类名，例如：日语" maxlength="40" autocomplete="off"></label><p class="field-help">类型决定它出现在首页「学习 / 日常」还是「碎碎念」里。</p></section>
+      <section class="drawer-group"><h3>整理</h3><label>分类<input id="categories" placeholder="例如：学习笔记" autocomplete="off"></label><label>标签<input id="tags" placeholder="例如：日语，听力" autocomplete="off"></label><p class="taxonomy-help field-help">可选已有名称，也可直接输入新名称；多个名称用逗号分隔。</p><h3 class="sub">所属系列</h3><div id="membership"></div><button id="article-new-series" class="text-button">＋ 新建系列</button></section>
+      <section class="drawer-group"><h3>链接与摘要</h3><label>链接名<span class="link-field"><input id="link" placeholder="例如 japanese-day-1" maxlength="80" autocomplete="off" spellcheck="false" inputmode="url" pattern="[a-z0-9]+(-[a-z0-9]+)*"><button id="link-suggest" type="button" title="根据标题里的英文和数字生成">生成</button></span></label><p id="link-preview" class="field-help link-preview"></p><label>摘要<textarea id="summary" rows="4" maxlength="500" placeholder="留空会自动摘取正文"></textarea></label><p id="summary-count" class="field-help"></p></section>
+      <p class="muted drawer-note">自动保存的是本机内容。修改已发布文章后，需要再次发布才会更新博客。</p>
+    </aside>
   </section>
   <section id="private-panel" hidden><iframe id="private-frame" title="加密私人手记"></iframe></section>
-  <footer id="publication-status" role="status" aria-live="polite"></footer>
 </main>
+<footer id="publication-status" role="status" aria-live="polite"></footer>
+<dialog id="palette" aria-label="搜索文章和命令"><div class="palette-search"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><input id="palette-input" placeholder="搜索文章，或输入命令…" autocomplete="off" spellcheck="false" aria-controls="palette-list"></div><div id="palette-list" role="listbox"></div><p class="palette-hint"><kbd>↑</kbd><kbd>↓</kbd> 选择　<kbd>Enter</kbd> 打开　<kbd>Esc</kbd> 关闭</p></dialog>
 <dialog id="form-dialog"><form id="dialog-form"><div class="dialog-heading"><h2 id="dialog-title"></h2><button type="button" data-dialog-close="form-dialog" aria-label="关闭">×</button></div><div id="dialog-fields"></div><p id="dialog-error" role="alert"></p><footer><button type="button" id="dialog-extra" hidden></button><button type="submit" id="dialog-submit" class="primary">保存</button></footer></form></dialog>
 <dialog id="template-dialog"><div class="dialog-heading"><div><h2>从模板开始</h2><p class="muted">选择一张空白的框架，再写自己的内容。</p></div><button data-dialog-close="template-dialog" aria-label="关闭模板">×</button></div><div id="template-list"></div><footer><button id="template-new">＋ 新建模板</button></footer></dialog>
 <dialog id="review"><div class="dialog-heading"><h2 id="review-heading">发布这次内容</h2><button data-dialog-close="review" aria-label="关闭发布预览">×</button></div><h3 id="review-title"></h3><p id="review-summary"></p><p id="review-meta" class="muted"></p><div id="review-tips"></div><div id="review-changes"></div><p id="review-error" class="danger" role="alert"></p><p>操作开始后可以继续写。之后的修改会留在本机，等下次发布。</p><footer><button data-dialog-close="review">再看看</button><button id="review-confirm" class="primary">确认发布</button></footer></dialog>
@@ -62,14 +106,21 @@
 <dialog id="images-dialog"><div class="dialog-heading"><h2>文章配图</h2><button data-dialog-close="images-dialog" aria-label="关闭文章配图">×</button></div><div id="images-list"></div><footer><button data-dialog-close="images-dialog">取消</button><button id="images-save" class="primary">保存配图修改</button></footer></dialog>
 <dialog id="history-dialog"><div class="dialog-heading"><div><h2>历史版本</h2><p class="muted">恢复标题、摘要和正文；当前内容会先保留，线上文章不会自动更新。</p></div><button data-dialog-close="history-dialog" aria-label="关闭历史版本">×</button></div><div class="history-layout"><nav id="history-list" aria-label="历史版本列表"></nav><div class="history-detail"><p id="history-summary"></p><div class="history-comparison"><section><h3>当前内容</h3><pre id="history-current"></pre></section><section><h3>所选版本</h3><pre id="history-selected"></pre></section></div></div></div><p id="history-error" class="danger" role="alert"></p><footer><button data-dialog-close="history-dialog">关闭</button><button id="history-restore" class="primary" disabled>恢复这个版本</button></footer></dialog>
 <dialog id="preview-dialog"><div class="dialog-heading"><h2>阅读预览</h2><button data-dialog-close="preview-dialog" aria-label="关闭阅读预览">×</button></div><iframe id="preview" title="文章阅读预览" sandbox="allow-same-origin"></iframe></dialog>
-<dialog id="shortcuts-dialog"><div class="dialog-heading"><h2>快捷键</h2><button data-dialog-close="shortcuts-dialog" aria-label="关闭快捷键">×</button></div><dl class="shortcut-list">
-<div><dt><kbd>Ctrl</kbd>+<kbd>S</kbd></dt><dd>立即保存（平时也会自动保存）</dd></div>
+<dialog id="shortcuts-dialog"><div class="dialog-heading"><h2>快捷键</h2><button data-dialog-close="shortcuts-dialog" aria-label="关闭快捷键">×</button></div>
+<h3 class="shortcut-group">写作台</h3><dl class="shortcut-list">
+<div><dt><kbd>Ctrl</kbd> <kbd>K</kbd></dt><dd>搜索文章、执行命令</dd></div>
+<div><dt><kbd>Ctrl</kbd> <kbd>S</kbd></dt><dd>立即保存（平时也会自动保存）</dd></div>
+<div><dt><kbd>Ctrl</kbd> <kbd>/</kbd></dt><dd>在排版和 Markdown 源码之间切换</dd></div>
+<div><dt><kbd>Ctrl</kbd> <kbd>,</kbd></dt><dd>展开或收起文章属性</dd></div>
 <div><dt><kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>N</kbd></dt><dd>新建文章</dd></div>
-<div><dt><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd></dt><dd>进入或退出专注写作</dd></div>
-<div><dt><kbd>Esc</kbd></dt><dd>退出专注写作、关闭面板</dd></div>
-<div><dt><kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>B</kbd></dt><dd>展开或收起资料库</dd></div>
-<div><dt><kbd>Ctrl</kbd> <kbd>,</kbd></dt><dd>打开文章设置</dd></div>
-<div><dt><kbd>Ctrl</kbd>+<kbd>/</kbd></dt><dd>显示这张快捷键表</dd></div>
+<div><dt><kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>B</kbd></dt><dd>快速切换文章</dd></div>
+<div><dt><kbd>Esc</kbd></dt><dd>关闭弹出的面板</dd></div>
+</dl>
+<h3 class="shortcut-group">排版编辑</h3><dl class="shortcut-list">
+<div><dt><kbd>/</kbd> 或 <kbd>・</kbd></dt><dd>在空行输入，插入标题、表格、生词表、注音、图片…</dd></div>
+<div><dt><kbd>#</kbd> <kbd>空格</kbd></dt><dd>标题；<kbd>-</kbd> 列表，<kbd>&gt;</kbd> 引用，<kbd>```</kbd> 代码块</dd></div>
+<div><dt><kbd>Ctrl</kbd> <kbd>B</kbd> / <kbd>I</kbd></dt><dd>加粗 / 斜体；选中文字也会出现格式工具条</dd></div>
+<div><dt><code>[漢字]{かんじ}</code></dt><dd>注音（振り仮名）；点击注音可修改</dd></div>
+<div><dt><code>$x^2$</code></dt><dd>行内公式；<code>$$</code> 回车为公式块</dd></div>
 </dl><p class="muted">Mac 上用 <kbd>⌘</kbd> 代替 <kbd>Ctrl</kbd>。</p></dialog>
-<button id="focus-exit" hidden title="退出专注 · Esc">退出专注</button>
 </body></html>

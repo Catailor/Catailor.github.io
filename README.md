@@ -25,7 +25,7 @@ npm run private     # 本机编写加密的私人手记
 
 | 想改什么 | 文件 |
 | --- | --- |
-| 文章标题、摘要、类型、主题、封面、精选、链接 | 文章开头的 front matter（写作台「文章设置」可改） |
+| 文章标题、摘要、类型、主题、封面、精选、链接 | 文章开头的 front matter（写作台「文章属性」可改） |
 | 留言区开关、旧版文章补充设置 | `source/_data/moonlit.yml` |
 | 系列、专题、友链、碎碎念 | `source/_data/notebook.yml`（写作台「我的系列」可改） |
 | 首页 / 导航 / 页脚 / 文章页布局 | `layout/moonlit/*.pug` |
