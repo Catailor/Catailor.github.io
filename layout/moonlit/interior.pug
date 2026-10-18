@@ -22,7 +22,10 @@ html(lang=config.language data-theme=theme.display_mode)
             .sticky_layout
               - page.toc_number = false
               include ../../node_modules/hexo-theme-butterfly/layout/includes/widget/card_post_toc.pug
-      include footer.pug
+      footer#footer.letter-footer
+        a(href=url_for('/about/')) ☾ Catailor
+        span= ' · ' + date(Date.now(), 'YYYY')
+        a(href=url_for('/archives/')) 翻阅旧时光 ↗
     include ../../node_modules/hexo-theme-butterfly/layout/includes/rightside.pug
     if isLetterPost && showToc
       button.letter-mobile-toc(type='button' data-toc-toggle aria-expanded='false' aria-controls='aside-content' hidden) 目录

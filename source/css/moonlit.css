@@ -1,184 +1,218 @@
-/* Moonlit — modern, quiet tokens and the homepage.
-   Interior pages: letter.css (structure) + moonlight.css (loaded last, modern overrides). */
+/* Moonlit: shared colors, with the homepage layout scoped to .moonlit-home. */
 :root {
-  --moon-paper: #fbfbfc; --moon-panel: #ffffff; --moon-text: #17171c; --moon-muted: #6b6b78;
-  --moon-line: #e9e9ee; --moon-accent: #6a58d0; --moon-ink: #5845c4; --moon-soft: #f3f2f8;
-  --moon-gold: var(--moon-accent); --moon-glow: #6a58d01f;
-  --moon-shadow: 0 1px 2px #1a1a2a0a; --moon-shadow-lift: 0 10px 30px #1a1a2a12;
-  --moon-radius: 16px; --moon-motion: 180ms; --moon-ease: cubic-bezier(.2, .7, .2, 1);
-  --moon-sans: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'HarmonyOS Sans SC', MiSans, 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
-  --moon-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
-  --letter-serif: var(--moon-sans); --moon-latin: var(--moon-sans);
+  --moon-paper: #f5f3f8; --moon-panel: #fff; --moon-text: #343243;
+  --moon-muted: #787184; --moon-line: #e7e1ee; --moon-accent: #81709d;
+  --moon-ink: #67557f; --moon-soft: #eee8f4; --moon-shadow: 0 10px 32px #44345208;
   --global-bg: var(--moon-paper); --card-bg: var(--moon-panel);
   --font-color: var(--moon-text); --text-highlight-color: var(--moon-text);
-  --btn-bg: var(--moon-text); --btn-hover-color: var(--moon-accent);
-  --scrollbar-color: #c9c9d3; --hr-border: var(--moon-line);
+  --btn-bg: var(--moon-accent); --btn-hover-color: #a08ab9;
+  --scrollbar-color: #b8a9c8; --hr-border: var(--moon-line);
   --light-grey: var(--moon-muted); --card-meta: var(--moon-muted);
 }
 [data-theme='dark'] {
   color-scheme: dark;
-  --moon-paper: #0d0d10; --moon-panel: #141418; --moon-text: #ededf2; --moon-muted: #9d9daa;
-  --moon-line: #25252c; --moon-accent: #a596ff; --moon-ink: #b6aaff; --moon-soft: #1b1b22;
-  --moon-glow: #a596ff26;
-  --moon-shadow: 0 1px 2px #00000040; --moon-shadow-lift: 0 10px 30px #00000066;
+  --moon-paper: #171923; --moon-panel: #232632; --moon-text: #ede9f3;
+  --moon-muted: #b9b1c7; --moon-line: #3b354a; --moon-accent: #a28cbf;
+  --moon-ink: #c2acd9; --moon-soft: #343043; --moon-shadow: 0 10px 32px #00000016;
   --global-bg: var(--moon-paper); --card-bg: var(--moon-panel);
   --font-color: var(--moon-text); --text-highlight-color: var(--moon-text);
-  --btn-bg: var(--moon-text); --light-grey: var(--moon-muted); --card-meta: var(--moon-muted);
-  --scrollbar-color: #3a3a44;
+  --btn-bg: var(--moon-accent); --light-grey: var(--moon-muted); --card-meta: var(--moon-muted);
 }
-html { scroll-behavior: smooth; scroll-padding-top: 84px; }
-body { background: var(--moon-paper); color: var(--moon-text); font-family: var(--moon-sans); -webkit-font-smoothing: antialiased; }
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+body { background: var(--moon-paper); color: var(--moon-text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; }
 button, a { -webkit-tap-highlight-color: transparent; }
-a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--moon-accent); outline-offset: 3px; border-radius: 6px; }
-::selection { background: color-mix(in srgb, var(--moon-accent) 26%, transparent); }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.moonlit-skip { position: fixed; top: -80px; left: 20px; padding: 10px 18px; z-index: 1000; background: var(--moon-text); color: var(--moon-paper); border-radius: 10px; }
-.moonlit-skip:focus { top: 12px; }
-.moon-icon { display: inline-block; flex-shrink: 0; vertical-align: -.2em; }
-#rightside > div > button, #rightside > div > a { border-radius: 10px; background: var(--moon-text); color: var(--moon-paper); }
-#page-header.not-top-img { background: var(--moon-paper); }
-.layout > div:first-child:not(.recent-posts), #aside-content .card-widget { border: 1px solid var(--moon-line); border-radius: var(--moon-radius); box-shadow: none; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--moon-ink); outline-offset: 5px; }
+::selection { background: #b4a0ca66; }
+#nav { gap: 24px; }
+#nav #blog-info { min-width: 150px; }
+#nav .site-page { font-size: 14px; }
+#nav .site-page:not(.child):after { background-color: var(--moon-accent); }
+#nav .moonlit-theme { margin-left: 20px; }
+.moonlit-theme { display: inline-grid; place-items: center; width: 35px; height: 35px; padding: 0; border: 1px solid #a798bd50; border-radius: 50%; background: #ffffff24; color: inherit; cursor: pointer; font-size: 23px; vertical-align: middle; transition: background .2s, transform .2s; }
+.moonlit-theme:hover { background: #b8a2cf30; transform: rotate(-12deg); }
+#page-header:not(.moonlit-hero) { background-color: #756489; }
+#page-header.not-top-img { background: var(--moon-panel); }
+#page-header.not-top-img #nav { box-shadow: 0 1px 0 var(--moon-line); }
+:root #page-header.nav-fixed > #nav, :root #page-header.not-top-img > #nav { background: var(--moon-panel); color: var(--moon-text); box-shadow: 0 1px 0 var(--moon-line); }
+#page-header:not(.moonlit-hero) #post-info .post-title { font-weight: 600; }
+.layout > div:first-child:not(.recent-posts), #aside-content .card-widget { border: 1px solid var(--moon-line); border-radius: 18px; box-shadow: var(--moon-shadow); }
+#article-container { font-size: 16px; line-height: 2; }
 #article-container a { color: var(--moon-ink); }
 #article-container blockquote { border-left-color: var(--moon-accent); background: var(--moon-soft); color: var(--moon-muted); }
+#article-container h1, #article-container h2, #article-container h3 { color: var(--moon-text); }
+#aside-content .card-info .author-info__name { font-size: 21px; }
+#aside-content .card-info #card-info-btn { background: var(--moon-soft); color: var(--moon-ink); border-radius: 9px; }
 #footer { background: transparent; color: var(--moon-muted); }
-#footer:before { content: none; }
+#footer:before { background: transparent; }
+#footer-wrap { color: var(--moon-muted); font-size: 12px; line-height: 2; }
+#footer-wrap a { color: var(--moon-ink); }
+#rightside > div > button, #rightside > div > a { border-radius: 9px; background: var(--moon-accent); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.moonlit-skip { position: fixed; top: -80px; left: 20px; padding: 10px 20px; z-index: 1000; background: var(--moon-panel); color: var(--moon-ink); border-radius: 8px; }
+.moonlit-skip:focus { top: 12px; }
 
-/* ---------- Navigation (shared by every page) ---------- */
-.moonlit-interior #page-header { height: 68px; background: transparent; }
-.moonlit-home #page-header::before { content: none; }
-.moonlit-interior #nav, .moonlit-home #page-header.nav-fixed #nav { height: 68px; padding: 0 max(28px, calc((100% - 1120px) / 2)); background: color-mix(in srgb, var(--moon-paper) 82%, transparent); color: var(--moon-text); box-shadow: none; text-shadow: none; overflow: visible; backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); }
-.moonlit-home #nav a { color: inherit; }
-.moonlit-home #menus { display: flex !important; }
-#page-header.nav-fixed #nav { box-shadow: 0 1px 0 var(--moon-line) !important; background: color-mix(in srgb, var(--moon-paper) 82%, transparent) !important; }
-#nav { gap: 24px; }
-#nav .nav-site-title { display: inline-flex; align-items: center; gap: 9px; }
-#nav .site-name { font: 650 18px/1 var(--moon-sans) !important; letter-spacing: -.01em; }
-.moonlit-brand-moon { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--moon-text); color: var(--moon-paper); }
-.moonlit-brand-moon .moon-icon { width: 16px; height: 16px; }
-.moonlit-links { display: flex; gap: 4px; align-items: center; font-size: 14px; letter-spacing: 0; }
-.moonlit-links > a, .letter-explore summary { position: relative; display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 8px; color: var(--moon-muted) !important; transition: color var(--moon-motion), background var(--moon-motion); }
-.moonlit-links > a:hover, .letter-explore summary:hover { color: var(--moon-text) !important; background: var(--moon-soft); }
-.moonlit-links > a.is-current { color: var(--moon-text) !important; font-weight: 600; }
-.moonlit-links > a:after { content: none !important; }
-.moonlit-nav-search span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.moonlit-theme { position: relative; display: inline-grid; place-items: center; width: 36px; height: 36px; margin-left: 6px; padding: 0; border: 1px solid var(--moon-line); border-radius: 10px; background: var(--moon-panel); color: var(--moon-text); cursor: pointer; transition: background var(--moon-motion), border-color var(--moon-motion); }
-.moonlit-theme:hover { background: var(--moon-soft); }
-.moonlit-theme .moon-icon { grid-area: 1 / 1; transition: opacity var(--moon-motion), transform var(--moon-motion); }
-.moonlit-theme .moon-icon-sun { opacity: 0; transform: scale(.6) rotate(-40deg); }
-[data-theme='dark'] .moonlit-theme .moon-icon-sun { opacity: 1; transform: none; }
-[data-theme='dark'] .moonlit-theme .moon-icon-moon { opacity: 0; transform: scale(.6) rotate(40deg); }
-
-/* ---------- Homepage ---------- */
-/* Full-screen moonlit scene with a soft gradient wash (kept from the original design). */
-.moonlit-home #page-header.moonlit-hero { position: relative; height: 100vh; height: 100svh; min-height: 480px; background: #c9c8e3; isolation: isolate; overflow: hidden; }
-.moonlit-home #page-header.moonlit-hero.nav-fixed { z-index: 200; overflow: visible; }
+/* The illustration stays bright on the left, with a quiet reading area on the right. */
+.moonlit-home #page-header.moonlit-hero { height: 530px; min-height: 460px; background: #c4c5e1; isolation: isolate; overflow: hidden; }
+/* Lift the hero's stacking context too: its fixed nav cannot escape isolation. */
+.moonlit-home #page-header.moonlit-hero.nav-fixed { z-index: 200; }
 .moonlit-home #page-header:before { content: none; }
-.moonlit-home #nav { position: absolute; top: 0; height: 76px; padding: 0 max(28px, calc((100% - 1120px) / 2)); background: transparent; box-shadow: none; color: var(--moon-text); text-shadow: none; }
-.moonlit-home #page-header.nav-fixed #nav { height: 62px; }
-.moonlit-home #hide-aside-btn { display: none; }
 .moonlit-scene, .moonlit-wash, .moonlit-stars { position: absolute; inset: 0; pointer-events: none; }
-.moonlit-scene { inset: -18px; background: url('/img/moonlit/hero.webp') 28% 32% / cover; transform: translate3d(var(--scene-x, 0px), var(--scene-y, 0px), 0) scale(1.03); transition: transform .8s ease-out; }
-.moonlit-wash { background:
-  linear-gradient(0deg, var(--moon-paper) 0, color-mix(in srgb, var(--moon-paper) 70%, transparent) 9%, transparent 30%),
-  linear-gradient(90deg, transparent 22%, color-mix(in srgb, var(--moon-paper) 40%, transparent) 46%, color-mix(in srgb, var(--moon-paper) 88%, transparent) 64%, color-mix(in srgb, var(--moon-paper) 94%, transparent)); }
-[data-theme='dark'] .moonlit-scene { filter: brightness(.62) saturate(.78) hue-rotate(-8deg); }
-.moonlit-stars span { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff9e5; box-shadow: 0 0 10px 3px #fff5d766; opacity: .5; animation: moonlit-twinkle 7s ease-in-out infinite; }
-.moonlit-stars span:nth-child(1) { left: 9%; top: 26%; } .moonlit-stars span:nth-child(2) { left: 38%; top: 21%; animation-delay: .8s; }
-.moonlit-stars span:nth-child(3) { left: 28%; top: 60%; animation-delay: 1.7s; } .moonlit-stars span:nth-child(4) { left: 47%; top: 41%; animation-delay: 2.3s; }
-.moonlit-stars span:nth-child(5) { left: 17%; top: 74%; animation-delay: 1.1s; } .moonlit-stars span:nth-child(6) { left: 56%; top: 15%; animation-delay: 2.9s; }
-.moonlit-stars span:nth-child(7) { left: 72%; top: 12%; animation-delay: 3.6s; } .moonlit-stars span:nth-child(8) { left: 88%; top: 30%; animation-delay: 4.4s; }
-@keyframes moonlit-twinkle { 0%, 100% { opacity: .2; transform: scale(.6); } 50% { opacity: .9; transform: scale(1.35); } }
-.moonlit-sr-only { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
-.moonlit-scroll { position: absolute; left: 50%; bottom: 30px; z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; margin-left: -22px; border-radius: 50%; color: var(--moon-text) !important; opacity: .55; transition: opacity var(--moon-motion); animation: moonlit-bob 2.6s ease-in-out infinite; }
-.moonlit-scroll:hover, .moonlit-scroll:focus-visible { opacity: 1; }
-@keyframes moonlit-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+.moonlit-scene { inset: -18px; background: url('/img/moonlit/hero.webp') center 30% / cover; transform: translate3d(var(--scene-x, 0px), var(--scene-y, 0px), 0) scale(1.025); transition: transform .8s ease-out; }
+.moonlit-wash { background: linear-gradient(0deg, var(--moon-paper), transparent 28%), linear-gradient(90deg, #eeedf500 15%, #eeedf520 42%, #eeedf5d4 66%, #eeedf5e8); }
+[data-theme='dark'] .moonlit-wash { background: linear-gradient(0deg, var(--moon-paper), transparent 35%), linear-gradient(90deg, #17192330, #17192350 38%, #171923bf 65%, #171923d9); }
+[data-theme='dark'] .moonlit-scene { filter: brightness(.72) saturate(.8); }
+.moonlit-home #nav { position: absolute; top: 0; height: 82px; padding: 0 max(44px, calc((100% - 1160px) / 2)); background: transparent; box-shadow: none; color: var(--moon-text); text-shadow: none; }
+.moonlit-home #nav a { color: inherit; }
+.moonlit-home #nav .site-name { font-family: Georgia, serif; font-size: 24px; font-weight: 500; letter-spacing: .3px; }
+.moonlit-brand-moon { margin-right: 9px; font-size: 30px; vertical-align: -2px; }
+.moonlit-links { display: flex; gap: 30px; align-items: center; font-size: 14px; letter-spacing: 1px; }
+.moonlit-links > a { position: relative; padding: 6px 0; }
+.moonlit-links > a:after { position: absolute; content: ''; left: 50%; right: 50%; bottom: 0; height: 2px; border-radius: 2px; background: var(--moon-ink); transition: left .2s, right .2s; }
+.moonlit-links > a:hover:after, .moonlit-links > a.is-current:after { left: 15%; right: 15%; }
+.moonlit-home #nav .moonlit-theme { margin: 0; }
+.moonlit-home #page-header.nav-fixed #nav { height: 60px; }
+.moonlit-home #hide-aside-btn { display: none; }
+.moonlit-hero-inner { position: relative; display: flex; align-items: center; width: min(1160px, calc(100% - 88px)); height: 100%; margin: auto; padding: 74px 0 22px; }
+.moonlit-hero-copy { width: 46%; margin-left: auto; padding-left: 28px; }
+.moonlit-eyebrow { margin: 0; color: var(--moon-ink); font-size: 10px; font-weight: 600; letter-spacing: 3px; line-height: 1.8; }
+.moonlit-hero-copy h1 { margin: 17px 0 17px; color: var(--moon-text); font-family: 'Noto Serif SC', 'Songti SC', SimSun, serif; font-size: clamp(34px, 3.4vw, 48px); font-weight: 500; line-height: 1.55; letter-spacing: 4px; }
+.moonlit-intro { margin: 0 0 29px; color: var(--moon-muted); font-size: 14px; letter-spacing: .6px; }
+.moonlit-hero-link { display: inline-flex; gap: 35px; align-items: center; padding-bottom: 7px; border-bottom: 1px solid #81709d70; color: var(--moon-ink); font-size: 13px; letter-spacing: 1px; }
+.moonlit-hero-link span { display: inline-block; transition: transform .2s; }
+.moonlit-hero-link:hover span { transform: translateY(4px); }
+.moonlit-hero-caption { position: absolute; bottom: 28px; left: max(44px, calc((100% - 1160px) / 2)); color: var(--moon-ink); opacity: .65; font-size: 9px; letter-spacing: 2px; }
+.moonlit-stars span { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #fff9e5; box-shadow: 0 0 12px 3px #fff5d755; opacity: .55; animation: moonlit-twinkle 6s ease-in-out 2; }
+.moonlit-stars span:nth-child(1) { left: 10%; top: 29%; }
+.moonlit-stars span:nth-child(2) { left: 39%; top: 23%; animation-delay: .7s; }
+.moonlit-stars span:nth-child(3) { left: 29%; top: 63%; animation-delay: 1.6s; }
+.moonlit-stars span:nth-child(4) { left: 48%; top: 43%; animation-delay: 2.1s; }
+.moonlit-stars span:nth-child(5) { left: 19%; top: 77%; animation-delay: 1s; }
+.moonlit-stars span:nth-child(6) { left: 55%; top: 16%; animation-delay: 2.6s; }
+@keyframes moonlit-twinkle { 0%, 100% { opacity: .3; transform: scale(.6); } 50% { opacity: .9; transform: scale(1.3); } }
 
-.moonlit-home #content-inner.moonlit-main { display: block; width: min(1120px, calc(100% - 56px)); max-width: none; margin: 0 auto; padding: 56px 0 24px; }
-.moonlit-section { padding: 0 0 64px; }
-.moonlit-section-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0 0 18px; }
-.moonlit-section-head h2 { margin: 0; padding: 0; color: var(--moon-text); font: 650 20px/1.4 var(--moon-sans); letter-spacing: -.01em; }
-.moonlit-section-head h2:before { content: none !important; }
-.moonlit-head-link { display: inline-flex; align-items: center; gap: 4px; color: var(--moon-muted) !important; font-size: 14px; }
-.moonlit-head-link:hover { color: var(--moon-text) !important; }
+/* Notebook */
+.moonlit-home #content-inner.moonlit-layout { display: block; max-width: 1248px; padding: 0 44px 24px; margin: 0 auto; }
+.moonlit-columns { display: grid; grid-template-columns: minmax(0, 1fr) 252px; gap: 32px; align-items: start; }
+.moonlit-section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+.moonlit-section-head h2 { margin: 3px 0 0; color: var(--moon-text); font-size: 23px; font-weight: 500; letter-spacing: 2px; }
+.moonlit-filters { display: flex; padding: 4px; gap: 4px; background: var(--moon-soft); border-radius: 25px; }
+.moonlit-filters button { padding: 5px 15px; border: 0; border-radius: 20px; color: var(--moon-muted); background: transparent; font: inherit; font-size: 12px; cursor: pointer; transition: background .2s, color .2s; }
+.moonlit-filters button.is-active { background: var(--moon-panel); color: var(--moon-ink); box-shadow: 0 2px 6px #4331510a; }
+.moonlit-home #recent-posts.moonlit-posts { width: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.moonlit-card { overflow: hidden; border: 1px solid var(--moon-line); border-radius: 18px; background: var(--moon-panel); box-shadow: var(--moon-shadow); transition: transform .3s ease, box-shadow .3s ease; }
+.moonlit-card:hover { transform: translateY(-5px); box-shadow: 0 16px 35px #4f3c7313; }
+.moonlit-card a { color: inherit; }
+.moonlit-cover { position: relative; display: block; overflow: hidden; aspect-ratio: 2 / 1; background: var(--moon-soft); }
+.moonlit-cover img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .65s ease, filter .3s; }
+.moonlit-card:hover .moonlit-cover img { transform: scale(1.055); }
+[data-theme='dark'] .moonlit-cover img { filter: brightness(.8) saturate(.85); }
+.moonlit-cover-badge { position: absolute; top: 16px; left: 16px; padding: 3px 11px; background: #fbf8ffe0; color: #67557f; border: 1px solid #fff8; border-radius: 20px; font-size: 10px; letter-spacing: 1px; backdrop-filter: blur(8px); }
+.moonlit-card-copy { display: flex; flex-direction: column; padding: 23px 25px 21px; }
+.moonlit-meta { display: flex; gap: 12px; justify-content: space-between; align-items: center; font-size: 11px; color: var(--moon-muted); }
+.moonlit-topic { color: var(--moon-ink); }
+.moonlit-card h3 { margin: 12px 0 9px; font-size: 18px; line-height: 1.65; font-weight: 600; color: var(--moon-text); }
+.moonlit-card h3 a:hover { color: var(--moon-ink); }
+.moonlit-card p { margin: 0 0 19px; color: var(--moon-muted); font-size: 13px; line-height: 1.9; }
+.moonlit-card .moonlit-read { display: flex; justify-content: space-between; align-items: center; margin-top: auto; color: var(--moon-ink); font-size: 11px; letter-spacing: 1px; }
+.moonlit-read span { font-size: 17px; transition: transform .2s; }
+.moonlit-read:hover span { transform: translate(2px, -2px); }
+.moonlit-featured { grid-column: 1 / -1; display: grid; grid-template-columns: 44% 56%; min-height: 270px; }
+.moonlit-featured .moonlit-cover { height: 100%; aspect-ratio: auto; }
+.moonlit-featured .moonlit-card-copy { padding: 28px; }
+.moonlit-featured h3 { font-size: 22px; }
+.moonlit-more { display: block; margin: 28px auto 10px; padding: 9px 30px; border: 1px solid var(--moon-line); border-radius: 25px; color: var(--moon-ink); background: var(--moon-panel); font-size: 12px; letter-spacing: 2px; cursor: pointer; transition: border-color .2s, transform .2s; }
+.moonlit-more:hover { border-color: var(--moon-accent); transform: translateY(-2px); }
+.moonlit-enter { animation: moonlit-enter .5s ease both; }
+@keyframes moonlit-enter { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+.moonlit-home [hidden] { display: none !important; }
 
-.moonlit-filters { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--moon-line); border-radius: 11px; background: var(--moon-panel); }
-.moonlit-filters[hidden] { display: none; }
-.moonlit-filters button { padding: 5px 12px; border: 0; border-radius: 8px; background: transparent; color: var(--moon-muted); font: 500 13px/1.4 var(--moon-sans); cursor: pointer; transition: background var(--moon-motion), color var(--moon-motion); }
-.moonlit-filters button:hover { color: var(--moon-text); }
-.moonlit-filters button.is-active { background: var(--moon-text); color: var(--moon-paper); }
+/* A quiet personal corner */
+.moonlit-home #aside-content.moonlit-aside { width: auto; padding: 0; }
+.moonlit-profile { position: relative; overflow: hidden; padding: 0 24px 23px; border: 1px solid var(--moon-line); border-radius: 18px; background: var(--moon-panel); text-align: center; box-shadow: var(--moon-shadow); }
+.moonlit-profile-top { height: 73px; margin: 0 -24px; background: linear-gradient(125deg, #e3deef, #eae5f0 55%, #d5dcec); }
+[data-theme='dark'] .moonlit-profile-top { background: linear-gradient(125deg, #433c58, #363245 55%, #3b4456); }
+.moonlit-avatar { position: relative; display: block; width: 84px; height: 84px; margin: -40px auto 12px; border: 5px solid var(--moon-panel); border-radius: 50%; object-fit: cover; }
+.moonlit-profile-name { margin: 0; color: var(--moon-text); font-family: Georgia, serif; font-size: 25px; letter-spacing: .5px; line-height: 1.5; }
+.moonlit-profile-en { margin: 6px -10px 17px; color: var(--moon-muted); font-size: 8px; letter-spacing: 1.3px; }
+.moonlit-profile-bio { margin: 0 0 22px; color: var(--moon-muted); font-size: 12px; line-height: 2; }
+.moonlit-stats { display: grid; grid-template-columns: repeat(3, 1fr); margin-bottom: 22px; }
+.moonlit-stats a { display: flex; flex-direction: column; gap: 3px; color: var(--moon-muted); font-size: 10px; line-height: 1.5; }
+.moonlit-stats a + a { border-left: 1px solid var(--moon-line); }
+.moonlit-stats strong { color: var(--moon-text); font-family: Georgia, serif; font-size: 23px; font-weight: 400; }
+.moonlit-stats a:hover strong { color: var(--moon-ink); }
+.moonlit-github { display: flex; justify-content: center; align-items: center; gap: 14px; padding: 7px; border-radius: 8px; background: var(--moon-soft); color: var(--moon-ink); font-size: 12px; }
+.moonlit-github:hover { background: var(--moon-ink); color: var(--moon-panel); }
+.moonlit-margin-note { margin-top: 22px; padding: 25px; border: 1px solid var(--moon-line); border-radius: 16px; background: linear-gradient(140deg, var(--moon-soft), var(--moon-paper)); }
+.moonlit-margin-note .moonlit-eyebrow { font-size: 8px; letter-spacing: 2px; }
+.moonlit-margin-note h3 { margin: 9px 0 14px; color: var(--moon-ink); font-size: 14px; font-weight: 500; letter-spacing: 2px; }
+.moonlit-margin-note p { color: var(--moon-muted); font-family: 'Songti SC', SimSun, serif; font-size: 14px; line-height: 2; }
+.moonlit-signature { display: block; text-align: right; color: var(--moon-ink); font: italic 12px Georgia, serif; }
+.moonlit-aside-bottom { padding: 22px 0; text-align: center; color: var(--moon-muted); font-size: 10px; letter-spacing: 1px; }
+.moonlit-home #footer { margin: 35px auto 0; max-width: 1160px; border-top: 1px solid var(--moon-line); }
+.moonlit-home #footer-wrap { padding: 28px 20px; }
 
-.moonlit-featured { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); overflow: hidden; border: 1px solid var(--moon-line); border-radius: 20px; background: var(--moon-panel); transition: border-color var(--moon-motion); }
-.moonlit-featured:hover { border-color: color-mix(in srgb, var(--moon-accent) 40%, var(--moon-line)); }
-.moonlit-featured[hidden] { display: none; }
-.moonlit-cover { position: relative; display: block; min-height: 300px; overflow: hidden; }
-.moonlit-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--moon-ease); }
-.moonlit-featured:hover .moonlit-cover img { transform: scale(1.03); }
-.moonlit-cover.letter-art { border-radius: 0; }
-.moonlit-cover.letter-art .letter-art-symbol { right: 28px; top: 14px; font-size: 120px; }
-.moonlit-cover.letter-art .letter-art-topic { left: 26px; bottom: 26px; font-size: 18px; }
-.moonlit-card-copy { display: flex; flex-direction: column; justify-content: center; padding: 36px 40px; }
-.moonlit-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; color: var(--moon-muted); font-size: 13px; }
-.moonlit-topic { display: inline-flex; align-items: center; padding: 2px 9px; border-radius: 6px; background: var(--moon-soft); color: var(--moon-text); font-size: 12px; font-weight: 500; white-space: nowrap; }
-.moonlit-featured h3 { margin: 14px 0 10px; padding: 0; font: 650 26px/1.35 var(--moon-sans); letter-spacing: -.02em; }
-.moonlit-featured h3:before { content: none !important; }
-.moonlit-featured h3 a { color: var(--moon-text) !important; }
-.moonlit-featured p { margin: 0 0 22px; color: var(--moon-muted); font-size: 15px; line-height: 1.8; }
-.moonlit-read { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; color: var(--moon-text) !important; font-size: 14px; font-weight: 600; }
-.moonlit-read .moon-icon { transition: transform var(--moon-motion); }
-.moonlit-read:hover .moon-icon { transform: translateX(3px); }
-
-.moonlit-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--moon-line); }
-.moonlit-row { position: relative; display: grid; grid-template-columns: 104px minmax(0, 1fr) auto; gap: 24px; align-items: baseline; margin: 0 !important; padding: 20px 12px !important; border-bottom: 1px solid var(--moon-line); border-radius: 0; transition: background var(--moon-motion); }
-.moonlit-row:before { content: none !important; }
-.moonlit-row:hover { background: color-mix(in srgb, var(--moon-soft) 70%, transparent); }
-.moonlit-row[hidden] { display: none; }
-.moonlit-row > time { color: var(--moon-muted); font: 13px/1.6 var(--moon-mono); font-variant-numeric: tabular-nums; }
-.moonlit-row h3 { margin: 0; padding: 0; font: 600 17px/1.5 var(--moon-sans); letter-spacing: -.01em; }
-.moonlit-row h3:before { content: none !important; }
-.moonlit-row h3 a { color: var(--moon-text) !important; }
-.moonlit-row h3 a:after { position: absolute; inset: 0; content: ''; }
-.moonlit-row p { margin: 4px 0 0; overflow: hidden; color: var(--moon-muted); font-size: 14px; line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
-.moonlit-row .moonlit-topic { position: relative; z-index: 1; pointer-events: none; }
-.moonlit-notes-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 22px; }
-.moonlit-more { height: 40px; padding: 0 18px; border: 1px solid var(--moon-line); border-radius: 10px; background: var(--moon-panel); color: var(--moon-text); font: 500 14px/1 var(--moon-sans); cursor: pointer; }
-.moonlit-more:hover { background: var(--moon-soft); }
-.moonlit-more[hidden] + .moonlit-head-link { margin-left: auto; }
-.moonlit-enter { animation: moonlit-enter .35s var(--moon-ease) both; }
-@keyframes moonlit-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-
-/* Companion (琪露诺) */
+/* The companion only loads when invited. */
 .moonlit-companion { position: fixed; bottom: 20px; left: 20px; z-index: 100; display: flex; gap: 8px; align-items: center; }
-.moonlit-companion button { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 1px solid var(--moon-line); border-radius: 12px; background: color-mix(in srgb, var(--moon-panel) 86%, transparent); color: var(--moon-accent); box-shadow: var(--moon-shadow-lift); cursor: pointer; backdrop-filter: blur(10px); transition: background var(--moon-motion), transform var(--moon-motion); }
-.moonlit-companion button:hover, .moonlit-companion button:focus-visible { background: var(--moon-soft); transform: rotate(30deg); }
-.moonlit-companion-frame { position: fixed; left: 8px; bottom: 68px; width: 260px; height: 390px; z-index: 99; border: 0; color-scheme: normal; background: transparent; }
+.moonlit-companion button { border: 1px solid var(--moon-line); border-radius: 24px; padding: 9px 15px; background: var(--moon-panel); color: var(--moon-ink); box-shadow: var(--moon-shadow); cursor: pointer; font-size: 12px; }
+.moonlit-companion-status { max-width: 200px; font-size: 12px; color: var(--moon-ink); background: var(--moon-panel); border-radius: 8px; }
+.moonlit-companion-status:not(:empty) { padding: 5px 10px; }
+.moonlit-companion-frame { position: fixed; left: 8px; bottom: 66px; width: 260px; height: 390px; z-index: 99; border: 0; color-scheme: normal; background: transparent; }
 .moonlit-companion-frame[hidden] { display: none; }
+.moonlit-companion button { display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border-radius: 50%; font-size: 20px; background: var(--moon-panel); }
+.moonlit-companion button:hover,.moonlit-companion button:focus-visible { color: var(--moon-text); background: var(--moon-soft); }
+.moonlit-profile-now { margin: 20px 0; padding-top: 18px; border-top: 1px solid var(--moon-line); text-align: left; }
+.moonlit-profile-now h3 { margin: 0 0 8px; color: var(--moon-ink); font-size: 13px; font-weight: 500; }
+.moonlit-profile-now p { margin: 0; color: var(--moon-muted); font-size: 13px; line-height: 1.9; }
+.moonlit-profile-links { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }
+.moonlit-profile-links a { color: var(--moon-ink); padding: 5px 0; }
+.moonlit-profile-links a:hover { color: var(--moon-text); text-decoration: underline; text-underline-offset: 4px; }
 
-@media (max-width: 960px) {
-  .moonlit-featured { grid-template-columns: minmax(0, 1fr); }
-  .moonlit-cover { min-height: 0; aspect-ratio: 16 / 9; }
+@media (min-width: 1600px) { .moonlit-home #page-header.moonlit-hero { height: 600px; } }
+@media (max-width: 1000px) {
+  .moonlit-columns { grid-template-columns: minmax(0, 1fr) 218px; gap: 22px; }
+  .moonlit-links { gap: 20px; }
+  .moonlit-featured { grid-template-columns: 40% 60%; }
+  .moonlit-card-copy, .moonlit-featured .moonlit-card-copy { padding: 20px; }
 }
-@media (max-width: 640px) {
-  .moonlit-home #content-inner.moonlit-main { width: calc(100% - 32px); padding-top: 28px; }
-  .moonlit-scene { inset: 0; background-position: 30% 30%; transform: none; }
-  .moonlit-wash { background: linear-gradient(0deg, var(--moon-paper) 0, color-mix(in srgb, var(--moon-paper) 60%, transparent) 10%, transparent 32%); }
-  .moonlit-scroll { bottom: 22px; }
-  .moonlit-section { padding-bottom: 48px; }
-  .moonlit-section-head { flex-wrap: wrap; }
-  .moonlit-filters { width: 100%; }
-  .moonlit-filters button { flex: 1; }
-  .moonlit-card-copy { padding: 22px 20px 24px; }
-  .moonlit-featured h3 { font-size: 21px; }
-  .moonlit-row { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 16px 4px !important; }
-  .moonlit-row > time { order: 0; font-size: 12px; }
-  .moonlit-row .moonlit-topic { display: none; }
-  .moonlit-row h3 { font-size: 16px; }
-  .moonlit-row p { font-size: 13px; }
-  .moonlit-companion { bottom: 14px; left: 14px; }
-  .moonlit-companion button { width: 36px; height: 36px; border-radius: 11px; }
-  .moonlit-companion-frame { width: 200px; height: 300px; bottom: 58px; }
+@media (max-width: 760px) {
+  .moonlit-home #nav { padding: 0 22px; height: 70px; }
+  .moonlit-links { gap: 16px; }
+  .moonlit-links > a[data-note-nav] { display: none; }
+  .moonlit-hero-inner { width: calc(100% - 44px); }
+  .moonlit-hero-copy { width: 66%; padding: 0; }
+  .moonlit-hero-copy h1 { font-size: 30px; letter-spacing: 2px; }
+  .moonlit-intro { font-size: 12px; }
+  .moonlit-home #content-inner.moonlit-layout { padding: 0 22px 22px; }
+  .moonlit-columns { grid-template-columns: minmax(0, 1fr); }
+  .moonlit-home #aside-content.moonlit-aside { display: none; }
+  .moonlit-hero-caption { left: 22px; font-size: 7px; letter-spacing: 1px; }
+}
+@media (max-width: 480px) {
+  .moonlit-home #recent-posts.moonlit-posts { grid-template-columns: 1fr; }
+  .moonlit-featured { display: block; }
+  .moonlit-featured .moonlit-cover { height: auto; aspect-ratio: 2 / 1; }
+  .moonlit-section-head h2 { font-size: 20px; }
+  .moonlit-filters button { padding: 5px 11px; }
+  .moonlit-companion { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .moonlit-scene { transform: none !important; }
   .moonlit-home *, .moonlit-home *:before, .moonlit-home *:after { animation: none !important; transition: none !important; }
+  .moonlit-scene { transform: none !important; }
+  .moonlit-card:hover, .moonlit-card:hover .moonlit-cover img { transform: none; }
 }
+
+/* A quieter frame with stronger type; homepage card layout stays intact. */
+:root { --moon-text:#2d2938; --moon-muted:#696273; --moon-motion:180ms; --moon-ease:cubic-bezier(.2,.7,.2,1); }
+[data-theme='dark'] { --moon-text:#f0ecf6; --moon-muted:#c0b8ce; }
+.moonlit-home #content-inner.moonlit-layout { position:relative; z-index:1; margin-top:0; }
+.moonlit-profile,.moonlit-japanese { border-color:transparent; }
+.moonlit-section-head h2,.moonlit-japanese-heading h2 { font-weight:600; color:var(--moon-text); }
+.moonlit-card { border-color:transparent; transition:transform var(--moon-motion) var(--moon-ease),box-shadow var(--moon-motion) var(--moon-ease); }
+.moonlit-card:hover { transform:translateY(-2px); box-shadow:0 10px 28px #4f3c7310; }
+.moonlit-card h3 { font-weight:650; }
+.moonlit-cover img { transition:transform 350ms var(--moon-ease),filter var(--moon-motion); }
+.moonlit-card:hover .moonlit-cover img { transform:scale(1.025); }
+.moonlit-theme,.moonlit-filters button,.moonlit-more,.moonlit-companion button { transition:background var(--moon-motion),color var(--moon-motion),border-color var(--moon-motion),transform var(--moon-motion); }
+[data-theme='dark'] .moonlit-card,[data-theme='dark'] .moonlit-profile,[data-theme='dark'] .moonlit-japanese { border-color:var(--moon-line); }
+@media(prefers-reduced-motion:reduce) { .moonlit-card,.moonlit-card:hover,.moonlit-cover img,.moonlit-card:hover .moonlit-cover img { transform:none; transition:none; } }

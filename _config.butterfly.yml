@@ -1076,7 +1076,6 @@ inject:
     - <link rel="stylesheet" href="/css/letter.css">
     - <link rel="stylesheet" href="/css/article-content.css">
     - <link rel="stylesheet" href="/css/moonlight.css">
-    - <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     - <link rel="alternate" type="application/atom+xml" title="月下手记" href="/atom.xml">
     - <script src="/js/theme-clock.js"></script>
   bottom:
