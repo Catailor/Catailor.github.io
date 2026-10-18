@@ -11,6 +11,7 @@
 .letter-menu { position: absolute; right: -20px; top: calc(100% + 12px); min-width: 172px; padding: 10px; border: 1px solid var(--moon-line); border-radius: 15px; background: var(--moon-panel); box-shadow: 0 16px 45px #33234218; z-index: 110; }
 .letter-menu a { display: block; padding: 8px 14px; border-radius: 8px; color: var(--moon-text) !important; font-size: 13px; letter-spacing: .5px; }
 .letter-menu a:hover, .letter-menu a:focus-visible { background: var(--moon-soft); }
+.moonlit-home #nav .moonlit-links { gap: 24px; }
 .moonlit-interior #page-header { height: 76px; background: var(--moon-paper); }
 .moonlit-interior #page-header::before { content: none; }
 .moonlit-interior #nav { height: 76px; padding: 0 max(36px, calc((100% - 1200px) / 2)); background: var(--moon-paper); color: var(--moon-text); box-shadow: none; text-shadow: none; overflow: visible; }
@@ -193,7 +194,7 @@
 @keyframes letter-orbit { from { opacity: 0; transform: translateY(8px) rotate(-30deg); } to { opacity: .4; transform: translateY(0) rotate(-18deg); } }
 .moonlit-interior [hidden] { display: none !important; }
 @media(max-width:1000px) { .moonlit-interior #content-inner > :first-child { padding: 30px; } .moonlit-links { gap: 15px; } .moonlit-interior #nav { padding: 0 25px; } .letter-taxonomy { grid-template-columns: repeat(2,minmax(0,1fr)); } }
-@media(max-width:800px) { .moonlit-interior #post { width: 100%; } .moonlit-interior #aside-content { display: none; } .moonlit-interior #content-inner { padding: 20px 14px; } .letter-post-neighbors { grid-template-columns: 1fr; } .letter-timeline-entry { grid-template-columns: 45px minmax(0,1fr) 18px; gap: 12px; } .letter-timeline-time { display: none; } .letter-reading-dock { bottom: 66px; right: 15px; } .letter-page-heading h1 { font-size: 27px; padding-right: 25px; } .letter-page-orbit { font-size: 45px; } }
+@media(max-width:800px) { .moonlit-interior #post { width: 100%; } .moonlit-interior #aside-content { display: none; } .moonlit-links > a:nth-child(2), .moonlit-links > a:nth-child(3) { display: none; } .moonlit-interior #content-inner { padding: 20px 14px; } .letter-post-neighbors { grid-template-columns: 1fr; } .letter-timeline-entry { grid-template-columns: 45px minmax(0,1fr) 18px; gap: 12px; } .letter-timeline-time { display: none; } .letter-reading-dock { bottom: 66px; right: 15px; } .letter-page-heading h1 { font-size: 27px; padding-right: 25px; } .letter-page-orbit { font-size: 45px; } }
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior: auto; } .letter-reveal, .letter-page-orbit { animation: none; } .letter-reveal { opacity: 1; transform: none; } .letter-timeline-entry, .letter-timeline-arrow, .letter-taxonomy a, .notebook-related, .letter-art-symbol, .moonlit-card, .moonlit-cover img, .moonlit-explore a { transition: none !important; } .moonlit-card:hover, .letter-taxonomy a:hover, .moonlit-card:hover .letter-art-symbol { transform: none; } }
 @media print { .letter-reader #page-header, .letter-reader #aside-content, .letter-reader #rightside, .letter-reader .moonlit-companion, .letter-reading-dock, .notebook-resume, .letter-copy, .letter-copy-status { display: none !important; } .letter-reader #content-inner, .letter-reader #post { width: 100%; max-width: none; padding: 0 !important; border: 0 !important; box-shadow: none; } .letter-reader { --moon-paper: white; --moon-panel: white; --moon-text: #222; --moon-muted: #555; --moon-ink: #444; --moon-line: #ddd; --moon-soft: #f5f5f5; } .letter-reader #article-container { font-size: 12pt; } .letter-reader #article-container h1, .letter-reader #article-container h2, .letter-reader #article-container h3 { break-after: avoid; } }
 
@@ -215,6 +216,25 @@
 .letter-reader .letter-colophon { margin-top: 28px; padding-top: 18px; }
 .moonlit-interior .letter-page-heading { padding-bottom: 18px; margin-bottom: 24px; }
 .letter-page .notebook-empty { padding: 24px; margin: 24px 0; }
+.moonlit-posts { grid-template-columns: 1fr !important; gap: 18px !important; }
+.moonlit-text-note { display: block !important; }
+.moonlit-text-note .moonlit-card-copy { padding: 24px 30px; }
+.moonlit-text-note .moonlit-card-copy h3 { margin: 9px 0; font-size: 22px; }
+.moonlit-text-note .moonlit-read { display: none; }
+.moonlit-text-note .moonlit-card-copy p { margin-bottom: 8px; }
+.moonlit-card.moonlit-illustrated { display: grid; grid-template-columns: 40% minmax(0,1fr); grid-column: 1 / -1; }
+.moonlit-illustrated .moonlit-cover { height: 100%; min-height: 230px; }
+.moonlit-japanese { margin: 24px 0 34px; padding: 24px 28px; border: 1px solid var(--moon-line); border-radius: 18px; background: var(--moon-panel); }
+.moonlit-japanese-heading { display: flex; align-items: center; gap: 18px; }
+.moonlit-japanese-heading > span { color: var(--moon-accent); font: 40px var(--letter-serif); }
+.moonlit-japanese-heading h2 { font: 23px var(--letter-serif); margin: 0 0 6px; }
+.moonlit-japanese-heading p,.moonlit-japanese-empty { font-size: 14px; color: var(--moon-muted); margin: 0; }
+.moonlit-japanese-heading > a { margin-left: auto; white-space: nowrap; font-size: 14px; }
+.moonlit-japanese-latest { margin-top: 18px; border-top: 1px solid var(--moon-line); }
+.moonlit-japanese-latest a { display: flex; gap: 20px; padding-top: 14px; align-items: baseline; }
+.moonlit-japanese-latest time { color: var(--moon-muted); font-size: 13px; }
+.moonlit-japanese-latest strong { font-weight: 500; }
+.moonlit-japanese-empty { margin-top: 16px; }
 .notebook-months { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0; }
 .notebook-months a { padding: 5px 13px; border: 1px solid var(--moon-line); border-radius: 20px; font-size: 14px; }
 .notebook-months [aria-current] { background: var(--moon-soft); color: var(--moon-text); }
@@ -235,8 +255,9 @@
 .wordbook-card .word-sources { font-size: 13px; color: var(--moon-muted); }
 .wordbook-card .word-sources a { margin-right: 16px; }
 .wordbook-hint { font-size: 13px; color: var(--moon-muted); }
+@media(max-width:800px) { .moonlit-japanese { padding: 20px; } .moonlit-japanese-heading { flex-wrap: wrap; } .moonlit-card.moonlit-illustrated { grid-template-columns: 1fr; } .moonlit-illustrated .moonlit-cover { height: 200px; } }
 
-.letter-copy,.letter-copy-status,.letter-post-neighbors small,.letter-license{font-size:13px}.moonlit-short-label{font-size:13px}
+.letter-copy,.letter-copy-status,.letter-post-neighbors small,.letter-license,.moonlit-card .moonlit-read{font-size:13px}.moonlit-home #content-inner > .moonlit-japanese{padding:24px 28px;width:100%}.moonlit-short-label{font-size:13px}
 
 .moonlit-home #rightside-config,.moonlit-interior #rightside-config{display:none!important}
 
@@ -283,6 +304,9 @@
 .letter-reader #article-container .study-note > :last-child { margin-bottom:0; }
 [data-theme='dark'] .letter-reader #article-container blockquote.study-note--warning { --study-line:#d0a46e; background:#302a28; }
 @media(prefers-reduced-motion:reduce) { .letter-tools summary,.letter-copy,.letter-return,.letter-reader #card-toc .toc-link { transition:none; } }
+.moonlit-home .moonlit-japanese-heading h2 { font-weight:600; }
+.moonlit-home #content-inner > .moonlit-japanese { border-color:transparent; }
+[data-theme='dark'] .moonlit-home #content-inner > .moonlit-japanese { border-color:var(--moon-line); }
 .moonlit-theme,.moonlit-companion button { width:38px; height:38px; border-radius:50%; }
 
 /* Phone layouts: keep navigation readable and the reading canvas usable. */
@@ -297,10 +321,29 @@
   #nav .site-name { font-size:20px; letter-spacing:0; }
   #nav .moonlit-brand-moon { font-size:22px; }
   .moonlit-home #nav .moonlit-links,.moonlit-interior #nav .moonlit-links { gap:10px; flex-shrink:0; white-space:nowrap; font-size:13px; letter-spacing:0; }
+  .moonlit-links > a:first-child,.moonlit-links > a:nth-child(3) { display:none; }
+  .moonlit-links > a:nth-child(2) { display:inline-flex; }
   .moonlit-links > a,.letter-explore summary { min-height:44px; align-items:center; }
   .moonlit-home #nav .moonlit-theme,.moonlit-interior #nav .moonlit-theme { margin-left:0; width:34px; height:34px; font-size:20px; }
   .letter-menu { right:-44px; min-width:180px; max-width:calc(100vw - 28px); max-height:calc(100dvh - 80px); overflow-y:auto; overscroll-behavior:contain; padding:8px; }
   .letter-menu a,.letter-menu .letter-mobile-link { display:flex; align-items:center; min-height:44px; padding:8px 14px; }
+  .moonlit-home #page-header.moonlit-hero { height:480px; min-height:440px; }
+  .moonlit-home .moonlit-scene { background-position:60% 30%; }
+  [data-theme='light'] .moonlit-home .moonlit-wash { background:linear-gradient(0deg,var(--moon-paper),transparent 36%),linear-gradient(90deg,#eeedf508 5%,#eeedf5b8 28%,#eeedf5eb 64%,#eeedf5f5); }
+  .moonlit-hero-inner { width:calc(100% - 36px); padding-top:64px; }
+  .moonlit-hero-copy { width:76%; padding:0; }
+  .moonlit-hero-copy h1 { font-size:clamp(27px,7.5vw,34px); letter-spacing:1px; }
+  .moonlit-intro { font-size:13px; line-height:1.9; text-wrap:pretty; }
+  .moonlit-home #content-inner.moonlit-layout { padding:0 14px 24px; }
+  .moonlit-home #content-inner > .moonlit-japanese { padding:20px; margin:20px 0 26px; }
+  .moonlit-japanese-heading { gap:12px; }
+  .moonlit-japanese-heading h2 { font-size:21px; }
+  .moonlit-japanese-heading > a { padding:6px 0; }
+  .moonlit-japanese-latest a { flex-wrap:wrap; gap:4px 12px; }
+  .moonlit-section-head { flex-wrap:wrap; gap:14px; }
+  .moonlit-filters button { min-height:36px; }
+  .moonlit-home #recent-posts.moonlit-posts { gap:18px; }
+  .moonlit-card h3,.moonlit-card p { overflow-wrap:anywhere; }
   .moonlit-interior #content-inner { padding:16px 12px 24px; }
   .moonlit-interior #content-inner > :first-child { padding:26px 22px; border-radius:16px; }
   .letter-reader #content-inner.layout { padding:16px 10px 24px; }

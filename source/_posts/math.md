@@ -8,6 +8,7 @@ description: 从向量到概率，把理解慢慢连起来。记录矩阵、对�
 categories: 学习笔记
 kind: study
 topic: 数学基础
+cover: /img/moonlit/notes.webp
 symbol: ∑
 featured: true
 studio_edited: true

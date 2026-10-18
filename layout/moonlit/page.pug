@@ -17,7 +17,5 @@ block content
     else
       header.letter-page-heading
         h1= page.title
-        span.letter-page-orbit(aria-hidden='true')
-          include icons.pug
-          +icon('moon', 26)
+        span.letter-page-orbit(aria-hidden='true') ☾
       article#article-container!= page.content
