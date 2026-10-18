@@ -69,29 +69,77 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 [data-theme='dark'] .moonlit-theme .moon-icon-moon { opacity: 0; transform: scale(.6) rotate(40deg); }
 
 /* ---------- Homepage ---------- */
-/* Full-screen moonlit scene with a soft gradient wash (kept from the original design). */
-.moonlit-home #page-header.moonlit-hero { position: relative; height: 100vh; height: 100svh; min-height: 480px; background: #c9c8e3; isolation: isolate; overflow: hidden; }
-.moonlit-home #page-header.moonlit-hero.nav-fixed { z-index: 200; overflow: visible; }
+/* Full-screen illustration. Layers: media (always clipped) > depth (moves with scroll) > scene / moon glow / stars. */
+.moonlit-home #page-header.moonlit-hero { position: relative; height: 100vh; height: 100svh; min-height: 480px; background: var(--moon-paper); isolation: isolate; overflow: visible; --scene-x: 0px; --scene-y: 0px; --hero-p: 0; }
+.moonlit-home #page-header.moonlit-hero.nav-fixed { z-index: 200; }
 .moonlit-home #page-header:before { content: none; }
 .moonlit-home #nav { position: absolute; top: 0; height: 76px; padding: 0 max(28px, calc((100% - 1120px) / 2)); background: transparent; box-shadow: none; color: var(--moon-text); text-shadow: none; }
 .moonlit-home #page-header.nav-fixed #nav { height: 62px; }
 .moonlit-home #hide-aside-btn { display: none; }
-.moonlit-scene, .moonlit-wash, .moonlit-stars { position: absolute; inset: 0; pointer-events: none; }
-.moonlit-scene { inset: -18px; background: url('/img/moonlit/hero.webp') 28% 32% / cover; transform: translate3d(var(--scene-x, 0px), var(--scene-y, 0px), 0) scale(1.03); transition: transform .8s ease-out; }
+.moonlit-hero-media { position: absolute; inset: 0; z-index: -1; overflow: hidden; clip-path: inset(0); pointer-events: none; background: #c9c8e3; }
+[data-theme='dark'] .moonlit-hero-media { background: #14131c; }
+.moonlit-hero-depth, .moonlit-scene, .moonlit-moonglow, .moonlit-stars, .moonlit-wash, .moonlit-hero-dim { position: absolute; inset: 0; }
+.moonlit-hero-depth { transform: translate3d(0, calc(var(--hero-p) * 30vh), 0); will-change: transform; }
+.moonlit-scene { inset: -24px; background: url('/img/moonlit/hero.webp') 50% 38% / cover; translate: var(--scene-x) var(--scene-y); scale: 1.04; transition: translate 1.1s cubic-bezier(.2, .7, .2, 1); }
+[data-theme='dark'] .moonlit-hero-depth { filter: brightness(.6) saturate(.8) hue-rotate(-10deg); }
+/* Soft moonlight over the moon in the illustration. */
+.moonlit-moonglow { translate: calc(var(--scene-x) * .5) calc(var(--scene-y) * .5); background: radial-gradient(circle at 58% 52%, #fffaf0 0, #fff6e6aa 9%, #ffffff33 22%, transparent 38%); mix-blend-mode: soft-light; opacity: .75; }
+[data-theme='dark'] .moonlit-moonglow { background: radial-gradient(circle at 58% 52%, #fff4dc 0, #ffe9c055 14%, #c8d4ff22 28%, transparent 42%); mix-blend-mode: screen; opacity: .6; }
+/* Wash: a light tint, a soft vignette, and a short fade into the page. No sideways white wall. */
 .moonlit-wash { background:
-  linear-gradient(0deg, var(--moon-paper) 0, color-mix(in srgb, var(--moon-paper) 70%, transparent) 9%, transparent 30%),
-  linear-gradient(90deg, transparent 22%, color-mix(in srgb, var(--moon-paper) 40%, transparent) 46%, color-mix(in srgb, var(--moon-paper) 88%, transparent) 64%, color-mix(in srgb, var(--moon-paper) 94%, transparent)); }
-[data-theme='dark'] .moonlit-scene { filter: brightness(.62) saturate(.78) hue-rotate(-8deg); }
+  linear-gradient(0deg, var(--moon-paper) 0, color-mix(in srgb, var(--moon-paper) 55%, transparent) 7%, transparent 22%),
+  linear-gradient(180deg, color-mix(in srgb, var(--moon-paper) 38%, transparent) 0, transparent 16%),
+  radial-gradient(130% 100% at 50% 42%, transparent 58%, #2a2140 100%); opacity: 1; }
+.moonlit-wash { --vignette: .22; }
+.moonlit-wash::after { position: absolute; inset: 0; content: ''; background: linear-gradient(120deg, #f3d8ff33, transparent 45%, #cfe0ff26); mix-blend-mode: soft-light; }
+[data-theme='dark'] .moonlit-wash { background:
+  linear-gradient(0deg, var(--moon-paper) 0, color-mix(in srgb, var(--moon-paper) 60%, transparent) 8%, transparent 26%),
+  linear-gradient(180deg, color-mix(in srgb, var(--moon-paper) 55%, transparent) 0, transparent 18%),
+  radial-gradient(120% 95% at 50% 42%, transparent 50%, #05050ccc 100%); }
+[data-theme='dark'] .moonlit-wash::after { background: linear-gradient(160deg, #3a4a9a33, transparent 50%, #6a58d022); mix-blend-mode: screen; }
+.moonlit-hero-dim { background: var(--moon-paper); opacity: calc(var(--hero-p) * .55); }
+.moonlit-stars { translate: calc(var(--scene-x) * -1.6) calc(var(--scene-y) * -1.6); transition: translate 1.1s cubic-bezier(.2, .7, .2, 1); }
 .moonlit-stars span { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff9e5; box-shadow: 0 0 10px 3px #fff5d766; opacity: .5; animation: moonlit-twinkle 7s ease-in-out infinite; }
-.moonlit-stars span:nth-child(1) { left: 9%; top: 26%; } .moonlit-stars span:nth-child(2) { left: 38%; top: 21%; animation-delay: .8s; }
-.moonlit-stars span:nth-child(3) { left: 28%; top: 60%; animation-delay: 1.7s; } .moonlit-stars span:nth-child(4) { left: 47%; top: 41%; animation-delay: 2.3s; }
-.moonlit-stars span:nth-child(5) { left: 17%; top: 74%; animation-delay: 1.1s; } .moonlit-stars span:nth-child(6) { left: 56%; top: 15%; animation-delay: 2.9s; }
-.moonlit-stars span:nth-child(7) { left: 72%; top: 12%; animation-delay: 3.6s; } .moonlit-stars span:nth-child(8) { left: 88%; top: 30%; animation-delay: 4.4s; }
+.moonlit-stars span:nth-child(1) { left: 9%; top: 26%; } .moonlit-stars span:nth-child(2) { left: 31%; top: 14%; animation-delay: .8s; }
+.moonlit-stars span:nth-child(3) { left: 24%; top: 52%; animation-delay: 1.7s; } .moonlit-stars span:nth-child(4) { left: 47%; top: 22%; animation-delay: 2.3s; }
+.moonlit-stars span:nth-child(5) { left: 14%; top: 66%; animation-delay: 1.1s; } .moonlit-stars span:nth-child(6) { left: 62%; top: 11%; animation-delay: 2.9s; }
+.moonlit-stars span:nth-child(7) { left: 76%; top: 18%; animation-delay: 3.6s; } .moonlit-stars span:nth-child(8) { left: 90%; top: 32%; animation-delay: 4.4s; }
+.moonlit-stars span:nth-child(9) { left: 84%; top: 8%; width: 2px; height: 2px; animation-delay: 5.1s; } .moonlit-stars span:nth-child(10) { left: 40%; top: 6%; width: 2px; height: 2px; animation-delay: 6s; }
 @keyframes moonlit-twinkle { 0%, 100% { opacity: .2; transform: scale(.6); } 50% { opacity: .9; transform: scale(1.35); } }
+
+/* Motion: entrance, slow breathing, moon glow rising. Only when effects include "hero". */
+[data-moonlit-effects~='hero'] .moonlit-scene { animation: moonlit-scene-in 1.6s cubic-bezier(.2, .7, .2, 1) both, moonlit-breathe 26s ease-in-out 1.6s infinite alternate; }
+[data-moonlit-effects~='hero'] .moonlit-moonglow { animation: moonlit-glow-in 2.4s ease-out .4s both, moonlit-glow 9s ease-in-out 2.8s infinite alternate; }
+[data-moonlit-effects~='hero'] .moonlit-stars { animation: moonlit-fade-in 2s ease-out 1s both; }
+@keyframes moonlit-scene-in { from { opacity: 0; scale: 1.13; filter: blur(10px); } to { opacity: 1; scale: 1.04; filter: blur(0); } }
+@keyframes moonlit-breathe { from { scale: 1.04; } to { scale: 1.09; } }
+@keyframes moonlit-glow-in { from { opacity: 0; } }
+@keyframes moonlit-glow { from { opacity: .55; } to { opacity: .9; } }
+@keyframes moonlit-fade-in { from { opacity: 0; } }
+
+/* One small line, bottom-left. */
+.moonlit-hero-line { position: absolute; left: max(28px, calc((100% - 1120px) / 2)); bottom: clamp(84px, 11vh, 120px); z-index: 2; display: flex; align-items: center; gap: 14px; margin: 0; padding: 0; color: var(--moon-text); font: 500 13px/1.6 var(--moon-sans); letter-spacing: .14em; text-shadow: 0 0 14px var(--moon-paper), 0 0 4px color-mix(in srgb, var(--moon-paper) 70%, transparent); }
+.moonlit-hero-line:before { content: none !important; }
+.moonlit-hero-line-name { font-weight: 650; letter-spacing: .24em; }
+.moonlit-hero-line-text { display: inline-flex; align-items: center; gap: 14px; color: color-mix(in srgb, var(--moon-text) 74%, transparent); }
+.moonlit-hero-line-text:before { width: 28px; height: 1px; content: ''; background: currentColor; opacity: .6; }
+[data-moonlit-effects~='hero'] .moonlit-hero-line > span { animation: moonlit-line-in 1s cubic-bezier(.2, .7, .2, 1) 1.1s both; }
+[data-moonlit-effects~='hero'] .moonlit-hero-line > span + span { animation-delay: 1.35s; }
+@keyframes moonlit-line-in { from { opacity: 0; transform: translateY(10px); filter: blur(4px); } }
 .moonlit-sr-only { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
-.moonlit-scroll { position: absolute; left: 50%; bottom: 30px; z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; margin-left: -22px; border-radius: 50%; color: var(--moon-text) !important; opacity: .55; transition: opacity var(--moon-motion); animation: moonlit-bob 2.6s ease-in-out infinite; }
+.moonlit-scroll { position: absolute; left: 50%; bottom: clamp(70px, 9vh, 100px); z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; margin-left: -22px; border-radius: 50%; color: var(--moon-text) !important; opacity: .55; transition: opacity var(--moon-motion); animation: moonlit-bob 2.6s ease-in-out infinite; }
 .moonlit-scroll:hover, .moonlit-scroll:focus-visible { opacity: 1; }
 @keyframes moonlit-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+/* Two slow waves melt the picture into the page; they use the page colour, so both themes match. */
+.moonlit-waves { position: absolute; left: 0; right: 0; bottom: -1px; z-index: 1; height: clamp(44px, 7vw, 92px); overflow: hidden; pointer-events: none; }
+.moonlit-wave { position: absolute; left: 0; bottom: 0; width: 200%; height: 100%; background: var(--moon-paper);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 58C240 18 480 18 720 58S1200 98 1440 58V100H0Z'/%3E%3C/svg%3E") 0 100% / 50% 100% repeat-x;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 58C240 18 480 18 720 58S1200 98 1440 58V100H0Z'/%3E%3C/svg%3E") 0 100% / 50% 100% repeat-x; }
+.moonlit-wave.is-back { height: 120%; opacity: .45; scale: 1 1; -webkit-mask-size: 37.5% 100%; mask-size: 37.5% 100%; }
+[data-moonlit-effects~='hero'] .moonlit-wave.is-front { animation: moonlit-wave 38s linear infinite; }
+[data-moonlit-effects~='hero'] .moonlit-wave.is-back { animation: moonlit-wave 26s linear infinite reverse; }
+@keyframes moonlit-wave { to { transform: translateX(-50%); } }
 
 .moonlit-home #content-inner.moonlit-main { display: block; width: min(1120px, calc(100% - 56px)); max-width: none; margin: 0 auto; padding: 56px 0 24px; }
 .moonlit-section { padding: 0 0 64px; }
@@ -159,9 +207,10 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 }
 @media (max-width: 640px) {
   .moonlit-home #content-inner.moonlit-main { width: calc(100% - 32px); padding-top: 28px; }
-  .moonlit-scene { inset: 0; background-position: 30% 30%; transform: none; }
-  .moonlit-wash { background: linear-gradient(0deg, var(--moon-paper) 0, color-mix(in srgb, var(--moon-paper) 60%, transparent) 10%, transparent 32%); }
-  .moonlit-scroll { bottom: 22px; }
+  .moonlit-scene { inset: -12px; background-position: 34% 40%; }
+  .moonlit-moonglow { background-position: 0 0; }
+  .moonlit-hero-line { left: 20px; right: 20px; bottom: 64px; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; }
+  .moonlit-scroll { display: none; }
   .moonlit-section { padding-bottom: 48px; }
   .moonlit-section-head { flex-wrap: wrap; }
   .moonlit-filters { width: 100%; }
@@ -177,8 +226,14 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
   .moonlit-companion button { width: 36px; height: 36px; border-radius: 11px; }
   .moonlit-companion-frame { width: 200px; height: 300px; bottom: 58px; }
 }
+/* Scroll reveal: only armed by JS (html.moonlit-reveal-on), so content never hides without it. */
+.moonlit-reveal-on [data-reveal] { transition: opacity .7s cubic-bezier(.2, .7, .2, 1) var(--reveal-delay, 0ms), transform .7s cubic-bezier(.2, .7, .2, 1) var(--reveal-delay, 0ms), background var(--moon-motion), border-color var(--moon-motion); }
+.moonlit-reveal-on [data-reveal]:not(.is-revealed) { opacity: 0; transform: translateY(18px); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .moonlit-scene { transform: none !important; }
+  .moonlit-scene { transform: none !important; translate: none !important; scale: 1 !important; }
+  .moonlit-hero-depth, .moonlit-stars { transform: none !important; }
+  .moonlit-hero-dim { display: none; }
+  .moonlit-reveal-on [data-reveal] { opacity: 1 !important; transform: none !important; }
   .moonlit-home *, .moonlit-home *:before, .moonlit-home *:after { animation: none !important; transition: none !important; }
 }

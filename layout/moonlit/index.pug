@@ -6,10 +6,13 @@
 - var featured = allNotes.find(p => p.featured)
 - var rows = allNotes.filter(p => p !== featured)
 - var since = moonlit_since()
+include effects.pug
 doctype html
-html(lang=config.language data-theme=theme.display_mode)
+html(lang=config.language data-theme=theme.display_mode data-moonlit-effects=fxList)
   head
     include ../../node_modules/hexo-theme-butterfly/layout/includes/head.pug
+    if fx.page_transition
+      style @media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }
     link(rel='preload' as='image' href=url_for('/img/moonlit/hero.webp'))
   body.moonlit-home
     != partial('includes/loading/index', {}, {cache: true})
@@ -17,15 +20,25 @@ html(lang=config.language data-theme=theme.display_mode)
     a.moonlit-skip(href='#notes') 跳到手记
     #body-wrap.page
       header#page-header.moonlit-hero
-        .moonlit-scene(aria-hidden='true')
-        .moonlit-wash(aria-hidden='true')
-        .moonlit-stars(aria-hidden='true')
-          each n in [1, 2, 3, 4, 5, 6, 7, 8]
-            span
+        .moonlit-hero-media(aria-hidden='true')
+          .moonlit-hero-depth
+            .moonlit-scene
+            .moonlit-moonglow
+            .moonlit-stars
+              each n in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                span
+          .moonlit-wash
+          .moonlit-hero-dim
         include navigation.pug
-        h1.moonlit-sr-only 月下手记 · Catailor
+        h1.moonlit-hero-line
+          span.moonlit-hero-line-name 月下手记
+          if moonlit.hero_line
+            span.moonlit-hero-line-text= moonlit.hero_line
         a.moonlit-scroll(href='#content-inner' aria-label='向下阅读')
           +icon('down', 20)
+        .moonlit-waves(aria-hidden='true')
+          .moonlit-wave.is-back
+          .moonlit-wave.is-front
       main#content-inner.moonlit-main
         if featured
           section.moonlit-section(aria-labelledby='featured-title')
@@ -42,7 +55,7 @@ html(lang=config.language data-theme=theme.display_mode)
                 .moonlit-meta
                   span.moonlit-topic= featured.topic
                   time(datetime=featured.iso)= featured.date
-                h3
+                h3(style='view-transition-name: ' + featured.vt)
                   a(href=featured.href)= featured.title
                 p= featured.summary
                 a.moonlit-read(href=featured.href aria-label='阅读：' + featured.title)
@@ -63,7 +76,7 @@ html(lang=config.language data-theme=theme.display_mode)
               li.moonlit-card.moonlit-row(data-kind=post.kind)
                 time(datetime=post.iso)= post.file === 'check_in.md' ? '随手' : post.date
                 .moonlit-row-copy
-                  h3
+                  h3(style='view-transition-name: ' + post.vt)
                     a(href=post.href)= post.title
                   p= post.summary
                 span.moonlit-topic= post.topic

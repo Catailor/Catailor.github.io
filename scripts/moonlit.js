@@ -45,9 +45,17 @@ hexo.extend.helper.register('moonlit_note', function (post) {
   return { ...noteOf(post, this.site.data, value => this.url_for(value)), ...this.notebook_stats(post.content) };
 });
 
+// Stable, CSS-safe view-transition-name for a post path, so a title can morph between pages.
+function vtName(value) {
+  let h = 5381;
+  for (const ch of String(value || '')) h = ((h << 5) + h + ch.codePointAt(0)) >>> 0;
+  return 'vt-' + h.toString(36);
+}
+hexo.extend.helper.register('moonlit_vt', vtName);
+
 function listing(ctx) {
   return ctx.site.posts.sort('-date').toArray().map(post => ({
-    href: ctx.url_for(post.path), iso: post.date.toISOString(),
+    href: ctx.url_for(post.path), vt: vtName(post.path), iso: post.date.toISOString(),
     date: path.basename(post.source) === 'check_in.md' ? '随手记录' : ctx.date(post.date, 'YYYY.MM.DD'),
     day: ctx.date(post.date, 'MM.DD'), year: ctx.date(post.date, 'YYYY'),
     ...ctx.moonlit_note(post), html: post.kind === 'moment' ? post.content : ''
