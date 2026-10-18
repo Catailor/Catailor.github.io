@@ -1,5 +1,6 @@
-# Opens the local writing studio: starts the service if needed and shows it in its own app window.
-param([switch]$NoBrowser, [switch]$Tab)
+# Opens the local writing studio: starts the service if needed and opens it in the default browser.
+# -App opens it in a separate Edge/Chrome app window instead.
+param([switch]$NoBrowser, [switch]$App)
 $ErrorActionPreference = 'Stop'
 $version = 'studio-v3'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
@@ -91,7 +92,7 @@ try {
     }
     if (-not $running) { throw "写作台没能启动。详细原因在项目的 .studio\server-$studioPort-error.log 里。" }
     if ($NoBrowser) { Write-Output $studioUrl; exit 0 }
-    $browser = if ($Tab) { $null } else { Find-AppBrowser }
+    $browser = if ($App) { Find-AppBrowser } else { $null }
     if ($browser) { Start-Process -FilePath $browser -ArgumentList @("--app=$studioUrl", '--window-size=1360,900') }
     else { Start-Process $studioUrl }
 } catch {
