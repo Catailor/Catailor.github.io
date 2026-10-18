@@ -13,6 +13,7 @@
 ```sh
 npm ci              # 安装依赖
 npm run studio      # 打开本机写作台（推荐的写作方式）
+npm run studio:shortcut  # 在桌面和开始菜单生成「月下手记写作台」图标（每台电脑一次）
 npm run server      # 本地预览 http://localhost:4000/
 npm run build       # 检查私人内容规则并生成 public/
 npm test            # 单元测试

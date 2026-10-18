@@ -1,0 +1,10 @@
+{
+  "name": "月下手记 · 写作台",
+  "short_name": "写作台",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f5f2",
+  "theme_color": "#2d2746",
+  "icons": [{"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
+}
