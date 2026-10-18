@@ -5,11 +5,16 @@
 - var top_img = false
 if isLetterPost
   - page.title = moonlit_note(page).title
+include effects.pug
 doctype html
-html(lang=config.language data-theme=theme.display_mode)
+html(lang=config.language data-theme=theme.display_mode data-moonlit-effects=fxList)
   head
     include ../../node_modules/hexo-theme-butterfly/layout/includes/head.pug
+    if fx.page_transition
+      style @media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }
   body.moonlit-interior(class=isLetterPost ? (isShortNote ? 'letter-reader letter-short' : 'letter-reader') : 'letter-directory')
+    if isLetterPost && fx.reading_progress
+      .moonlit-progress(aria-hidden='true')
     a.moonlit-skip(href='#content-inner') 跳到正文
     #body-wrap(class=pageType)
       header#page-header.not-top-img

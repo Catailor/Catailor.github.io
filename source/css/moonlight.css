@@ -147,3 +147,23 @@
 .moonlit-footer-links a:hover { color: var(--moon-text) !important; text-decoration: none; }
 .moonlit-footer-fine { border-top-style: solid; }
 .moonlit-footer-fine a { color: var(--moon-muted) !important; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Page transitions (cross-document View Transitions) ---------- */
+#nav { view-transition-name: moonlit-nav; }
+::view-transition-old(root) { animation: 180ms cubic-bezier(.4, 0, 1, 1) both moonlit-vt-out; }
+::view-transition-new(root) { animation: 380ms cubic-bezier(.2, .7, .2, 1) 60ms both moonlit-vt-in; }
+::view-transition-group(*) { animation-duration: 420ms; animation-timing-function: cubic-bezier(.2, .7, .2, 1); }
+@keyframes moonlit-vt-out { to { opacity: 0; } }
+@keyframes moonlit-vt-in { from { opacity: 0; transform: translateY(14px); } }
+
+/* ---------- Day / night ripple ---------- */
+html.moonlit-theme-switching::view-transition-old(root),
+html.moonlit-theme-switching::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+html.moonlit-theme-switching::view-transition-group(*) { animation: none; }
+html.moonlit-theme-switching * { view-transition-name: none !important; transition: none !important; }
+
+/* ---------- Reading progress ---------- */
+.moonlit-progress { position: fixed; top: 0; left: 0; right: 0; z-index: 1001; height: 2px; pointer-events: none; background: linear-gradient(90deg, var(--moon-accent, #6f8fd8), #9fd3ff); transform: scaleX(var(--read-p, 0)); transform-origin: left center; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}

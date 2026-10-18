@@ -1,0 +1,3 @@
+//- Optional motion effects, switched in source/_data/moonlit.yml → effects.
+- var fx = Object.assign({ hero_motion: true, reveal: true, page_transition: true, theme_ripple: true, reading_progress: true }, (site.data.moonlit || {}).effects || {})
+- var fxList = [fx.hero_motion && 'hero', fx.reveal && 'reveal', fx.page_transition && 'pages', fx.theme_ripple && 'theme', fx.reading_progress && 'progress'].filter(Boolean).join(' ')

@@ -1,3 +1,14 @@
+# 首屏左下角的一行小字（留空则只显示「月下手记」）。
+hero_line: 在月光下，记录一些小事。
+
+# 动态效果开关：true 开启，false 关闭。系统开启「减少动态效果」时会自动全部关闭。
+effects:
+  hero_motion: true       # 首屏：入场、缓慢呼吸、月光、鼠标视差、滚动联动、底部波浪
+  reveal: true            # 首页卡片和文章列表滑入
+  page_transition: true   # 页面切换时淡入淡出，文章标题平滑过渡
+  theme_ripple: true      # 切换日夜时从按钮扩散的圆形
+  reading_progress: true  # 文章页顶部的阅读进度条
+
 # 每篇文章的标题、摘要、类型（kind）、主题（topic）、封面（cover）
 # 与是否精选（featured）现在直接写在文章开头的元数据里，写作台的「文章设置」可以修改。
 # 旧版写法仍然兼容：在这里按文件名补充 posts.<文件名>.title / summary 等字段。

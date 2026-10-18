@@ -28,7 +28,7 @@ block content
           time(datetime=date_xml(post.date))= date(post.date, 'MM.DD')
           .letter-timeline-copy
             span.letter-timeline-topic= note.topic
-            h3= note.title
+            h3(style='view-transition-name: ' + moonlit_vt(post.path))= note.title
             p= note.summary
           span.letter-timeline-time= note.kind === 'moment' ? '碎碎念' : note.minutes + ' 分钟'
           span.letter-timeline-arrow(aria-hidden='true')

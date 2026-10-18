@@ -2,6 +2,8 @@
   'use strict';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const root = document.documentElement;
+  const effects = new Set((root.dataset.moonlitEffects || '').split(/\s+/).filter(Boolean));
+  const motionOk = () => !reducedMotion.matches;
 
   function init() {
     const menus = document.querySelector('#menus');
@@ -21,7 +23,22 @@
         themeButton.title = dark ? '切换到日间模式' : '切换到夜间模式';
       };
       syncTheme();
-      themeButton.addEventListener('click', () => document.querySelector('#darkmode')?.click());
+      const toggleTheme = () => document.querySelector('#darkmode')?.click();
+      themeButton.addEventListener('click', () => {
+        if (!effects.has('theme') || !document.startViewTransition || !motionOk()) return toggleTheme();
+        // Day/night switch spreads out from the button as a circular ripple.
+        const rect = themeButton.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+        root.classList.add('moonlit-theme-switching');
+        const transition = document.startViewTransition(toggleTheme);
+        transition.ready.then(() => {
+          root.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+            { duration: 650, easing: 'cubic-bezier(.4, 0, .2, 1)', pseudoElement: '::view-transition-new(root)' });
+        }).catch(() => {});
+        transition.finished.finally(() => root.classList.remove('moonlit-theme-switching'));
+      });
       new MutationObserver(syncTheme).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
     }
 
@@ -83,19 +100,65 @@
       fromHash();
     }
 
-    // Gentle parallax on the full-screen hero illustration.
+    // Hero: layered pointer parallax plus scroll-linked depth.
     const hero = document.querySelector('.moonlit-hero');
-    if (hero && window.matchMedia('(pointer: fine)').matches) {
-      hero.addEventListener('pointermove', event => {
-        if (reducedMotion.matches) return;
-        const rect = hero.getBoundingClientRect();
-        hero.style.setProperty('--scene-x', `${((event.clientX - rect.left) / rect.width - .5) * 14}px`);
-        hero.style.setProperty('--scene-y', `${((event.clientY - rect.top) / rect.height - .5) * 10}px`);
-      }, { passive: true });
-      hero.addEventListener('pointerleave', () => {
-        hero.style.setProperty('--scene-x', '0px');
-        hero.style.setProperty('--scene-y', '0px');
-      });
+    if (hero && effects.has('hero') && motionOk()) {
+      if (window.matchMedia('(pointer: fine)').matches) {
+        hero.addEventListener('pointermove', event => {
+          const rect = hero.getBoundingClientRect();
+          hero.style.setProperty('--scene-x', `${((event.clientX - rect.left) / rect.width - .5) * 14}px`);
+          hero.style.setProperty('--scene-y', `${((event.clientY - rect.top) / rect.height - .5) * 10}px`);
+        }, { passive: true });
+        hero.addEventListener('pointerleave', () => {
+          hero.style.setProperty('--scene-x', '0px');
+          hero.style.setProperty('--scene-y', '0px');
+        });
+      }
+      let heroTick = false;
+      const heroScroll = () => {
+        heroTick = false;
+        const progress = Math.min(Math.max(window.scrollY / (hero.offsetHeight || 1), 0), 1);
+        hero.style.setProperty('--hero-p', progress.toFixed(4));
+      };
+      window.addEventListener('scroll', () => { if (!heroTick) { heroTick = true; requestAnimationFrame(heroScroll); } }, { passive: true });
+      heroScroll();
+    }
+
+    // Reading progress bar on letters.
+    const progressBar = document.querySelector('.moonlit-progress');
+    if (progressBar && effects.has('progress')) {
+      let readTick = false;
+      const readScroll = () => {
+        readTick = false;
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        progressBar.style.setProperty('--read-p', max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1).toFixed(4) : '0');
+      };
+      window.addEventListener('scroll', () => { if (!readTick) { readTick = true; requestAnimationFrame(readScroll); } }, { passive: true });
+      window.addEventListener('resize', readScroll, { passive: true });
+      readScroll();
+    }
+
+    // Cards rise in softly as they enter the viewport.
+    if (effects.has('reveal') && motionOk() && 'IntersectionObserver' in window) {
+      const targets = [...document.querySelectorAll('.moonlit-section-head, .moonlit-featured, .moonlit-row')];
+      if (targets.length) {
+        let batch = 0;
+        let batchTimer;
+        const observer = new IntersectionObserver(entries => {
+          entries.filter(entry => entry.isIntersecting).forEach(entry => {
+            entry.target.style.setProperty('--reveal-delay', `${Math.min(batch++, 6) * 60}ms`);
+            entry.target.classList.add('is-revealed');
+            observer.unobserve(entry.target);
+          });
+          clearTimeout(batchTimer);
+          batchTimer = setTimeout(() => { batch = 0; }, 120);
+        }, { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+        targets.forEach(target => { target.dataset.reveal = ''; observer.observe(target); });
+        root.classList.add('moonlit-reveal-on');
+        // Cards shown later by filters / "more" should never stay hidden.
+        new MutationObserver(() => targets.forEach(t => { if (!t.hidden && !t.classList.contains('is-revealed') && t.getBoundingClientRect().top < innerHeight) t.classList.add('is-revealed'); }))
+          .observe(document.querySelector('#notes') || document.body, { subtree: true, attributes: true, attributeFilter: ['hidden'] });
+      }
     }
 
     // Isolate Live2D in a small, disposable frame so closing it releases its resources.
