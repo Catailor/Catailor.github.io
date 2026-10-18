@@ -17,8 +17,15 @@
     "version": "8.1.1"
   },
   "dependencies": {
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/lang-markdown": "^6.5.2",
+    "@codemirror/language": "^6.13.1",
+    "@codemirror/language-data": "^6.5.2",
+    "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.14",
+    "@lezer/highlight": "^1.2.5",
+    "@milkdown/crepe": "^7.22.3",
     "@renbaoshuo/markdown-it-katex": "^2.0.2",
-    "@toast-ui/editor": "^3.2.2",
     "cheerio": "1.0.0",
     "diff": "^9.0.0",
     "dompurify": "^3.4.15",

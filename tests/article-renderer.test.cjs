@@ -6,6 +6,11 @@ test('article rendering supports hard breaks, formulas, footnotes and study note
   const html=renderArticle(body);assert.match(html,/<br>/);assert.match(html,/<table>/);assert.match(html,/class="katex"/);assert.match(html,/study-note--tip/);assert.match(html,/footnote/);assert.match(html,/id="标题"/);
   assert.equal(require('../tools/studio-content.cjs').md,md);
 });
+test('furigana syntax renders ruby without breaking links, footnotes or code',()=>{
+  const html=renderArticle('今日は[漢字]{かんじ}を[勉強]{べんきょう}した。[链接](https://example.com) `[码]{ma}` [<b>]{x}');
+  assert.match(html,/<ruby class="article-ruby">漢字<rp>\(<\/rp><rt>かんじ<\/rt><rp>\)<\/rp><\/ruby>/);assert.match(html,/<rt>べんきょう<\/rt>/);
+  assert.match(html,/<a href="https:\/\/example.com">链接<\/a>/);assert.match(html,/<code>\[码\]\{ma\}<\/code>/);assert.match(html,/&lt;b&gt;/);
+});
 test('visual editing preserves protected content after edits, including definitions and fenced code',async()=>{
   const {prepareVisualContent}=await import('../tools/studio/visual-content.mjs');
   for(const body of ['普通 $5，价格 $10。','前<br>后','公式 $x^2$。','<div>内容</div>','[链接][a]\n\n[a]: https://example.com','```html\n<div>原文</div>\n```']){

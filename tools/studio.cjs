@@ -67,13 +67,18 @@ function createStudio({ root = ROOT, privatePort = 4002, publisher = publish } =
         if (url.pathname === '/preview.css') return send(200,
           ['moonlit.css','notebook.css','letter.css','article-content.css'].map(file=>fs.readFileSync(path.join(ROOT,'source/css',file),'utf8')).join('\n') +
           '\nbody{margin:0;background:var(--moon-panel);color:var(--moon-text)}main{max-width:776px;margin:32px auto;padding:0 32px 60px}header h1{font:600 30px/1.65 var(--letter-serif)}table{border-collapse:collapse}td,th{border:1px solid var(--moon-line)}pre{padding:16px;background:var(--moon-paper);border-radius:10px}a{color:var(--moon-ink)}', 'text/css');
-        const assets = { '/': ['tools/studio/index.html', 'text/html'], '/studio.js': ['tools/studio/studio.js', 'text/javascript'], '/studio.css': ['tools/studio/studio.css', 'text/css'] };
+        const assets = { '/': ['tools/studio/index.html', 'text/html'], '/studio.js': ['tools/studio/studio.js', 'text/javascript'], '/studio.css': ['tools/studio/studio.css', 'text/css'], '/theme.js': ['tools/studio/theme.js', 'text/javascript'] };
         if(url.pathname==='/article-content.css')return send(200,fs.readFileSync(path.join(ROOT,'source/css/article-content.css')),'text/css');
         if (assets[url.pathname]) { const [file, type] = assets[url.pathname]; return send(200, fs.readFileSync(path.join(ROOT, file)), type); }
         if (url.pathname === '/purify.js') return send(200,fs.readFileSync(path.join(path.dirname(require.resolve('dompurify')),'purify.min.js')),'text/javascript');
-        if (url.pathname === '/editor.js') return send(200,fs.readFileSync(require('./studio-assets.cjs').editorBundle()),'text/javascript');
-        const editorAssets = {'/editor.css':'toastui-editor.css'};
-        if (editorAssets[url.pathname]) return send(200, fs.readFileSync(path.join(path.dirname(require.resolve('@toast-ui/editor')), editorAssets[url.pathname])), url.pathname.endsWith('.css') ? 'text/css' : 'text/javascript');
+        if (url.pathname.startsWith('/editor/')) {
+          const rel = url.pathname.slice(8), types = { '.js': 'text/javascript', '.css': 'text/css', '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf' };
+          if (!/^(?:(?:chunks|assets)\/)?[\w.-]+$/.test(rel) || !types[path.extname(rel)]) return send(404, {});
+          const file = path.join(require('./studio-assets.cjs').editorBundle(), rel);
+          if (!fs.existsSync(file)) return send(404, {});
+          if (rel.includes('/')) res.setHeader('Cache-Control', 'private, max-age=31536000, immutable');
+          return send(200, fs.readFileSync(file), types[path.extname(rel)]);
+        }
         if (/^\/img\/uploads\/[\w.-]+$/.test(url.pathname)) {
           const file = safePath(root, 'source' + url.pathname), type = { '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif' }[path.extname(file)];
           if (!type) return send(404, {}); return send(200, fs.readFileSync(file), type);
